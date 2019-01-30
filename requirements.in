@@ -6,3 +6,6 @@ numpy
 
 # Additional functionality on top of numpy
 scipy
+
+# Automatic formatting tool
+black
