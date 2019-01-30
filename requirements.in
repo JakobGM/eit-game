@@ -1,0 +1,8 @@
+# Python game engine
+pygame
+
+# Numerical computation engine
+numpy
+
+# Additional functionality on top of numpy
+scipy
