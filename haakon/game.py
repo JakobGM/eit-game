@@ -3,53 +3,16 @@ import pygame
 from haakon.canvas import *
 from haakon.arena import *
 
-
-class Player:
-    width = 50
-    height = 50
-
-    def __init__(self, X, Y):
-        self.x = X
-        self.y = Y
-        self.health = 6000
-        self.velocity = 3  # Speed of player
-        self.player_size = 30  # Radius of player
-        self.color = (255, 128, 0, 128)  # Random player color (orange)
-        # self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
-
-    def draw(self, g):
-        pygame.draw.rect(g, self.color, (self.x, self.y, self.width, self.height), 0)
-
-    def move(self, dirn):
-        """
-        :param dirn: 0 - 3 (right, left, up, down)
-        :return: None
-        """
-
-        if dirn == 0:
-            self.x += self.velocity
-        elif dirn == 1:
-            self.x -= self.velocity
-        elif dirn == 2:
-            self.y -= self.velocity
-        else:
-            self.y += self.velocity
-
-
 class Game:
     def __init__(self):
         #self.net = Network()
-        self.width = 1000  # px
-        self.height = 850  # px
         self.player = Player(50, 50)
+        self.arena = Arena()
         #self.arena = Arena()
         #self.player2 = Player(100, 100)
         #self.canvas = Canvas(self.width, self.height, "Testing...")
         # self.center_x = int(self.width / 2)  # Center of screen, x-dir.
         # self.center_y = int(self.height / 2)  # Center of screen, y-dir.
-        self.arena_color = (125,125,125)
-        self.arena_pos = (100,100)
-        self.arena_radius = 100
 
     def run(self):
         pygame.init()
