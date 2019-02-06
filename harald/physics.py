@@ -2,8 +2,7 @@ from typing import List
 
 import numpy as np
 
-import agent
-import arena
+from harald import agent, arena
 
 
 class Physics:
