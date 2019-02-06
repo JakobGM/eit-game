@@ -1,5 +1,6 @@
 import pygame
 
+
 def coin(surface, pos):
     color = (180, 200, 17)
     size = 5

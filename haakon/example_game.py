@@ -7,6 +7,7 @@ import healthbar
 import numpy as np
 import draw_coin
 
+
 pygame.init()
 pygame.font.init()
 
