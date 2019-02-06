@@ -7,7 +7,4 @@ def test_invokation_of_physics_object():
     """Check if we are able to create Physics object."""
     players = [Player(), Player()]
     arena = Arena()
-    physics = Physics(
-        arena=arena,
-        players=players,
-    )
+    physics = Physics(arena=arena, players=players)
