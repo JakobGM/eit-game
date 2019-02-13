@@ -7,9 +7,9 @@ class Screen():
         self.screen = pygame.display.set_mode((self.width,self.height))
 
 class Circle():
-    def __init__(self):
-        self.position = (500,500)
-        self.radius = 500
+    def __init__(self,x = 50,y = 50):
+        self.position = (x,y)
+        self.radius = 50
         self.color = ((255,255,255))
 
     def draw(self, screen): # Screen is a pygame.surface object

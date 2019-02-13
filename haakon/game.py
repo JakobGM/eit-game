@@ -1,6 +1,5 @@
 import pygame
 #from haakon.network import Network
-from haakon.canvas import *
 from haakon.arena import *
 from haakon.player import *
 from haakon.graphics import *
@@ -8,8 +7,11 @@ from haakon.graphics import *
 class Game:
     def __init__(self):
         #self.net = Network()
-        self.player = Player(50, 50)
+        #self.player = Player(600, 600)
+        self.player = Player(200, 200)
         self.arena = Arena(1000,850)
+        self.x = self.arena.width/2
+        self.y = self.arena.height/2
 
     def run(self):
         pygame.init()
@@ -17,8 +19,8 @@ class Game:
         clock = pygame.time.Clock()
 
         screen = Screen()
-        player = Circle()
-        player.draw(screen.screen)
+        #player = Player(400,400)
+        self.player.shape.draw(screen.screen)
 
         run = True
         while run:
@@ -28,29 +30,13 @@ class Game:
             clock.tick(60)
 
             keys = pygame.key.get_pressed()
+            self.player.move(keys)
 
-            # Checks if the player is shielded
-            if keys[pygame.K_SPACE]:
-                draw_shield = True  # Flags shield to be drawn
-                self.player.velocity = 0  # Player cannot move while shielded
-                self.player.health += 25  # Player regens health while shielded.
-
-            if keys[pygame.K_RIGHT]:
-                if self.player.x <= self.width - self.player.velocity:
-                    self.player.move(0)
-
-            if keys[pygame.K_LEFT]:
-                if self.player.x >= self.player.velocity:
-                    self.player.move(1)
-
-            if keys[pygame.K_UP]:
-                if self.player.y >= self.player.velocity:
-                    self.player.move(2)
-
-            if keys[pygame.K_DOWN]:
-                if self.player.y <= self.height - self.player.velocity:
-                    self.player.move(3)
-
+            #print(self.player.x, self.player.y)
+            screen.screen.fill((0, 0, 0))
+            self.player.shape = Circle(self.player.x, self.player.y)
+            self.player.shape.draw(screen.screen)
             pygame.display.flip()
+            clock.tick(60)
 
         pygame.quit()

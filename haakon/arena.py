@@ -12,6 +12,5 @@ class Arena():
     def draw(self):
         return None
 
-
 def draw_arena(surface, color, pos, radius):
     pygame.draw.circle(surface, color, pos, radius)
