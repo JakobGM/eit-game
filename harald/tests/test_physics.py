@@ -1,14 +1,14 @@
 import numpy as np
 
 from harald.physics import Physics
-from harald.arena import Arena
+from harald.arena import Arena, FrictionLayer
 from harald.agent import Player
 
 
 def test_invokation_of_physics_object():
     """Check if we are able to create Physics object."""
     players = [Player(), Player()]
-    arena = Arena()
+    arena = Arena(layers=[])
     Physics(arena=arena, players=players, time_step=0.1)
 
 
@@ -25,7 +25,7 @@ def test_move_player():
     assert np.any(np.not_equal(player.velocity, np.zeros(2)))
 
     # Initialize a area
-    arena = Arena()
+    arena = Arena(layers=[])
 
     physics = Physics(arena=arena, players=[player], time_step=0.1)
     physics.move_players()

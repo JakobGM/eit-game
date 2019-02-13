@@ -1,20 +1,13 @@
 import abc
+import logging
+from typing import List
 
 import numpy as np
 from numpy.linalg import norm
 
 from harald.agent import Player
 
-
-class Arena:
-    def __init__(layers: List[ArenaLayer]) -> None:
-        self.layers = layers
-
-    def force(player):
-        total_force = np.zeros(2, dtype=float)
-        for layer in layers:
-            total_force += layer.force(player=player)
-        return total_force
+logger = logging.getLogger(__name__)
 
 
 class ArenaLayer(abc.ABC):
@@ -29,11 +22,30 @@ class FrictionLayer(ArenaLayer):
 
     def force(self, player: Player) -> np.array:
         velocity = player.velocity
-        if norm(velocity) == 0:
-            return np.array([0., 0.])
+
+        # If the velocity is 0 (or close), the force is [0, 0]
+        if norm(velocity) < 0.1:
+            return np.array([0.0, 0.0])
 
         position = player.position
+        logger.debug(position)
+
         x, y = position.tolist()
-        mu = self.friction[int(x), int(y)]
-        force = -mu * velocity / norm(velocity)
+        x, y = int(x), int(y)
+        if 0 < x < self.friction.shape[1] and 0 < y < self.friction.shape[0]:
+            mu = self.friction[int(x), int(y)]
+            force = -mu * velocity / norm(velocity)
+        else:
+            force = np.array([0, 0])
         return force
+
+
+class Arena:
+    def __init__(self, layers: List[ArenaLayer]) -> None:
+        self.layers = layers
+
+    def force(self, player):
+        total_force = np.zeros(2, dtype=float)
+        for layer in self.layers:
+            total_force += layer.force(player=player)
+        return total_force
