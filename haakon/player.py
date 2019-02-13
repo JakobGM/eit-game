@@ -1,19 +1,17 @@
 from haakon.graphics import *
 
 class Player:
-    #width = 200
-    #height = 200
-
     def __init__(self, X, Y):
         self.x = X
         self.y = Y
         self.max_health = 6000
         self.health = self.max_health
-        self.velocity = 3  # Speed of player
-        self.player_size = 30  # Radius of player
-        self.color = (255, 128, 0, 128)  # Random player color (orange)
+        self.velocity = 6  # Speed of player
+        self.player_size = 10  # Radius of player
+        self.color = Colors.random()
         self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
-        self.shape = Circle(self.x,self.y)
+        self.shape = self.display()
+        self.shield_radius = 5
 
     def move(self, keys):
         """
@@ -28,3 +26,21 @@ class Player:
             self.x -= self.velocity
         if keys[pygame.K_d]:
             self.x += self.velocity
+
+    def shield(self, keys):
+        if keys[pygame.K_SPACE]:
+            draw_shield = True  # Flags shield to be drawn
+            self.velocity = 0  # Player cannot move while shielded
+            self.health += 25  # Player regens health while shielded.
+            return True
+        else:
+            self.velocity = 3
+            return False
+
+    def display(self):
+        circle = Circle(self.x,self.y, self.color, self.player_size)
+        return circle
+
+    def display_shield(self):
+        shield = Circle(self.x,self.y, self.shield_color, self.player_size + self.shield_radius)
+        return shield

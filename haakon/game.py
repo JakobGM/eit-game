@@ -19,7 +19,6 @@ class Game:
         clock = pygame.time.Clock()
 
         screen = Screen()
-        #player = Player(400,400)
         self.player.shape.draw(screen.screen)
 
         run = True
@@ -32,9 +31,13 @@ class Game:
             keys = pygame.key.get_pressed()
             self.player.move(keys)
 
-            #print(self.player.x, self.player.y)
             screen.screen.fill((0, 0, 0))
-            self.player.shape = Circle(self.player.x, self.player.y)
+            if self.player.shield(keys) == True:
+                print("test")
+                self.player.shape = self.player.display_shield()
+                self.player.shape.draw(screen.screen)
+
+            self.player.shape = self.player.display()
             self.player.shape.draw(screen.screen)
             pygame.display.flip()
             clock.tick(60)
