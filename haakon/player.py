@@ -9,7 +9,7 @@ class Player:
         self.velocity = 3  # Speed of player
         self.player_size = 30  # Radius of player
         self.color = (255, 128, 0, 128)  # Random player color (orange)
-        # self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
+        self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
 
     def move(self, dirn):
         """
