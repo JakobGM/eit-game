@@ -75,21 +75,40 @@ class Inputs:
         # return inputs
 
 
-players = ["kristoffer"]
+players = ["kristoffer", "Sindre"]
 player = Inputs(players)
-screen_width = 1000  # px
-screen_height = 850  # px
+screen_width = 400  # px
+screen_height = 400  # px
+c_x = int(screen_width / 2)  # Center of screen, x-dir.
+c_y = int(screen_height / 2)  # Center of screen, y-dir.
 screen = pg.display.set_mode(
     (screen_width, screen_height)
 )  # drawing surface, what happenes if we have multiple?
-
-
-while True:
+input_fra_telefon = (1,5)
+done = False
+while not done:
+    vinkel = np.arctan2(input_fra_telefon[1],input_fra_telefon[0])
+    scale = np.sqrt(np.square(input_fra_telefon[0])+np.square(input_fra_telefon[1]))/10
     print("her")
     for event in pg.event.get():
+        if event.type == pg.QUIT:
+            done = True
         print(event)
         player.latest()
+    pg.draw.polygon(
+        screen,
+        (255, 255, 255),
+        (
+            (c_x + 10, c_y),  # 1
+            (c_x - 10, c_y),  # 2
+            (c_x - 10, c_y + 100),  # 3
+            (c_x - 30, c_y + 100),  # 4
+            (c_x, c_y + 125),  # 5
+            (c_x + 30, c_y + 100),  # 6
+            (c_x + 10, c_y + 100),  # 7
+        ),
+        0,<
+    )
     pg.display.flip()
     print(player.is_down)
-    time.sleep(1)
 """self.direction["up"][i]"""

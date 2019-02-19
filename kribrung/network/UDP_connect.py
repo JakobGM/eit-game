@@ -1,5 +1,6 @@
 import socket
 
+
 class UdpSocket:
     def __init__(self, ip_address="0.0.0.0", port=2055, tx=0):
         # Initiate values
@@ -40,22 +41,23 @@ class UdpSocket:
         """
         self.socket.close()
 
-from UDP_connect import UdpSocket
-receive = UdpSocket(ip_address = "0.0.0.0", port=2055) ##uses
-print_ct = 0
-x = 0
-y = 0
-
-while 1:
-   gyro_data, user_data = receive.receive()
-   coor = list(map(lambda x: float(x), gyro_data[:-1].split(',')))
-   x, y = -coor[1], -coor[0]
-   print_ct += 1
-
-   if print_ct > 50:
-      print_ct = 0
-      print("x: {} y: {}".format(x, y))
 
 class connect_phone:
+    def __init__(self, coor=0, gyro_data=0, port=2055, x=0, y=0, print_ct=0):
+        self.port = port
+        self.x = x
+        self.y = y
+        self.print_ct = print_ct
+        self.coor = coor
+        self.gyro_data = gyro_data
 
-    def __init__(self, port):
+    def vect_phone(self):
+        phone = UdpSocket(port=self.port)
+        self.gyro_data, self.user_data = phone.receive()
+        self.coor = list(map(lambda x: float(x), self.gyro_data[:-1].split(",")))
+        self.x, self.y = -self.coor[1], self.coor[0]
+        return (self.x,self.y)
+
+
+
+

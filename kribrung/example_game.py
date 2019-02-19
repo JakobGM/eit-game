@@ -13,8 +13,8 @@ pygame.font.init()
 # Window
 screen_width = 1000  # px
 screen_height = 850  # px
-center_x = int(screen_width / 2) # Center of screen, x-dir.
-center_y = int(screen_height / 2) # Center of screen, y-dir.
+center_x = int(screen_width / 2)  # Center of screen, x-dir.
+center_y = int(screen_height / 2)  # Center of screen, y-dir.
 
 screen = pygame.display.set_mode(
     (screen_width, screen_height)
