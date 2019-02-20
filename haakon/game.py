@@ -1,19 +1,47 @@
 import pygame
-from network import Network
+#from haakon.network import Network
+from haakon.arena import *
+from haakon.player import *
+from haakon.graphics import *
 
-class Player():
+class Game:
     def __init__(self):
-        self.player_health_max = 6000  # Unused so far, got an idea of making an healthbar using this
-        self.player_health = player_health_max
-        self.player_velocity = 3  # Speed of player
-        self.player_size = 30  # Radius of player
-        self.player_color = (255, 128, 0, 128)  # Random player color (orange)
-        self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
+        #self.net = Network()
+        #self.player = Player(600, 600)
+        self.player = Player(200, 200)
+        self.arena = Arena(1000,850)
+        self.x = self.arena.width/2
+        self.y = self.arena.height/2
 
+    def run(self):
+        pygame.init()
+        pygame.font.init()
+        clock = pygame.time.Clock()
 
-class Game()
-    def __init__(self):
-        self.screen_width = 1000  # px
-        self.screen_height = 850  # px
-        self.center_x = int(self.screen_width / 2)  # Center of screen, x-dir.
-        self.center_y = int(self.screen_height / 2)  # Center of screen, y-dir.
+        screen = Screen()
+
+        #self.arena.draw_arena(screen)
+
+        self.player.shape.draw(screen.screen)
+
+        run = True
+        while run:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+            clock.tick(60)
+
+            keys = pygame.key.get_pressed()
+            self.player.move(keys)
+
+            screen.screen.fill((0, 0, 0))
+            if self.player.shield(keys) == True:
+                self.player.shape = self.player.display_shield()
+                self.player.shape.draw(screen.screen)
+
+            self.player.shape = self.player.display()
+            self.player.shape.draw(screen.screen)
+            pygame.display.flip()
+            clock.tick(60)
+
+        pygame.quit()
