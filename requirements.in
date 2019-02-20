@@ -9,3 +9,6 @@ scipy
 
 # Automatic formatting tool
 black
+
+# Python testing library
+pytest
