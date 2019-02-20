@@ -9,8 +9,6 @@ class Arena():
         self.radius = 500
         self.color = (125,125,125)
 
-    def draw(self):
-        return None
-
-def draw_arena(surface, color, pos, radius):
-    pygame.draw.circle(surface, color, pos, radius)
+    def draw_arena(self, screen):
+        arena = pygame.draw.circle(self, screen, self.color, self.position, self.radius)
+        return arena

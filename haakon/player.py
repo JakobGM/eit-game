@@ -1,4 +1,5 @@
 from haakon.graphics import *
+import numpy as np
 
 class Player:
     def __init__(self, X, Y):
@@ -12,6 +13,7 @@ class Player:
         self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
         self.shape = self.display()
         self.shield_radius = 5
+        self.position = np.array([X,Y])
 
     def move(self, keys):
         """

@@ -19,6 +19,9 @@ class Game:
         clock = pygame.time.Clock()
 
         screen = Screen()
+
+        #self.arena.draw_arena(screen)
+
         self.player.shape.draw(screen.screen)
 
         run = True
@@ -33,7 +36,6 @@ class Game:
 
             screen.screen.fill((0, 0, 0))
             if self.player.shield(keys) == True:
-                print("test")
                 self.player.shape = self.player.display_shield()
                 self.player.shape.draw(screen.screen)
 
