@@ -1,5 +1,6 @@
 import pygame
 import random
+from haakon.graphics import *
 
 class Arena():
     def __init__(self, width, height):
@@ -7,8 +8,9 @@ class Arena():
         self.height = height
         self.position = (int(width / 2), int(height / 2))
         self.radius = 500
-        self.color = (125,125,125)
+        self.color = (90,180,90)
+        self.shape = self.display()
 
-    def draw_arena(self, screen):
-        arena = pygame.draw.circle(self, screen, self.color, self.position, self.radius)
+    def display(self):
+        arena = Circle(self.position[0], self.position[1],self.color, self.radius)
         return arena

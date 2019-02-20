@@ -2,12 +2,14 @@ from haakon.graphics import *
 import numpy as np
 
 class Player:
-    def __init__(self, X, Y):
+    def __init__(self, X, Y, arena_x, arena_y):
+        self.arena_x = arena_x
+        self.arena_y = arena_y
         self.x = X
         self.y = Y
         self.max_health = 6000
         self.health = self.max_health
-        self.velocity = 6  # Speed of player
+        self.velocity = 10  # Speed of player
         self.player_size = 10  # Radius of player
         self.color = Colors.random()
         self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
@@ -21,13 +23,25 @@ class Player:
         :return: None
         """
         if keys[pygame.K_w]:  # Top is zero, means up is negative and down is positive
-            self.y -= self.velocity
+            if (self.y - self.velocity < 0):
+                self.y -= (self.velocity - self.arena_y)
+            else:
+                self.y -= self.velocity
         if keys[pygame.K_s]:
-            self.y += self.velocity
+            if (self.y + self.velocity > self.arena_y):
+                self.y += self.velocity - self.arena_y
+            else:
+                self.y += self.velocity
         if keys[pygame.K_a]:  # Left is zero, hence left is negative, right is positive
-            self.x -= self.velocity
+            if (self.x - self.velocity < 0):
+                self.x -= (self.velocity - self.arena_x)
+            else:
+                self.x -= self.velocity
         if keys[pygame.K_d]:
-            self.x += self.velocity
+            if (self.x + self.velocity > self.arena_x):
+                self.x += self.velocity - self.arena_x
+            else:
+                self.x += self.velocity
 
     def shield(self, keys):
         if keys[pygame.K_SPACE]:
@@ -36,7 +50,7 @@ class Player:
             self.health += 25  # Player regens health while shielded.
             return True
         else:
-            self.velocity = 3
+            self.velocity = 10
             return False
 
     def display(self):

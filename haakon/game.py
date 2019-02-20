@@ -8,8 +8,8 @@ class Game:
     def __init__(self):
         #self.net = Network()
         #self.player = Player(600, 600)
-        self.player = Player(200, 200)
-        self.arena = Arena(1000,850)
+        self.player = Player(200, 200, 1000, 1000)
+        self.arena = Arena(1000,1000)
         self.x = self.arena.width/2
         self.y = self.arena.height/2
 
@@ -20,8 +20,8 @@ class Game:
 
         screen = Screen()
 
-        #self.arena.draw_arena(screen)
-
+        #self.arena.display(screen.screen)
+        self.arena.shape.draw(screen.screen)
         self.player.shape.draw(screen.screen)
 
         run = True
@@ -35,6 +35,7 @@ class Game:
             self.player.move(keys)
 
             screen.screen.fill((0, 0, 0))
+            self.arena.shape.draw(screen.screen)
             if self.player.shield(keys) == True:
                 self.player.shape = self.player.display_shield()
                 self.player.shape.draw(screen.screen)
