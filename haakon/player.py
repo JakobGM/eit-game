@@ -4,11 +4,11 @@ from haakon.input import Input
 
 
 class Player:
-    def __init__(self, x: float, y: float, keys, max_health=6000, mass: float = 1.0):
+    def __init__(self, x: float, y: float, keys, max_health=6000, mass: float = 1.0, phone=None):
         self.mass = mass
         self.position = np.array([x, y], dtype=float)
         self.velocity = np.zeros(2, dtype=float)
-        self.input = Input(keys)
+        self.input = Input(keys, phone)
         self.max_health = max_health
         self.health = self.max_health
         self.player_size = 10  # Radius of player

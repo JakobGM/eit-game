@@ -5,6 +5,7 @@ from haakon.arena import *
 from haakon.player import *
 from haakon.graphics import *
 from harald.physics import Physics
+import kribrung.network.UDP_connect as con
 
 
 class Game:
@@ -19,7 +20,7 @@ class Game:
                 "down": pygame.K_s,
                 "left": pygame.K_a,
                 "right": pygame.K_d,
-            },
+            }, phone=con.connect_phone()
         )
         self.arena = Arena(1000, 850, layers = None)
         self.x = self.arena.width / 2
@@ -42,7 +43,6 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-            clock.tick(60)
 
             keys = pygame.key.get_pressed()
 

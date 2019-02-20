@@ -52,7 +52,7 @@ while 1:
         b = rd.randint(0, 200)
         change_color = 0
 
-    a = input_phone.vect_phone()
+    a = tuple(input_phone.vect_phone()[0])
     a_filtered = (filter_x.lowpass(a[0]), filter_y.lowpass(a[1]))
     tetha = np.arctan2(a_filtered[1], a_filtered[0])
     scale = np.sqrt(np.square(a_filtered[1]) + np.square(a_filtered[0]))
