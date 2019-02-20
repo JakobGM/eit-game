@@ -29,7 +29,6 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-            clock.tick(60)
 
             keys = pygame.key.get_pressed()
             self.player.move(keys)
@@ -39,7 +38,8 @@ class Game:
             if self.player.shield(keys) == True:
                 self.player.shape = self.player.display_shield()
                 self.player.shape.draw(screen.screen)
-
+            else:
+                self.player.shape.draw(screen.screen)
             self.player.shape = self.player.display()
             self.player.shape.draw(screen.screen)
             pygame.display.flip()

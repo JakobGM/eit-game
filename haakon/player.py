@@ -9,7 +9,8 @@ class Player:
         self.y = Y
         self.max_health = 6000
         self.health = self.max_health
-        self.velocity = 10  # Speed of player
+        self.max_velocity = 5
+        self.velocity = 5  # Speed of player
         self.player_size = 10  # Radius of player
         self.color = Colors.random()
         self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
@@ -50,7 +51,7 @@ class Player:
             self.health += 25  # Player regens health while shielded.
             return True
         else:
-            self.velocity = 10
+            self.velocity = self.max_velocity
             return False
 
     def display(self):
