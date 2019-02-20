@@ -1,8 +1,4 @@
-import pygame as pg
 import numpy as np
-import UDP_connect as con
-import random as rd
-
 
 class Rotate:
     def __init__(self, vect, origin):
