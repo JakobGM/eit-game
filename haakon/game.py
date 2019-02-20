@@ -4,16 +4,27 @@ import pygame
 from haakon.arena import *
 from haakon.player import *
 from haakon.graphics import *
+from harald.physics import Physics
 
 
 class Game:
     def __init__(self):
         # self.net = Network()
         # self.player = Player(600, 600)
-        self.player = Player(200, 200)
+        self.player = Player(
+            200,
+            200,
+            {
+                "up": pygame.K_w,
+                "down": pygame.K_s,
+                "left": pygame.K_a,
+                "right": pygame.K_d,
+            },
+        )
         self.arena = Arena(1000, 850)
         self.x = self.arena.width / 2
         self.y = self.arena.height / 2
+        self.physics = Physics(arena=None, players=[self.player], time_step=1 / 60)
 
     def run(self):
         pygame.init()
@@ -34,7 +45,11 @@ class Game:
             clock.tick(60)
 
             keys = pygame.key.get_pressed()
-            self.player.move(keys)
+
+            # Physics
+            self.physics.move_players()
+
+            # self.player.move(keys)
 
             screen.screen.fill((0, 0, 0))
             if self.player.shield(keys) == True:

@@ -3,21 +3,23 @@ from typing import List
 
 import numpy as np
 
-from harald import agent, arena
+from haakon.player import Player
+from harald import arena
 
 logger = logging.getLogger(__name__)
 
 
 class Physics:
-    def __init__(
-        self, arena: arena.Arena, players: List[agent.Player], time_step: float
-    ):
+    def __init__(self, arena: arena.Arena, players: List[Player], time_step: float):
         self.arena = arena
         self.players = players
         self.time_step = time_step
 
     def move_players(self) -> None:
+
         for player in self.players:
-            acceleration = player.force / player.mass
+
+            force = player.input.get_move()
+            acceleration = force / player.mass
             player.velocity += acceleration * self.time_step
             player.position += player.velocity * self.time_step
