@@ -4,19 +4,17 @@ from haakon.input import Input
 
 
 class Player:
-    def __init__(self, X, Y, keys, max_health=6000, mass: float = 1.0):
-        self.x = X
-        self.y = Y
+    def __init__(self, x: float, y: float, keys, max_health=6000, mass: float = 1.0):
         self.mass = mass
         self.max_health = max_health
         self.health = self.max_health
-        self.velocity = 6  # Speed of player
+        self.velocity = np.zeros(2, dtype=float)
         self.player_size = 10  # Radius of player
         self.color = Colors.random()
         self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
         self.shape = self.display()
         self.shield_radius = 5
-        self.position = np.array([X, Y])
+        self.position = np.array([x, y], dtype=float)
         self.input = Input(keys)
 
     def shield(self, keys):
