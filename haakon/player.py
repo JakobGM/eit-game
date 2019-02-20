@@ -1,12 +1,13 @@
 from haakon.graphics import *
 import numpy as np
+from haakon.input import Input
 
 
 class Player:
-    def __init__(self, X, Y):
+    def __init__(self, X, Y, keys, max_health=6000):
         self.x = X
         self.y = Y
-        self.max_health = 6000
+        self.max_health = max_health
         self.health = self.max_health
         self.velocity = 6  # Speed of player
         self.player_size = 10  # Radius of player
@@ -15,20 +16,7 @@ class Player:
         self.shape = self.display()
         self.shield_radius = 5
         self.position = np.array([X, Y])
-
-    def move(self, keys):
-        """
-        :param dirn: 0 - 3 (right, left, up, down)
-        :return: None
-        """
-        if keys[pygame.K_w]:  # Top is zero, means up is negative and down is positive
-            self.y -= self.velocity
-        if keys[pygame.K_s]:
-            self.y += self.velocity
-        if keys[pygame.K_a]:  # Left is zero, hence left is negative, right is positive
-            self.x -= self.velocity
-        if keys[pygame.K_d]:
-            self.x += self.velocity
+        self.input = Input(keys)
 
     def shield(self, keys):
         if keys[pygame.K_SPACE]:
