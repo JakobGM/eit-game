@@ -12,7 +12,6 @@ from numpy.linalg import norm
 
 from harald.agent import Player
 
-logger = logging.getLogger(__name__)
 
 
 class ArenaLayer(abc.ABC):
