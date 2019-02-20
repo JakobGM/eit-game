@@ -33,7 +33,7 @@ class Screen:
 
 class Circle:
     def __init__(self, x=50, y=50, color=Colors.RED, radius=10):
-        self.position = (x, y)
+        self.position = (int(x), int(y))
         self.radius = radius
         self.color = color
 

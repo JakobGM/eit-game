@@ -19,7 +19,7 @@ class Physics:
 
         for player in self.players:
 
-            force = player.input.get_move()
+            force = 100 * player.input.get_move()
             acceleration = force / player.mass
             player.velocity += acceleration * self.time_step
             player.position += player.velocity * self.time_step

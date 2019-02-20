@@ -18,10 +18,10 @@ class Input:
             move += np.array([1, 0])
 
         if keys[self.keys["up"]]:
-            move += np.array([0, 1])
+            move += np.array([0, -1])
 
         if keys[self.keys["down"]]:
-            move += np.array([0, -1])
+            move += np.array([0, 1])
 
         return move
 
