@@ -5,6 +5,13 @@ from haakon.input import Input
 
 class Player:
     def __init__(self, x: float, y: float, keys, max_health=6000, mass: float = 1.0):
+        """
+        :param x: initial x-position
+        :param y: initial y-position
+        :param keys: dictionary used to store which keys that belongs to the player
+        :param max_health:
+        :param mass: mass used to calculate force from the input and friction
+        """
         self.mass = mass
         self.position = np.array([x, y], dtype=float)
         self.velocity = np.zeros(2, dtype=float)

@@ -13,6 +13,9 @@ def test_invokation_of_physics_object():
 
 
 def test_move_player():
+    """
+    Check if the code is able to change the position of a player
+    """
     player = Player()
 
     # Initialize a player
