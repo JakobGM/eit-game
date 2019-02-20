@@ -28,11 +28,11 @@ class Player:
             return False
 
     def display(self):
-        circle = Circle(self.x, self.y, self.color, self.player_size)
+        circle = Circle(self.position[0], self.position[1], self.color, self.player_size)
         return circle
 
     def display_shield(self):
         shield = Circle(
-            self.x, self.y, self.shield_color, self.player_size + self.shield_radius
+            self.position[0], self.position[1], self.shield_color, self.player_size + self.shield_radius
         )
         return shield
