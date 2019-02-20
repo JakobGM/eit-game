@@ -1,6 +1,7 @@
 from haakon.graphics import *
 import numpy as np
 
+
 class Player:
     def __init__(self, X, Y):
         self.x = X
@@ -13,7 +14,7 @@ class Player:
         self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
         self.shape = self.display()
         self.shield_radius = 5
-        self.position = np.array([X,Y])
+        self.position = np.array([X, Y])
 
     def move(self, keys):
         """
@@ -40,9 +41,11 @@ class Player:
             return False
 
     def display(self):
-        circle = Circle(self.x,self.y, self.color, self.player_size)
+        circle = Circle(self.x, self.y, self.color, self.player_size)
         return circle
 
     def display_shield(self):
-        shield = Circle(self.x,self.y, self.shield_color, self.player_size + self.shield_radius)
+        shield = Circle(
+            self.x, self.y, self.shield_color, self.player_size + self.shield_radius
+        )
         return shield

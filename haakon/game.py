@@ -1,17 +1,19 @@
 import pygame
-#from haakon.network import Network
+
+# from haakon.network import Network
 from haakon.arena import *
 from haakon.player import *
 from haakon.graphics import *
 
+
 class Game:
     def __init__(self):
-        #self.net = Network()
-        #self.player = Player(600, 600)
+        # self.net = Network()
+        # self.player = Player(600, 600)
         self.player = Player(200, 200)
-        self.arena = Arena(1000,850)
-        self.x = self.arena.width/2
-        self.y = self.arena.height/2
+        self.arena = Arena(1000, 850)
+        self.x = self.arena.width / 2
+        self.y = self.arena.height / 2
 
     def run(self):
         pygame.init()
@@ -20,7 +22,7 @@ class Game:
 
         screen = Screen()
 
-        #self.arena.draw_arena(screen)
+        # self.arena.draw_arena(screen)
 
         self.player.shape.draw(screen.screen)
 
