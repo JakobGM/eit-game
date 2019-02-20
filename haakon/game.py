@@ -21,10 +21,14 @@ class Game:
                 "right": pygame.K_d,
             },
         )
-        self.arena = Arena(1000, 850, layers = None)
+        self.arena_size = (1000, 1000)
+        self.layers = [FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1])))]
+        self.arena = Arena(self.arena_size[0], self.arena_size[1], layers=self.layers)
         self.x = self.arena.width / 2
         self.y = self.arena.height / 2
-        self.physics = Physics(arena=self.arena, players=[self.player], time_step=1 / 60)
+        self.physics = Physics(
+            arena=self.arena, players=[self.player], time_step=1 / 60
+        )
 
     def run(self):
         pygame.init()

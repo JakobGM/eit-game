@@ -29,33 +29,33 @@ class FrictionLayer(ArenaLayer):
         velocity = player.velocity
 
         # If the velocity is 0 (or close), the force is [0, 0]
-        if norm(velocity) < 0.1:
+        if norm(velocity) < 10:
             return np.array([0.0, 0.0])
 
         position = player.position
-        logger.debug(position)
 
         x, y = position.tolist()
         x, y = int(x), int(y)
         if 0 < x < self.friction.shape[1] and 0 < y < self.friction.shape[0]:
             mu = self.friction[int(x), int(y)]
-            force = -mu * velocity / norm(velocity)
+            force = -mu * velocity / norm(velocity) * player.mass * 10
         else:
             force = np.array([0, 0])
         return force
 
-class Arena():
+
+class Arena:
     def __init__(self, width, height, layers: List[ArenaLayer]) -> None:
         self.width = width
         self.height = height
         self.position = (int(width / 2), int(height / 2))
         self.radius = 500
-        self.color = (90,180,90)
+        self.color = (90, 180, 90)
         self.shape = self.display()
         self.layers = layers
 
     def display(self):
-        arena = Circle(self.position[0], self.position[1],self.color, self.radius)
+        arena = Circle(self.position[0], self.position[1], self.color, self.radius)
         return arena
 
     def force(self, player):
@@ -63,5 +63,3 @@ class Arena():
         for layer in self.layers:
             total_force += layer.force(player=player)
         return total_force
-
-

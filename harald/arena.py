@@ -28,7 +28,6 @@ class FrictionLayer(ArenaLayer):
             return np.array([0.0, 0.0])
 
         position = player.position
-        logger.debug(position)
 
         x, y = position.tolist()
         x, y = int(x), int(y)

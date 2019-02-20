@@ -18,8 +18,10 @@ class Physics:
     def move_players(self) -> None:
 
         for player in self.players:
-
+            # print(self.arena.force(player))
             force = 1500 * player.input.get_move()
+            print(force, "\t", self.arena.force(player))
+            force += 50 * self.arena.force(player)
             acceleration = force / player.mass
             player.velocity += acceleration * self.time_step
             """
@@ -42,4 +44,3 @@ class Physics:
                 player.position[1] -= self.arena.height
             if player.position[1] < 0:
                 player.position[1] += self.arena.height
-

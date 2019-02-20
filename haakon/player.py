@@ -20,11 +20,13 @@ class Player:
     def shield(self, keys):
         if keys[pygame.K_SPACE]:
             draw_shield = True  # Flags shield to be drawn
-            self.velocity = np.zeros(2, dtype=float)  # Player cannot move while shielded
+            self.velocity = np.zeros(
+                2, dtype=float
+            )  # Player cannot move while shielded
             self.health += 25  # Player regens health while shielded.
             return True
         else:
-            #self.velocity = 10
+            # self.velocity = 10
             return False
 
     def display(self):
