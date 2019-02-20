@@ -4,9 +4,10 @@ from haakon.input import Input
 
 
 class Player:
-    def __init__(self, X, Y, keys, max_health=6000):
+    def __init__(self, X, Y, keys, max_health=6000, mass: float = 1.0):
         self.x = X
         self.y = Y
+        self.mass = mass
         self.max_health = max_health
         self.health = self.max_health
         self.velocity = 6  # Speed of player
