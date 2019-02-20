@@ -21,10 +21,10 @@ class Game:
                 "right": pygame.K_d,
             },
         )
-        self.arena = Arena(1000, 850)
+        self.arena = Arena(1000, 850, layers = None)
         self.x = self.arena.width / 2
         self.y = self.arena.height / 2
-        self.physics = Physics(arena=None, players=[self.player], time_step=1 / 60)
+        self.physics = Physics(arena=self.arena, players=[self.player], time_step=1 / 60)
 
     def run(self):
         pygame.init()
@@ -52,6 +52,9 @@ class Game:
             # self.player.move(keys)
 
             screen.screen.fill((0, 0, 0))
+
+            self.arena.shape.draw(screen.screen)
+
             if self.player.shield(keys) == True:
                 self.player.shape = self.player.display_shield()
                 self.player.shape.draw(screen.screen)
