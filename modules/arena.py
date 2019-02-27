@@ -1,16 +1,11 @@
-import pygame
-import random
-from haakon.graphics import *
-from typing import List
+from modules.graphics import *
 
 import abc
-import logging
 from typing import List
 
 import numpy as np
 from numpy.linalg import norm
-
-from harald.agent import Player
+from modules.player import Player
 
 
 class ArenaLayer(abc.ABC):

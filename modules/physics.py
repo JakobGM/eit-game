@@ -1,9 +1,7 @@
 from typing import List
 
-import numpy as np
-
-from haakon.player import Player
-from haakon.arena import Arena
+from modules.player import Player
+from modules.arena import Arena
 
 
 class Physics:

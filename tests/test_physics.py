@@ -1,7 +1,7 @@
 import numpy as np
 
-from harald.physics import Physics
-from harald.arena import Arena, FrictionLayer
+from modules.physics import Physics
+from harald.arena import Arena
 from harald.agent import Player
 
 

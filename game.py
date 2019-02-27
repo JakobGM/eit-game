@@ -1,11 +1,7 @@
-import pygame
-
-# from haakon.network import Network
-from haakon.arena import *
-from haakon.player import *
-from haakon.graphics import *
-from harald.physics import Physics
-import kribrung.network.UDP_connect as con
+from modules.arena import *
+from modules.player import *
+from modules.graphics import *
+from modules.physics import Physics
 
 
 class Game:

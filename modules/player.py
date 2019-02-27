@@ -1,6 +1,6 @@
-from haakon.graphics import *
+from modules.graphics import *
 import numpy as np
-from haakon.input import Input
+from input.input import Input
 
 
 class Player:
