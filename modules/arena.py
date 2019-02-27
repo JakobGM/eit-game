@@ -6,6 +6,7 @@ from typing import List
 import numpy as np
 from numpy.linalg import norm
 from modules.player import Player
+from settings import PhysicsConsts
 
 
 class ArenaLayer(abc.ABC):
@@ -38,8 +39,10 @@ class FrictionLayer(ArenaLayer):
         velocity = player.velocity
 
         # If the velocity is 0 (or close), the force is [0, 0]
-        if norm(velocity) < 10:
-            return np.array([0.0, 0.0])
+        if norm(velocity) < PhysicsConsts.static_friction_limit:
+            player.velocity = np.zeros(2)
+            force = np.zeros(2)
+            return force
 
         position = player.position
         x, y = position.tolist()
@@ -77,7 +80,7 @@ class AirResistanceLayer(ArenaLayer):
         """
 
         return (
-            -self.drag_coefficient * np.linspace.norm(player.velocity) * player.velocity
+            -self.drag_coefficient * np.linalg.norm(player.velocity) * player.velocity
         )
 
 

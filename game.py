@@ -21,7 +21,7 @@ class Game:
         self.arena_size = (1000, 1000)
         self.layers = [
             FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1]))),
-            AirResistanceLayer(1),
+            AirResistanceLayer(0.00001),
         ]
         self.arena = Arena(self.arena_size[0], self.arena_size[1], layers=self.layers)
         self.x = self.arena.width / 2
