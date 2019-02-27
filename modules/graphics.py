@@ -1,4 +1,3 @@
-import abc
 from collections import namedtuple
 from enum import Enum
 import random
@@ -18,16 +17,15 @@ class Colors(Enum):
 
     @staticmethod
     def random():
-        # return cls(random.randint(0,255),random.randint(0,255),random.randint(0,255))
         return Color(
             random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
         )
 
 
 class Screen:
-    def __init__(self):
-        self.width = 1000
-        self.height = 1000
+    def __init__(self, width=1000, height=1000):
+        self.width = width
+        self.height = height
         self.screen = pygame.display.set_mode((self.width, self.height))
 
 
