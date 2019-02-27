@@ -23,6 +23,10 @@ class Input:
         if keys[self.keys["down"]]:
             move += np.array([0, 1])
 
+        # Normalize
+        if np.linalg.norm(move) > 1:
+            move /= np.linalg.norm(move)
+
         return move
 
     @staticmethod
