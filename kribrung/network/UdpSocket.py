@@ -1,18 +1,14 @@
 import socket
-import numpy as np
-import pygame as pg
-import time
-
 
 class UdpSocket:
     def __init__(self, ip_address="0.0.0.0", port=2055, tx=0):
-        # Initiate values
-        self.socket = None
-
         self.udp_ip_address = ip_address
         self.tx = tx
         self.port = port
         self.setup()
+
+        # Initiate values
+        self.socket = None
 
     def setup(self):
         """
@@ -43,26 +39,3 @@ class UdpSocket:
         Needs to be called if it is a TCP connection or a receiving UDP connection.
         """
         self.socket.close()
-
-
-class ConnectPhone:
-    def __init__(self, coor=0, gyro_data=0, port=2055, x=0, y=0, z=0, print_ct=0):
-        self.port = port
-        self.x = x
-        self.y = y
-        self.z = z
-        self.print_ct = print_ct
-        self.coor = coor
-        self.gyro_data = gyro_data
-        self.udp_socket = UdpSocket(port=self.port)
-
-    def vect_phone(self):
-        """
-        supposed to be used as a input to the game.
-        :return: Returns a description of the phone's orientation
-        """
-        self.gyro_data, self.user_data = self.udp_socket.receive()
-        self.coor = list(map(lambda x: float(x), self.gyro_data[:-1].split(",")))
-        self.x, self.y, self.z = -self.coor[1], -self.coor[0], self.coor[2]
-        #make the z a bool
-        return np.array([self.x, self.y])

@@ -20,7 +20,7 @@ class Game:
                 "down": pygame.K_s,
                 "left": pygame.K_a,
                 "right": pygame.K_d,
-            }, phone=con.connect_phone()
+            }, phone=con.ConnectPhone()
         )
         self.arena = Arena(1000, 850, layers = None)
         self.x = self.arena.width / 2
@@ -63,5 +63,4 @@ class Game:
             self.player.shape.draw(screen.screen)
             pygame.display.flip()
             clock.tick(60)
-
         pygame.quit()
