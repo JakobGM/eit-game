@@ -1,5 +1,5 @@
-from haakon.game import Game
+from haakon import game
 
 if __name__ == "__main__":
-    game = Game()
+    game = game.Game()
     game.run()

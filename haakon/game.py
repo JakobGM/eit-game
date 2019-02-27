@@ -5,6 +5,7 @@ from haakon.arena import *
 from haakon.player import *
 from haakon.graphics import *
 from harald.physics import Physics
+import kribrung.network.UDP_connect as con
 
 
 class Game:
@@ -19,7 +20,7 @@ class Game:
                 "down": pygame.K_s,
                 "left": pygame.K_a,
                 "right": pygame.K_d,
-            },
+            }, phone=con.ConnectPhone()
         )
         self.arena_size = (1000, 1000)
         self.layers = [FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1])))]
@@ -46,7 +47,6 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-            clock.tick(60)
 
             keys = pygame.key.get_pressed()
 
@@ -67,5 +67,4 @@ class Game:
             self.player.shape.draw(screen.screen)
             pygame.display.flip()
             clock.tick(60)
-
         pygame.quit()
