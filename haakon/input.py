@@ -1,7 +1,6 @@
 from typing import List, Tuple, Dict
 import numpy as np
 import pygame as pg
-from kribrung.network.UDP_connect import connect_phone
 
 
 
