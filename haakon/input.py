@@ -3,7 +3,6 @@ import numpy as np
 import pygame as pg
 
 
-
 class Input:
     def __init__(self, keys: Dict[str, int], input_phone=None):
         self.keys: Dict[str, int] = keys

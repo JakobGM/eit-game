@@ -7,6 +7,6 @@ class Text:
     def init(self, font):
         pygame.font.init()
 
-    def write (surface, color, pos, text):
+    def write(surface, color, pos, text):
         font = pygame.freetype.Font(None, 22)
         font.render_to(surface, pos, text, color)

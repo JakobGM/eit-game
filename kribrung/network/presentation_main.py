@@ -17,15 +17,7 @@ origin = (c_x, c_y)
 screen = pg.display.set_mode((screen_width, screen_height))
 input_phone = con.connect_phone()
 
-points_arrow = [
-    (0, -7),
-    (100, -7),
-    (100, -20),
-    (135, 0),
-    (100, 20),
-    (100, 7),
-    (0, 7),
-]
+points_arrow = [(0, -7), (100, -7), (100, -20), (135, 0), (100, 20), (100, 7), (0, 7)]
 
 filter_x = input_.Filter()
 filter_y = input_.Filter()
@@ -69,7 +61,6 @@ while 1:
     for i, point in enumerate(points_arrow):
         rotation = input_.Rotate(point, origin)
         rotating_arrow.append(rotation.rotate(tetha, scale))
-
 
     pg.draw.polygon(screen, (r, g, b), rotating_arrow)
     clock.tick(60)

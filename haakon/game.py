@@ -20,7 +20,8 @@ class Game:
                 "down": pygame.K_s,
                 "left": pygame.K_a,
                 "right": pygame.K_d,
-            }, phone=con.ConnectPhone()
+            },
+            phone=con.ConnectPhone(),
         )
         self.arena_size = (1000, 1000)
         self.layers = [FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1])))]

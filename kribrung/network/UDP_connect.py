@@ -64,6 +64,5 @@ class ConnectPhone:
         self.gyro_data, self.user_data = self.udp_socket.receive()
         self.coor = list(map(lambda x: float(x), self.gyro_data[:-1].split(",")))
         self.x, self.y, self.z = -self.coor[1], -self.coor[0], self.coor[2]
-        #make the z a bool
+        # make the z a bool
         return np.array([self.x, self.y])
-

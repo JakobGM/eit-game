@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Rotate:
     def __init__(self, vect, origin):
         self.vect = vect
@@ -21,7 +22,7 @@ class Rotate:
 
 
 class Filter:
-    def __init__(self, gain = 0.15):
+    def __init__(self, gain=0.15):
         self.gain = gain
         self.y = 0.0
 
@@ -29,5 +30,3 @@ class Filter:
         self.u = u
         self.y += self.gain * (self.u - self.y)
         return self.y
-
-

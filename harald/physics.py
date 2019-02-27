@@ -13,7 +13,7 @@ class Physics:
 
     def __init__(self, arena: Arena, players: List[Player], time_step: float) -> None:
         """
-        Initialize variables
+        Constructor
         :param arena: Store the board of the game, including the physical fields
         :param players: A list of players
         :param time_step: Time discretization used to calculate the next position

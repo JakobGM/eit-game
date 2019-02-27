@@ -3,7 +3,6 @@ import numpy as np
 import pygame as pg
 
 
-
 class Input:
     def __init__(self, keys: Dict[str, int], input_phone=None):
         self.keys: Dict[str, int] = keys
@@ -14,7 +13,7 @@ class Input:
         move = np.zeros(2)
         if self.input_phone:
             print(self.input_phone.vect_phone())
-            return self.input_phone.vect_phone()/10
+            return self.input_phone.vect_phone() / 10
 
         if keys[self.keys["left"]]:
             move += np.array([-1, 0])
@@ -27,8 +26,6 @@ class Input:
 
         if keys[self.keys["down"]]:
             move += np.array([0, 1])
-
-
 
         return move
 
