@@ -4,8 +4,9 @@ import pygame as pg
 
 
 class Input:
-    def __init__(self, keys, input_phone=None):
+    def __init__(self, player, keys, input_phone=None):
         self.keys = keys
+        self.player = player
         self.input_phone = input_phone
 
     def get_move(self):

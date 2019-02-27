@@ -15,12 +15,12 @@ class Game:
             200,
             Player1Settings,
         )
-        self.arena_size = (1000, 1000)
+        self.arena_size = (ArenaSettings.x, ArenaSettings.y)
         self.layers = [
             arena.FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1]))),
             arena.AirResistanceLayer(0.00001),
         ]
-        self.arena = Arena(self.arena_size[0], self.arena_size[1], layers=self.layers)
+        self.arena = arena.Arena(self.arena_size[0], self.arena_size[1], layers=self.layers)
         self.x = self.arena.width / 2
         self.y = self.arena.height / 2
         self.physics = Physics(
@@ -45,9 +45,6 @@ class Game:
 
             keys = pg.key.get_pressed()
 
-            # Physics
-            self.physics.move_players()
-
 
             screen.screen.fill((0, 0, 0))
 
@@ -59,6 +56,9 @@ class Game:
             if self.player.shield(keys):
                 self.player.shape = self.player.display_shield()
                 self.player.shape.draw(screen.screen)
+            else:
+                # Physics
+                self.physics.move_players()
 
             self.player.shape = self.player.display()
             self.player.shape.draw(screen.screen)

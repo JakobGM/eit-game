@@ -15,7 +15,7 @@ class Player:
         self.position = np.array([x, y], dtype=float)
         self.velocity = np.zeros(2, dtype=float)
 
-        self.input = Input(data)
+        self.input = Input(self, data)
 
         self.max_health = data.max_health
         self.health = self.max_health
@@ -30,16 +30,11 @@ class Player:
         return math.sqrt(self.velocity[0]**2 + self.velocity[1]**2)
 
     def shield(self, keys):
-        if self.data.key_shield:
-            draw_shield = True  # Flags shield to be drawn
-            self.velocity = np.zeros(
-                2, dtype=float
-            )  # Player cannot move while shielded
+        if keys[self.data.key_shield]:
+            self.velocity = np.zeros(2)
             self.health += 25  # Player regens health while shielded.
             return True
-        else:
-            # self.velocity = 10
-            return False
+        return False
 
     def display(self):
         circle = Circle(
