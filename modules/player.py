@@ -1,31 +1,36 @@
 from modules.graphics import *
 import numpy as np
 from input.input import Input
+import math
 
 
 class Player:
-    def __init__(self, x: float, y: float, keys, max_health=6000, mass: float = 1.0):
+    def __init__(self, x: float, y: float, data):
         """
         :param x: initial x-position
         :param y: initial y-position
-        :param keys: dictionary used to store which keys that belongs to the player
-        :param max_health:
-        :param mass: mass used to calculate force from the input and friction
+        :param data: Dataclass used to store player settings
         """
-        self.mass = mass
+        self.mass = data.mass
         self.position = np.array([x, y], dtype=float)
         self.velocity = np.zeros(2, dtype=float)
-        self.input = Input(keys)
-        self.max_health = max_health
+
+        self.input = Input(data)
+
+        self.max_health = data.max_health
         self.health = self.max_health
-        self.player_size = 10  # Radius of player
+        self.player_size = data.player_size  # Radius of player
         self.color = Colors.random()
         self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
         self.shape = self.display()
-        self.shield_radius = 5
+        self.shield_radius = data.shield_radius
+        self.data = data
+
+    def get_velocity(self):
+        return math.sqrt(self.velocity[0]**2 + self.velocity[1]**2)
 
     def shield(self, keys):
-        if keys[pygame.K_SPACE]:
+        if self.data.key_shield:
             draw_shield = True  # Flags shield to be drawn
             self.velocity = np.zeros(
                 2, dtype=float

@@ -1,66 +1,62 @@
-from modules.arena import *
-from modules.player import *
-from modules.graphics import *
+import modules.arena as arena
+import modules.player as player
+import modules.graphics as graphics
 from modules.physics import Physics
+import numpy as np
+import pygame as pg
+from settings import ArenaSettings, Player1Settings
+from modules.text import Text
 
 
 class Game:
     def __init__(self):
-        # self.net = Network()
-        # self.player = Player(600, 600)
-        self.player = Player(
+        self.player = player.Player(
             200,
             200,
-            {
-                "up": pygame.K_w,
-                "down": pygame.K_s,
-                "left": pygame.K_a,
-                "right": pygame.K_d,
-            },
+            Player1Settings,
         )
-        self.arena_size = (1000, 1000)
-        self.layers = [FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1])))]
-        self.arena = Arena(self.arena_size[0], self.arena_size[1], layers=self.layers)
-        self.x = self.arena.width / 2
-        self.y = self.arena.height / 2
+        self.arena_size = (ArenaSettings.x, ArenaSettings.y)
+        self.layers = [arena.FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1])))]
+        self.arena = arena.Arena(self.arena_size[0], self.arena_size[1], layers=self.layers)
         self.physics = Physics(
             arena=self.arena, players=[self.player], time_step=1 / 60
         )
+        self.screen_object = [Text(800, 50, 'Velocity: ', self.player.get_velocity)]
 
     def run(self):
-        pygame.init()
-        pygame.font.init()
-        clock = pygame.time.Clock()
+        pg.init()
+        pg.font.init()
+        clock = pg.time.Clock()
 
-        screen = Screen()
-
-        # self.arena.draw_arena(screen)
+        screen = graphics.Screen()
 
         self.player.shape.draw(screen.screen)
 
         run = True
         while run:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
                     run = False
 
-            keys = pygame.key.get_pressed()
+            keys = pg.key.get_pressed()
 
             # Physics
             self.physics.move_players()
 
-            # self.player.move(keys)
 
             screen.screen.fill((0, 0, 0))
 
             self.arena.shape.draw(screen.screen)
 
-            if self.player.shield(keys) == True:
+            for screen_object in self.screen_object:
+                screen.screen.blit(screen_object.get_element(), (screen_object.x, screen_object.y))
+
+            if self.player.shield(keys):
                 self.player.shape = self.player.display_shield()
                 self.player.shape.draw(screen.screen)
 
             self.player.shape = self.player.display()
             self.player.shape.draw(screen.screen)
-            pygame.display.flip()
+            pg.display.flip()
             clock.tick(60)
-        pygame.quit()
+        pg.quit()

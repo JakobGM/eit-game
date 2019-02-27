@@ -1,22 +1,6 @@
-from collections import namedtuple
-from enum import Enum
-import random
 import settings
 import pygame
-
-Color = namedtuple("Color", ["red", "green", "blue"])
-
-
-class Colors(Enum):
-    RED = Color(255, 0, 0)
-    GREEN = Color(0, 255, 0)
-    BLUE = Color(0, 0, 255)
-
-    @staticmethod
-    def random():
-        return Color(
-            random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
-        )
+from settings import Colors
 
 
 class Screen:

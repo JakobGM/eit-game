@@ -4,8 +4,8 @@ import pygame as pg
 
 
 class Input:
-    def __init__(self, keys: Dict[str, int], input_phone=None):
-        self.keys: Dict[str, int] = keys
+    def __init__(self, keys, input_phone=None):
+        self.keys = keys
         self.input_phone = input_phone
 
     def get_move(self):
@@ -15,16 +15,16 @@ class Input:
         if self.input_phone:
             move += self.input_phone.vect_phone()
 
-        if keys[self.keys["left"]]:
+        if keys[self.keys.key_left]:
             move += np.array([-1, 0])
 
-        if keys[self.keys["right"]]:
+        if keys[self.keys.key_right]:
             move += np.array([1, 0])
 
-        if keys[self.keys["up"]]:
+        if keys[self.keys.key_up]:
             move += np.array([0, -1])
 
-        if keys[self.keys["down"]]:
+        if keys[self.keys.key_down]:
             move += np.array([0, 1])
 
         # Normalize input to a sphere
