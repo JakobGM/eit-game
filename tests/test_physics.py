@@ -1,8 +1,8 @@
 import numpy as np
 
 from modules.physics import Physics
-from harald.arena import Arena
-from harald.agent import Player
+from modules.arena import Arena
+from modules.player import Player
 
 
 def test_invokation_of_physics_object():
