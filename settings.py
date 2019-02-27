@@ -4,6 +4,7 @@ from enum import Enum
 from collections import namedtuple
 import random
 
+
 @dataclass
 class ScreenSettings:
     height: int = 1000
@@ -41,3 +42,12 @@ class Colors(Enum):
         return Color(
             random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
         )
+
+
+@dataclass
+class PhysicsConsts:
+    friction_const = 1
+    drag_coefficient = 1
+    input_modulation = 1500
+    force_modulation = 50
+    static_friction_limit = 5
