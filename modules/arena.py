@@ -52,6 +52,35 @@ class FrictionLayer(ArenaLayer):
         return force
 
 
+class AirResistanceLayer(ArenaLayer):
+    """
+    Representing the physical friction field
+    """
+
+    def __init__(self, drag_coefficient: float) -> None:
+        """
+        Constructor
+        :param drag_coefficient: float representing the drag coefficient. This is proportional to geometric shape of the
+        object, air density, and the relative speed of the fluid.
+        """
+        self.drag_coefficient = drag_coefficient
+
+    def force(self, player: Player) -> np.array:
+        """
+        Calculate the air resistance for a player. The force is given by the eqn.
+
+        F = - C_d * |v|^2 * (v / |v|)  = - C_d * |v| * v,
+
+        where v is velocity vector, and C_d drag coefficient
+
+        :return: ndarray containing the air resistance
+        """
+
+        return (
+            -self.drag_coefficient * np.linspace.norm(player.velocity) * player.velocity
+        )
+
+
 class Arena:
     """
     The Arena class is used to represent the board of the game.
