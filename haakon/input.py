@@ -27,6 +27,9 @@ class Input:
         if keys[self.keys["down"]]:
             move += np.array([0, 1])
 
+        # Normalize input to a sphere
+        if np.linalg.norm(move) > 1:
+            move /= np.sqrt(2)
         return move
 
     @staticmethod
