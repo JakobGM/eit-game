@@ -15,7 +15,7 @@ class Input:
         keys = Input.get_key_pressed()
         move = np.zeros(2)
         if self.input_phone:
-            move += self.input_phone.vect_phone()
+            move += self.input_phone.vect_phone()[0]
 
         if keys[self.keys["left"]]:
             move += np.array([-1, 0])

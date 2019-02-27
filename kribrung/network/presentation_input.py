@@ -15,7 +15,7 @@ class Rotate:
             ]
         )
         x_vec = np.matrix([[self.vect[0]], [self.vect[1]]])
-        rot_vec = rot_matrix * x_vec * self.scale / 2 + self.origin
+        rot_vec = rot_matrix * x_vec * self.scale *2 + self.origin
         rot_vec = (round(float(rot_vec[0])), round(float(rot_vec[1])))
         return rot_vec
 

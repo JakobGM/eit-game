@@ -58,18 +58,14 @@ class connect_phone:
 
     def vect_phone(self):
         """
-
-        :return: Returns an
+        supposed to be used as a input to the game.
+        :return: Returns a description of the phone's orientation
         """
+        is_flipped = False
         phone = self.udp_socket
         self.gyro_data, self.user_data = phone.receive()
         self.coor = list(map(lambda x: float(x), self.gyro_data[:-1].split(",")))
-        self.x, self.y, self.z = -self.coor[1], -self.coor[0], self.coor[2]
-        #make the z a bool
-        return np.array([self.x, self.y]), self.z
-
-phone = connect_phone()
-
-while 1:
-    a = phone.vect_phone()
-    print(type(a[0]))
+        self.x, self.y, self.z = -self.coor[1], self.coor[0], self.coor[2]
+        if self.z < -5:
+            is_flipped = True
+        return np.array([self.x/10, self.y/10]), is_flipped
