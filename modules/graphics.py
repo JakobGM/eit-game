@@ -1,11 +1,8 @@
 from collections import namedtuple
 from enum import Enum
 import random
-
+import settings
 import pygame
-
-X_MIN, X_MAX = 0, 1000
-Y_MIN, Y_MAX = 0, 1000
 
 Color = namedtuple("Color", ["red", "green", "blue"])
 
@@ -23,9 +20,9 @@ class Colors(Enum):
 
 
 class Screen:
-    def __init__(self, width=1000, height=1000):
-        self.width = width
-        self.height = height
+    def __init__(self):
+        self.width = settings.ScreenSettings.width
+        self.height = settings.ScreenSettings.height
         self.screen = pygame.display.set_mode((self.width, self.height))
 
 
