@@ -25,6 +25,7 @@ class Player:
         self.shape = self.display()
         self.shield_radius = data.shield_radius
         self.data = data
+        self.shield_on = False
 
     def get_velocity(self):
         return math.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)

@@ -15,7 +15,7 @@ class Game:
 
         self.players = [
             player.Player(200, 200, ps.Player1Settings),
-            player.Player(200, 200, ps.Player2Settings),
+            player.Player(300, 300, ps.Player2Settings),
         ]
 
         self.arena_size = (ArenaSettings.x, ArenaSettings.y)

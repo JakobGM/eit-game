@@ -22,7 +22,7 @@ class Physics:
         self.players = game.get_players()
         self.time_step = time_step
 
-    def boarder_collisions(self, player: Player) -> None:
+    def _boarder_collisions(self, player: Player) -> None:
         """
         Simulates elastic collisions with the walls. To prevent the player from moving through the wall, the position is
         fixed, and the velocity reflected according to conservation to momentum.
@@ -46,11 +46,49 @@ class Physics:
             player.position[1] = self.arena.height - player.player_size
             player.velocity[1] = -player.velocity[1]
 
-    def player_collisions(self) -> None:
+    def _player_collisions(self) -> None:
         for i in range(len(self.players)):
             for j in range(i + 1, len(self.players)):
-                if np.abs(self.players[i].position - self.players[j].position) <= self.players[i].:
-                    pass
+                # r1 and r2: position. R1 and R2 radius
+                r1 = self.players[i].position
+                r2 = self.players[j].position
+                R1 = self.players[i].player_size
+                R2 = self.players[j].player_size
+
+                # Check if players have shield (which is added to the total radius)
+                if self.players[i].shield_on:
+                    R1 += self.players[i].shield_radius
+                if self.players[j].shield_on:
+                    R2 += self.players[j].shield_radius
+
+                if np.linalg.norm(r1 - r2) <= R1 + R2:
+                    x1 = self.players[i].position
+                    x2 = self.players[j].position
+                    v1 = self.players[i].velocity
+                    v2 = self.players[j].velocity
+                    m1 = self.players[i].mass
+                    m2 = self.players[j].mass
+
+                    self.players[i].velocity -= (
+                        2
+                        * m2
+                        / (m1 + m2)
+                        * np.dot(v1 - v2, x1 - x2)
+                        / np.linalg.norm(x1 - x2) ** 2
+                        * (x1 - x2)
+                    )
+                    self.players[j].velocity -= (
+                        2
+                        * m1
+                        / (m1 + m2)
+                        * np.dot(v2 - v1, x2 - x1)
+                        / np.linalg.norm(x2 - x1) ** 2
+                        * (x2 - x1)
+                    )
+
+                    # print(self.players[i].velocity)
+                    print(self.players[j].velocity)
+                    # self.players[i].position
 
     def move_players(self) -> None:
         """
@@ -62,6 +100,7 @@ class Physics:
         for player in self.players:
             force = PhysicsConsts.input_modulation * player.input.get_move()
 
+            # if not shield:
             # print(self.arena.force(player))
             force += PhysicsConsts.force_modulation * self.arena.force(player)
 
@@ -69,4 +108,5 @@ class Physics:
             player.velocity += acceleration * self.time_step
             player.position += player.velocity * self.time_step
 
-            self.boarder_collisions(player)
+            self._boarder_collisions(player)
+            self._player_collisions()
