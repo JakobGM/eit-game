@@ -118,9 +118,6 @@ class Physics:
                     if r1[0] - R1 < 0 or r2[0] - R2 < 0:
 
                         diff = min(abs(R1 - r1[0]), abs(R2 - r2[0]))
-                        if diff < 0:
-                            print("krise")
-                        print(diff)
                         self.players[i].position[0] += diff
                         self.players[j].position[0] += diff
 
@@ -129,13 +126,11 @@ class Physics:
                             abs(r1[0] + R1 - self.arena.width),
                             abs(r2[0] + R2 - self.arena.width),
                         )
-                        print(diff)
                         self.players[i].position[0] -= diff
                         self.players[j].position[0] -= diff
 
                     if r1[1] - R1 < 0 or r2[1] - R2 < 0:
                         diff = min(abs(R1 - r1[1]), abs(R2 - r2[1]))
-                        print(diff)
                         self.players[i].position[1] += diff
                         self.players[j].position[1] += diff
 
@@ -147,7 +142,6 @@ class Physics:
                             abs(r1[1] + R1 - self.arena.height),
                             abs(r2[1] + R2 - self.arena.height),
                         )
-                        print(diff)
                         self.players[i].position[1] -= diff
                         self.players[j].position[1] -= diff
 
