@@ -4,7 +4,8 @@ import modules.graphics as graphics
 from modules.physics import Physics
 import numpy as np
 import pygame as pg
-from settings import ArenaSettings, Player1Settings, Player2Settings
+from settings import ArenaSettings
+import players_settings as ps
 from modules.text import Text
 from typing import List
 
@@ -13,8 +14,8 @@ class Game:
     def __init__(self):
 
         self.players = [
-            player.Player(200, 200, Player1Settings),
-            player.Player(200, 200, Player2Settings)
+            player.Player(200, 200, ps.Player1Settings),
+            player.Player(200, 200, ps.Player2Settings)
         ]
 
         self.arena_size = (ArenaSettings.x, ArenaSettings.y)
