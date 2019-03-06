@@ -61,14 +61,13 @@ class Physics:
                 if self.players[j].shield_on:
                     R2 += self.players[j].shield_radius
 
-                if np.linalg.norm(r1 - r2) <= R1 + R2:
+                if np.linalg.norm(r1 - r2) < R1 + R2:
                     x1 = self.players[i].position
                     x2 = self.players[j].position
-                    v1 = self.players[i].velocity
-                    v2 = self.players[j].velocity
+                    v1 = self.players[i].velocity.copy()
+                    v2 = self.players[j].velocity.copy()
                     m1 = self.players[i].mass
                     m2 = self.players[j].mass
-
                     self.players[i].velocity -= (
                         2
                         * m2
@@ -85,10 +84,24 @@ class Physics:
                         / np.linalg.norm(x2 - x1) ** 2
                         * (x2 - x1)
                     )
+                    direction_vector = (r2 - r1) / np.linalg.norm(r2 - r1)
 
-                    # print(self.players[i].velocity)
-                    print(self.players[j].velocity)
-                    # self.players[i].position
+                    if np.linalg.norm(v1) > np.linalg.norm(v2):
+                        self.players[j].position += (
+                            R1 + R2 - np.linalg.norm(r2 - r1)
+                        ) * direction_vector
+                    elif np.linalg.norm(v2) > np.linalg.norm(v1):
+                        self.players[i].position -= (
+                            R1 + R2 - np.linalg.norm(r2 - r1)
+                        ) * direction_vector
+                    else:
+                        self.players[i].position -= (
+                            (R1 + R2 - np.linalg.norm(r2 - r1)) * direction_vector / 2
+                        )
+
+                        self.players[j].position += (
+                            (R1 + R2 - np.linalg.norm(r2 - r1)) * direction_vector / 2
+                        )
 
     def move_players(self) -> None:
         """
@@ -98,6 +111,7 @@ class Physics:
         """
 
         for player in self.players:
+
             force = PhysicsConsts.input_modulation * player.input.get_move()
 
             # if not shield:
@@ -108,5 +122,5 @@ class Physics:
             player.velocity += acceleration * self.time_step
             player.position += player.velocity * self.time_step
 
-            self._boarder_collisions(player)
             self._player_collisions()
+            self._boarder_collisions(player)
