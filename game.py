@@ -6,11 +6,14 @@ import numpy as np
 import pygame as pg
 from settings import ArenaSettings, Player1Settings
 from modules.text import Text
+from typing import List
 
 
 class Game:
     def __init__(self):
+
         self.player = player.Player(200, 200, Player1Settings)
+
         self.arena_size = (ArenaSettings.x, ArenaSettings.y)
         self.layers = [
             arena.FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1]))),
@@ -19,6 +22,7 @@ class Game:
         self.arena = arena.Arena(
             self.arena_size[0], self.arena_size[1], layers=self.layers
         )
+
         self.x = self.arena.width / 2
         self.y = self.arena.height / 2
         self.physics = Physics(
@@ -48,6 +52,7 @@ class Game:
             self.arena.shape.draw(screen.screen)
 
             for screen_object in self.screen_object:
+
                 screen.screen.blit(
                     screen_object.get_element(), (screen_object.x, screen_object.y)
                 )
@@ -64,3 +69,9 @@ class Game:
             pg.display.flip()
             clock.tick(60)
         pg.quit()
+
+    def get_players(self) -> List[player.Player]:
+        return [self.player]
+
+    def get_arena(self) -> arena.Arena:
+        return self.arena
