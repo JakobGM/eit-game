@@ -1,4 +1,5 @@
 from typing import List
+import numpy as np
 
 from modules.player import Player
 from modules.arena import Arena
@@ -14,8 +15,7 @@ class Physics:
         """
         Constructor
 
-        :param arena: Store the board of the game, including the physical fields
-        :param players: A list of players
+        :param game: Used to get the arena layers and all players
         :param time_step: Time discretization used to calculate the next position
         """
         self.arena = game.get_arena()
@@ -45,6 +45,12 @@ class Physics:
         elif player.position[1] + player.player_size >= self.arena.height:
             player.position[1] = self.arena.height - player.player_size
             player.velocity[1] = -player.velocity[1]
+
+    def player_collisions(self) -> None:
+        for i in range(len(self.players)):
+            for j in range(i + 1, len(self.players)):
+                if np.abs(self.players[i].position - self.players[j].position) <= self.players[i].:
+                    pass
 
     def move_players(self) -> None:
         """

@@ -31,6 +31,7 @@ class Player1Settings:
     player_size = 10
     key_shield = pg.K_SPACE
 
+
 @dataclass
 class Player2Settings:
     key_up: int = pg.K_UP
