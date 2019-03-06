@@ -15,7 +15,7 @@ class Player1Settings:
     key_left: int = pg.K_a
     key_right: int = pg.K_d
     max_health: int = 6000
-    mass: float = 1.0
+    mass: float = 2.0
     shield_radius: int = 5
     player_size = 10
     key_shield = pg.K_q
@@ -30,5 +30,5 @@ class Player2Settings:
     max_health: int = 6000
     mass: float = 1.0
     shield_radius: int = 5
-    player_size = 10
+    player_size = 50
     key_shield = pg.K_SPACE

@@ -21,6 +21,7 @@ class Player:
         self.health = PlayerSettings.shield_color
         self.color = Colors.random()
         self.data = data
+        self.shield_on = False
 
     def get_velocity(self):
         return math.sqrt(self.velocity[0]**2 + self.velocity[1]**2)

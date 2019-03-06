@@ -15,24 +15,22 @@ class Game:
 
         self.players = [
             player.Player(200, 200, ps.Player1Settings),
-            player.Player(200, 200, ps.Player2Settings)
+            player.Player(300, 300, ps.Player2Settings),
         ]
 
         self.arena_size = (ArenaSettings.x, ArenaSettings.y)
         self.layers = [
-            arena.FrictionLayer(
-                np.ones((self.arena_size[0], self.arena_size[1]))),
+            arena.FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1]))),
             arena.AirResistanceLayer(0.00001),
         ]
         self.arena = arena.Arena(
-            self.arena_size[0], self.arena_size[1], layers=self.layers)
+            self.arena_size[0], self.arena_size[1], layers=self.layers
+        )
 
         self.x = self.arena.width / 2
         self.y = self.arena.height / 2
         self.physics = Physics(self, time_step=1 / 60)
-        self.screen_object = [
-            Text(800, 50, "Velocity: ", self.players[0].get_velocity)
-        ]
+        self.screen_object = [Text(800, 50, "Velocity: ", self.players[0].get_velocity)]
 
     def run(self):
         pg.init()
@@ -53,8 +51,9 @@ class Game:
 
             for screen_object in self.screen_object:
 
-                screen.screen.blit(screen_object.get_element(),
-                                   (screen_object.x, screen_object.y))
+                screen.screen.blit(
+                    screen_object.get_element(), (screen_object.x, screen_object.y)
+                )
 
             self.physics.move_players()
 
