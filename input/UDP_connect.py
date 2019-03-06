@@ -50,14 +50,7 @@ class UdpSocket:
 
 
 class ConnectPhone:
-    def __init__(self,
-                 coor=0,
-                 gyro_data=0,
-                 port=2055,
-                 x=0,
-                 y=0,
-                 z=0,
-                 print_ct=0):
+    def __init__(self, coor=0, gyro_data=0, port=2055, x=0, y=0, z=0, print_ct=0):
         self.x = x
         self.y = y
         self.z = z
@@ -68,8 +61,7 @@ class ConnectPhone:
 
     def vect_phone(self):
         self.gyro_data, self.user_data = self.udp_socket._receive()
-        self.coor = list(
-            map(lambda x: float(x), self.gyro_data[:-1].split(",")))
+        self.coor = list(map(lambda x: float(x), self.gyro_data[:-1].split(",")))
         self.x, self.y, self.z = -self.coor[1], -self.coor[0], self.coor[2]
         # make the z a bool
         return np.array([self.x, self.y])

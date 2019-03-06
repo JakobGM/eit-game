@@ -24,7 +24,7 @@ class Player:
         self.shield_on = False
 
     def get_velocity(self):
-        return math.sqrt(self.velocity[0]**2 + self.velocity[1]**2)
+        return math.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
 
     def shield(self):
         if self.input.shield_on():
@@ -34,8 +34,9 @@ class Player:
         return False
 
     def display(self):
-        circle = Circle(self.position[0], self.position[1], self.color,
-                        self.data.player_size)
+        circle = Circle(
+            self.position[0], self.position[1], self.color, self.data.player_size
+        )
         return circle
 
     def display_shield(self):

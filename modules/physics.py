@@ -50,8 +50,8 @@ class Physics:
         for player_i in [p for p in self.players if p is not player]:
             r1 = player.position
             r2 = player_i.position
-            R1 = player.player_size
-            R2 = player_i.player_size
+            R1 = player.data.player_size
+            R2 = player_i.data.player_size
             if np.linalg.norm(r1 - r2) < R1 + R2:
                 pass
 
@@ -59,8 +59,8 @@ class Physics:
         for i in range(len(self.players)):
             for j in range(i + 1, len(self.players)):
                 # r1 and r2: position. R1 and R2 radius
-                r1 = self.players[i].position
-                r2 = self.players[j].position
+                r1 = self.players[i].position.copy()
+                r2 = self.players[j].position.copy()
                 R1 = self.players[i].data.player_size
                 R2 = self.players[j].data.player_size
 
@@ -71,8 +71,8 @@ class Physics:
                     R2 += self.players[j].shield_radius
 
                 if np.linalg.norm(r1 - r2) < R1 + R2:
-                    x1 = self.players[i].position
-                    x2 = self.players[j].position
+                    x1 = self.players[i].position.copy()
+                    x2 = self.players[j].position.copy()
                     v1 = self.players[i].velocity.copy()
                     v2 = self.players[j].velocity.copy()
                     m1 = self.players[i].mass
@@ -111,6 +111,45 @@ class Physics:
                         self.players[j].position += (
                             (R1 + R2 - np.linalg.norm(r2 - r1)) * direction_vector / 2
                         )
+
+                    # Borders
+                    r1 = self.players[i].position.copy()
+                    r2 = self.players[j].position.copy()
+                    if r1[0] - R1 < 0 or r2[0] - R2 < 0:
+
+                        diff = min(abs(R1 - r1[0]), abs(R2 - r2[0]))
+                        if diff < 0:
+                            print("krise")
+                        print(diff)
+                        self.players[i].position[0] += diff
+                        self.players[j].position[0] += diff
+
+                    if r1[0] + R1 > self.arena.width or (r2[0] + R2) > self.arena.width:
+                        diff = min(
+                            abs(r1[0] + R1 - self.arena.width),
+                            abs(r2[0] + R2 - self.arena.width),
+                        )
+                        print(diff)
+                        self.players[i].position[0] -= diff
+                        self.players[j].position[0] -= diff
+
+                    if r1[1] - R1 < 0 or r2[1] - R2 < 0:
+                        diff = min(abs(R1 - r1[1]), abs(R2 - r2[1]))
+                        print(diff)
+                        self.players[i].position[1] += diff
+                        self.players[j].position[1] += diff
+
+                    if (
+                        r1[1] + R1 > self.arena.height
+                        or (r2[1] + R2) > self.arena.height
+                    ):
+                        diff = min(
+                            abs(r1[1] + R1 - self.arena.height),
+                            abs(r2[1] + R2 - self.arena.height),
+                        )
+                        print(diff)
+                        self.players[i].position[1] -= diff
+                        self.players[j].position[1] -= diff
 
     def move_players(self) -> None:
         """
