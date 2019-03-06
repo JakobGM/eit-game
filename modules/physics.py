@@ -56,8 +56,19 @@ class Physics:
                 pass
 
     def _player_collisions(self) -> None:
+        """
+        Simulates elastic collisions between the players.
+        Both velocity and position is updated. The velocity is updated based on physical conditions.
+        The position is updated to prevent the players to have overlaping positions, and to prevent the players to move
+        through the walls.
+
+        :return: Updates velocity and positions of the players
+        """
+
+        # Looping through all players and checking collisions with the other players.
         for i in range(len(self.players)):
             for j in range(i + 1, len(self.players)):
+
                 # r1 and r2: position. R1 and R2 radius
                 r1 = self.players[i].position.copy()
                 r2 = self.players[j].position.copy()
@@ -70,29 +81,32 @@ class Physics:
                 if self.players[j].shield_on:
                     R2 += self.players[j].shield_radius
 
+                # Check if there is collisions
                 if np.linalg.norm(r1 - r2) < R1 + R2:
-                    x1 = self.players[i].position.copy()
-                    x2 = self.players[j].position.copy()
                     v1 = self.players[i].velocity.copy()
                     v2 = self.players[j].velocity.copy()
                     m1 = self.players[i].mass
                     m2 = self.players[j].mass
+
+                    # Update velocity
                     self.players[i].velocity -= (
                         2
                         * m2
                         / (m1 + m2)
-                        * np.dot(v1 - v2, x1 - x2)
-                        / np.linalg.norm(x1 - x2) ** 2
-                        * (x1 - x2)
+                        * np.dot(v1 - v2, r1 - r2)
+                        / np.linalg.norm(r1 - r2) ** 2
+                        * (r1 - r2)
                     )
                     self.players[j].velocity -= (
                         2
                         * m1
                         / (m1 + m2)
-                        * np.dot(v2 - v1, x2 - x1)
-                        / np.linalg.norm(x2 - x1) ** 2
-                        * (x2 - x1)
+                        * np.dot(v2 - v1, r2 - r1)
+                        / np.linalg.norm(r2 - r1) ** 2
+                        * (r2 - r1)
                     )
+
+                    # Fixing positions such that the players are touching each other
                     direction_vector = (r2 - r1) / np.linalg.norm(r2 - r1)
 
                     if np.linalg.norm(v1) > np.linalg.norm(v2):
@@ -112,7 +126,7 @@ class Physics:
                             (R1 + R2 - np.linalg.norm(r2 - r1)) * direction_vector / 2
                         )
 
-                    # Borders
+                    # Fixing the positions in case that any of the players are crossing the borders
                     r1 = self.players[i].position.copy()
                     r2 = self.players[j].position.copy()
                     if r1[0] - R1 < 0 or r2[0] - R2 < 0:
@@ -165,4 +179,5 @@ class Physics:
             player.position += player.velocity * self.time_step
 
             self._boarder_collisions(player)
+
         self._player_collisions()
