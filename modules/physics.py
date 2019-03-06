@@ -46,6 +46,15 @@ class Physics:
             player.position[1] = self.arena.height - player.player_size
             player.velocity[1] = -player.velocity[1]
 
+        # check collisions:
+        for player_i in [p for p in self.players if p is not player]:
+            r1 = player.position
+            r2 = player_i.position
+            R1 = player.player_size
+            R2 = player_i.player_size
+            if np.linalg.norm(r1 - r2) < R1 + R2:
+                pass
+
     def _player_collisions(self) -> None:
         for i in range(len(self.players)):
             for j in range(i + 1, len(self.players)):
@@ -122,5 +131,5 @@ class Physics:
             player.velocity += acceleration * self.time_step
             player.position += player.velocity * self.time_step
 
-            self._player_collisions()
             self._boarder_collisions(player)
+        self._player_collisions()
