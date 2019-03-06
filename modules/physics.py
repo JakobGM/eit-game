@@ -13,6 +13,7 @@ class Physics:
     def __init__(self, arena: Arena, players: List[Player], time_step: float) -> None:
         """
         Constructor
+
         :param arena: Store the board of the game, including the physical fields
         :param players: A list of players
         :param time_step: Time discretization used to calculate the next position
@@ -21,7 +22,14 @@ class Physics:
         self.players = players
         self.time_step = time_step
 
-    def boarder_collitions(self, player: Player) -> None:
+    def boarder_collisions(self, player: Player) -> None:
+        """
+        Simulates elastic collisions with the walls. To prevent the player from moving through the wall, the position is
+        fixed, and the velocity reflected according to conservation to momentum.
+
+        :param player: the given player to be investigated.
+        """
+
         if player.position[0] - player.player_size <= 0:
             player.position[0] = player.player_size
             player.velocity[0] = -player.velocity[0]
@@ -44,6 +52,7 @@ class Physics:
         The calculation is based on both user input modeled as a force and
         forces from the physical fields associated with the board.
         """
+
         for player in self.players:
             force = PhysicsConsts.input_modulation * player.input.get_move()
 
@@ -54,9 +63,12 @@ class Physics:
             player.velocity += acceleration * self.time_step
             player.position += player.velocity * self.time_step
 
-            self.boarder_collitions(player)
+            self.boarder_collisions(player)
+
             """
-            # Periodic boundary condition
+            Old Periodic boundary condition, now replaced with boarder collitions.
+            
+
             if player.position[0] > self.arena.width:
                 player.position[0] -= self.arena.width
             if player.position[0] < 0:

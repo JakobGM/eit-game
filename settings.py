@@ -10,7 +10,8 @@ class ScreenSettings:
     height: int = 1000
     width: int = 1000
     font_size: int = 30
-    font: str = 'Comic Sans MS'
+    font: str = "Comic Sans MS"
+
 
 @dataclass
 class ArenaSettings:
@@ -30,7 +31,9 @@ class Player1Settings:
     player_size = 10
     key_shield = pg.K_SPACE
 
+
 Color = namedtuple("Color", ["red", "green", "blue"])
+
 
 class Colors(Enum):
     RED = Color(255, 0, 0)

@@ -27,7 +27,7 @@ class Player:
         self.data = data
 
     def get_velocity(self):
-        return math.sqrt(self.velocity[0]**2 + self.velocity[1]**2)
+        return math.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
 
     def shield(self, keys):
         if keys[self.data.key_shield]:
