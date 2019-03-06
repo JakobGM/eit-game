@@ -4,7 +4,7 @@ import modules.graphics as graphics
 from modules.physics import Physics
 import numpy as np
 import pygame as pg
-from settings import ArenaSettings, Player1Settings
+from settings import ArenaSettings, Player1Settings, Player2Settings
 from modules.text import Text
 from typing import List
 
@@ -12,21 +12,26 @@ from typing import List
 class Game:
     def __init__(self):
 
-        self.player = player.Player(200, 200, Player1Settings)
+        self.players = [
+            player.Player(200, 200, Player1Settings),
+            player.Player(200, 200, Player2Settings)
+        ]
 
         self.arena_size = (ArenaSettings.x, ArenaSettings.y)
         self.layers = [
-            arena.FrictionLayer(np.ones((self.arena_size[0], self.arena_size[1]))),
+            arena.FrictionLayer(
+                np.ones((self.arena_size[0], self.arena_size[1]))),
             arena.AirResistanceLayer(0.00001),
         ]
         self.arena = arena.Arena(
-            self.arena_size[0], self.arena_size[1], layers=self.layers
-        )
+            self.arena_size[0], self.arena_size[1], layers=self.layers)
 
         self.x = self.arena.width / 2
         self.y = self.arena.height / 2
         self.physics = Physics(self, time_step=1 / 60)
-        self.screen_object = [Text(800, 50, "Velocity: ", self.player.get_velocity)]
+        self.screen_object = [
+            Text(800, 50, "Velocity: ", self.players[0].get_velocity)
+        ]
 
     def run(self):
         pg.init()
@@ -35,7 +40,8 @@ class Game:
 
         screen = graphics.Screen()
 
-        self.player.shape.draw(screen.screen)
+        for p in self.players:
+            p.shape.draw(screen.screen)
 
         run = True
         while run:
@@ -51,25 +57,20 @@ class Game:
 
             for screen_object in self.screen_object:
 
-                screen.screen.blit(
-                    screen_object.get_element(), (screen_object.x, screen_object.y)
-                )
+                screen.screen.blit(screen_object.get_element(),
+                                   (screen_object.x, screen_object.y))
 
-            if self.player.shield(keys):
-                self.player.shape = self.player.display_shield()
-                self.player.shape.draw(screen.screen)
-            else:
-                # Physics
-                self.physics.move_players()
+            self.physics.move_players()
 
-            self.player.shape = self.player.display()
-            self.player.shape.draw(screen.screen)
+            for p in self.players:
+                p.shape = p.display()
+                p.shape.draw(screen.screen)
             pg.display.flip()
             clock.tick(60)
         pg.quit()
 
     def get_players(self) -> List[player.Player]:
-        return [self.player]
+        return self.players
 
     def get_arena(self) -> arena.Arena:
         return self.arena

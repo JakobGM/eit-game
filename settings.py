@@ -31,6 +31,18 @@ class Player1Settings:
     player_size = 10
     key_shield = pg.K_SPACE
 
+@dataclass
+class Player2Settings:
+    key_up: int = pg.K_UP
+    key_down: int = pg.K_DOWN
+    key_left: int = pg.K_LEFT
+    key_right: int = pg.K_RIGHT
+    max_health: int = 6000
+    mass: float = 1.0
+    shield_radius: int = 5
+    player_size = 10
+    key_shield = pg.K_SPACE
+
 
 Color = namedtuple("Color", ["red", "green", "blue"])
 
