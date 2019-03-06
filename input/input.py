@@ -6,7 +6,7 @@ import pygame as pg
 class Input:
     def __init__(self, player, keys, input_phone=None):
         self.keys = keys
-        self.player = player
+        self.player1 = player
         self.input_phone = input_phone
 
     def get_move(self):
@@ -32,6 +32,12 @@ class Input:
         if np.linalg.norm(move) > 1:
             move /= np.sqrt(2)
         return move
+
+    def shield_on(self):
+        keys = Input.get_key_pressed()
+        if keys[self.keys.key_shield]:
+            return True
+        return False
 
     @staticmethod
     def get_key_pressed() -> Tuple[int]:

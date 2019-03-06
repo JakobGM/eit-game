@@ -1,5 +1,11 @@
 from dataclasses import dataclass
 import pygame as pg
+from typing import Tuple
+
+
+@dataclass
+class PlayerSettings:
+    shield_color: Tuple[int] = (0, 255, 0, 0)
 
 
 @dataclass
@@ -12,7 +18,7 @@ class Player1Settings:
     mass: float = 1.0
     shield_radius: int = 5
     player_size = 10
-    key_shield = pg.K_SPACE
+    key_shield = pg.K_q
 
 
 @dataclass

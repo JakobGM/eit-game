@@ -41,16 +41,11 @@ class Game:
 
         screen = graphics.Screen()
 
-        for p in self.players:
-            p.shape.draw(screen.screen)
-
         run = True
         while run:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     run = False
-
-            keys = pg.key.get_pressed()
 
             screen.screen.fill((0, 0, 0))
 
@@ -64,8 +59,10 @@ class Game:
             self.physics.move_players()
 
             for p in self.players:
-                p.shape = p.display()
-                p.shape.draw(screen.screen)
+                if p.shield():
+                    p.display_shield().draw(screen.screen)
+                p.display().draw(screen.screen)
+
             pg.display.flip()
             clock.tick(60)
         pg.quit()

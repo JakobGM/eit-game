@@ -1,6 +1,7 @@
-from modules.graphics import *
+from modules.graphics import Circle, Colors
 import numpy as np
 from input.input import Input
+from players_settings import PlayerSettings
 import math
 
 
@@ -17,36 +18,30 @@ class Player:
 
         self.input = Input(self, data)
 
-        self.max_health = data.max_health
-        self.health = self.max_health
-        self.player_size = data.player_size  # Radius of player
+        self.health = PlayerSettings.shield_color
         self.color = Colors.random()
-        self.shield_color = (0, 255, 0, 0)  # Random shield color (green)
-        self.shape = self.display()
-        self.shield_radius = data.shield_radius
         self.data = data
 
     def get_velocity(self):
-        return math.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
+        return math.sqrt(self.velocity[0]**2 + self.velocity[1]**2)
 
-    def shield(self, keys):
-        if keys[self.data.key_shield]:
+    def shield(self):
+        if self.input.shield_on():
             self.velocity = np.zeros(2)
             self.health += 25  # Player regens health while shielded.
             return True
         return False
 
     def display(self):
-        circle = Circle(
-            self.position[0], self.position[1], self.color, self.player_size
-        )
+        circle = Circle(self.position[0], self.position[1], self.color,
+                        self.data.player_size)
         return circle
 
     def display_shield(self):
         shield = Circle(
             self.position[0],
             self.position[1],
-            self.shield_color,
-            self.player_size + self.shield_radius,
+            PlayerSettings.shield_color,
+            self.data.player_size + self.shield_radius,
         )
         return shield

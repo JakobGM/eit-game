@@ -30,20 +30,20 @@ class Physics:
         :param player: the given player to be investigated.
         """
 
-        if player.position[0] - player.player_size <= 0:
-            player.position[0] = player.player_size
+        if player.position[0] - player.data.player_size <= 0:
+            player.position[0] = player.data.player_size
             player.velocity[0] = -player.velocity[0]
 
-        elif player.position[0] + player.player_size >= self.arena.width:
-            player.position[0] = self.arena.width - player.player_size
+        elif player.position[0] + player.data.player_size >= self.arena.width:
+            player.position[0] = self.arena.width - player.data.player_size
             player.velocity[0] = -player.velocity[0]
 
-        if player.position[1] - player.player_size <= 0:
-            player.position[1] = player.player_size
+        if player.position[1] - player.data.player_size <= 0:
+            player.position[1] = player.data.player_size
             player.velocity[1] = -player.velocity[1]
 
-        elif player.position[1] + player.player_size >= self.arena.height:
-            player.position[1] = self.arena.height - player.player_size
+        elif player.position[1] + player.data.player_size >= self.arena.height:
+            player.position[1] = self.arena.height - player.data.player_size
             player.velocity[1] = -player.velocity[1]
 
     def move_players(self) -> None:
