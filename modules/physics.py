@@ -10,7 +10,9 @@ class Physics:
     Creates a physics engine which is used to update the position of all players
     """
 
-    def __init__(self, arena: Arena, players: List[Player], time_step: float) -> None:
+    def __init__(
+        self, game, time_step: float
+    ) -> None:  # self, arena: Arena, players: List[Player], time_step: float) -> None:
         """
         Constructor
 
@@ -18,8 +20,8 @@ class Physics:
         :param players: A list of players
         :param time_step: Time discretization used to calculate the next position
         """
-        self.arena = arena
-        self.players = players
+        self.arena = game.get_arena()
+        self.players = game.get_players()
         self.time_step = time_step
 
     def boarder_collisions(self, player: Player) -> None:
@@ -64,17 +66,3 @@ class Physics:
             player.position += player.velocity * self.time_step
 
             self.boarder_collisions(player)
-
-            """
-            Old Periodic boundary condition, now replaced with boarder collitions.
-            
-
-            if player.position[0] > self.arena.width:
-                player.position[0] -= self.arena.width
-            if player.position[0] < 0:
-                player.position[0] += self.arena.width
-            if player.position[1] > self.arena.height:
-                player.position[1] -= self.arena.height
-            if player.position[1] < 0:
-                player.position[1] += self.arena.height
-            """

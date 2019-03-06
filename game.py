@@ -25,9 +25,7 @@ class Game:
 
         self.x = self.arena.width / 2
         self.y = self.arena.height / 2
-        self.physics = Physics(
-            arena=self.arena, players=[self.player], time_step=1 / 60
-        )
+        self.physics = Physics(self, time_step=1 / 60)
         self.screen_object = [Text(800, 50, "Velocity: ", self.player.get_velocity)]
 
     def run(self):
