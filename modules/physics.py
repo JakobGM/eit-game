@@ -10,9 +10,7 @@ class Physics:
     Creates a physics engine which is used to update the position of all players
     """
 
-    def __init__(
-        self, game, time_step: float
-    ) -> None:  # self, arena: Arena, players: List[Player], time_step: float) -> None:
+    def __init__(self, game, time_step: float) -> None:
         """
         Constructor
 
