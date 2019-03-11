@@ -31,9 +31,8 @@ class Game:
         self.x = self.arena.width / 2
         self.y = self.arena.height / 2
         self.physics = Physics(self, time_step=1 / 60)
-        self.screen_object = [
-            Text(800, 50, "Velocity: ", self.players[0].get_velocity)]
-        self.graphs = [graphics.Graph(self.players, "velocity")]
+        self.screen_object = []
+        self.graphs = [graphics.Graph(self.players, "v")]
 
     def run(self):
         """Run game."""
@@ -42,12 +41,21 @@ class Game:
         clock = pg.time.Clock()
 
         screen = graphics.Screen()
+        self.slides = [graphics.Slider("Test", 50, 150, 10, 1300, screen.screen)]
 
         run = True
         while run:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     run = False
+                elif event.type == pg.MOUSEBUTTONDOWN:
+                    pos = pg.mouse.get_pos()
+                    for s in self.slides:
+                        if s.button_rect.collidepoint(pos):
+                            s.hit = True
+                elif event.type == pg.MOUSEBUTTONUP:
+                    for s in self.slides:
+                        s.hit = False
 
             screen.screen.fill((0, 0, 0))
 
@@ -71,6 +79,12 @@ class Game:
             for graph in self.graphs:
                 graph.plot()
                 screen.screen.blit(graph.get_plot(), (1100, 0))
+            for s in self.slides:
+                if s.hit:
+                    pass
+                    s.move()
+            for s in self.slides:
+                s.draw()
             pg.display.flip()
             clock.tick(60)
         pg.quit()

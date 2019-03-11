@@ -26,6 +26,14 @@ class Colors(Enum):
     RED = Color(255, 0, 0)
     GREEN = Color(0, 255, 0)
     BLUE = Color(0, 0, 255)
+    WHITE = Color(255, 255, 255)
+    BLACK = Color(0, 0, 0)
+    YELLOW = Color(255, 255, 0)
+    GREY = Color(200, 200, 200)
+    ORANGE = Color(200, 100, 50)
+    CYAN = Color(0, 255, 255)
+    MAGENTA = Color(255, 0, 255)
+    TRANS = Color(1, 1, 1)
 
     @staticmethod
     def random():

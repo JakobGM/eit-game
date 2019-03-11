@@ -30,7 +30,8 @@ class Player:
         if self.input.shield_on():
             self.velocity = np.zeros(2)
             if(self.health_bar.health < self.health_bar.start_health):
-                self.health_bar.health += 1  # Player regens health while shielded.
+                # Player regens health while shielded.
+                self.health_bar.health += 1
             return True
         return False
 
