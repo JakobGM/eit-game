@@ -8,9 +8,9 @@ from settings import PhysicsConsts
 
 class Physics:
     """
-    Creates a physics engine which is used to update the position of all players
+    Create a physics engine which is used to update
+    the position of all players.
     """
-
     def __init__(self, game, time_step: float) -> None:
         """
         Constructor
@@ -24,12 +24,12 @@ class Physics:
 
     def _boarder_collisions(self, player: Player) -> None:
         """
-        Simulates elastic collisions with the walls. To prevent the player from moving through the wall, the position is
-        fixed, and the velocity reflected according to conservation to momentum.
+        Simulate elastic collisions with the walls. To prevent the player
+        from moving through the wall, the position is fixed, and the velocity
+        reflected according to conservation to momentum.
 
         :param player: the given player to be investigated.
         """
-
         if player.position[0] - player.data.player_size <= 0:
             player.position[0] = player.data.player_size
             player.velocity[0] = -player.velocity[0]

@@ -1,4 +1,4 @@
-from modules.graphics import Circle, Colors
+from modules.graphics import Circle, Colors, HealthBar
 import numpy as np
 from input.input import Input
 from players_settings import PlayerSettings
@@ -18,10 +18,10 @@ class Player:
 
         self.input = Input(self, data)
 
-        self.health = PlayerSettings.shield_color
         self.color = Colors.random()
         self.data = data
         self.shield_on = False
+        self.health_bar = HealthBar(self, PlayerSettings.health)
 
     def get_velocity(self):
         return math.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
@@ -29,9 +29,16 @@ class Player:
     def shield(self):
         if self.input.shield_on():
             self.velocity = np.zeros(2)
-            self.health += 25  # Player regens health while shielded.
+            if(self.health_bar.health < self.health_bar.start_health):
+                self.health_bar.health += 1  # Player regens health while shielded.
             return True
         return False
+
+    def get_health_bar(self):
+        return self.health_bar
+
+    def get_position(self):
+        return self.position
 
     def display(self):
         circle = Circle(
@@ -44,6 +51,6 @@ class Player:
             self.position[0],
             self.position[1],
             PlayerSettings.shield_color,
-            self.data.player_size + self.shield_radius,
+            self.data.player_size + self.data.shield_radius,
         )
         return shield

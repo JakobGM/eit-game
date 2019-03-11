@@ -8,7 +8,7 @@ import random
 @dataclass
 class ScreenSettings:
     height: int = 1000
-    width: int = 1000
+    width: int = 1500
     font_size: int = 30
     font: str = "Comic Sans MS"
 
@@ -30,7 +30,8 @@ class Colors(Enum):
     @staticmethod
     def random():
         return Color(
-            random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
+            random.randint(0, 255), random.randint(
+                0, 255), random.randint(0, 255)
         )
 
 

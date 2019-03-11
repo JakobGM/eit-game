@@ -4,11 +4,14 @@ import numpy as np
 
 class UdpSocket:
     def __init__(self, ip_address="0.0.0.0", port=2055, tx=0):
-        """
-        A general UDP socket that can be set up to be a client or server
+        r"""
+        Set up a general UDP socket that can be \
+        set up to be a client or server.
+
         :param ip_address: The ip address for outbound or inbound packets
         :param port: The port for outbound or inbound packets
-        :param tx: 0 if the socket only receives packets, or 1 if it only sends.
+        :param tx: 0 if the socket only receives packets, \
+        or 1 if it only sends.
         """
         # Initiate values
         self._socket = None
@@ -19,16 +22,15 @@ class UdpSocket:
         self._setup()
 
     def _setup(self):
-        """
-        Sets up the socket.
-        """
+        """Set up the socket."""
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         if not self.tx:
             self.socket.bind((self.udp_ip_address, self.port))
 
     def receive(self, data_size=1024):
         """
-        Receives message from socket
+        Receives message from socket.
+
         :return: A message received from the socket
         """
         data, addr = self.socket.recvfrom(data_size)
@@ -36,15 +38,18 @@ class UdpSocket:
 
     def send(self, message):
         """
-        Sends a message to the socket.
+        Send a message to the socket.
+
         :param message: A messages to be sent to the socket
         """
         self.socket.sendto(message.encode(), (self.udp_ip_address, self.port))
 
     def close_connection(self):
-        """
-        Closes the established connection.
-        Needs to be called if it is a TCP connection or a receiving UDP connection.
+        r"""
+        Close the established connection.
+
+        Needs to be called if it is a TCP connection or a receiving UDP \
+        connection.
         """
         self.socket.close()
 
@@ -61,7 +66,8 @@ class ConnectPhone:
 
     def vect_phone(self):
         self.gyro_data, self.user_data = self.udp_socket._receive()
-        self.coor = list(map(lambda x: float(x), self.gyro_data[:-1].split(",")))
+        self.coor = list(
+            map(lambda x: float(x), self.gyro_data[:-1].split(",")))
         self.x, self.y, self.z = -self.coor[1], -self.coor[0], self.coor[2]
         # make the z a bool
         return np.array([self.x, self.y])
