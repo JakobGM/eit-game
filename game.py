@@ -4,15 +4,18 @@ import modules.graphics as graphics
 from modules.physics import Physics
 import numpy as np
 import pygame as pg
-from settings import ArenaSettings
+from settings import ArenaSettings, Colors
 import players_settings as ps
-from modules.text import Text
 from typing import List
+import time
 
 
 class Game:
     def __init__(self):
         """Initialize the game with different parameters."""
+        pg.init()
+        pg.font.init()
+        self.screen = graphics.Screen()
         self.players = [
             player.Player(200, 200, ps.Player1Settings),
             player.Player(300, 300, ps.Player2Settings),
@@ -33,15 +36,11 @@ class Game:
         self.physics = Physics(self, time_step=1 / 60)
         self.screen_object = []
         self.graphs = [graphics.Graph(self.players, "v")]
+        self.slides = [graphics.Slider("Friction", 1, 10, 0, 1300)]
 
     def run(self):
         """Run game."""
-        pg.init()
-        pg.font.init()
         clock = pg.time.Clock()
-
-        screen = graphics.Screen()
-        self.slides = [graphics.Slider("Test", 50, 150, 10, 1300, screen.screen)]
 
         run = True
         while run:
@@ -57,37 +56,40 @@ class Game:
                     for s in self.slides:
                         s.hit = False
 
-            screen.screen.fill((0, 0, 0))
+            self.screen.screen.fill(Colors.BLACK.value)
+            self.arena.shape.draw(self.screen.screen)
 
-            self.arena.shape.draw(screen.screen)
-
-            for screen_object in self.screen_object:
-
-                screen.screen.blit(
-                    screen_object.get_element(),
-                    (screen_object.x, screen_object.y)
-                )
-
+            # Move players
             self.physics.move_players()
 
+            # Draw players
             for p in self.players:
-                if p.shield():
-                    p.display_shield().draw(screen.screen)
-                p.display().draw(screen.screen)
-                health_bar = p.get_health_bar()
-                health_bar.draw(screen.screen)
+                p.update_health(self.arena.width / 2)
+                p.draw(self.screen.screen)
+            # Draw graphs
             for graph in self.graphs:
-                graph.plot()
-                screen.screen.blit(graph.get_plot(), (1100, 0))
+                graph.draw(self.screen.screen)
+
+            # Draw sliders
             for s in self.slides:
                 if s.hit:
                     pass
                     s.move()
             for s in self.slides:
-                s.draw()
+                s.draw(self.screen.screen)
+
             pg.display.flip()
             clock.tick(60)
+            # Check for game over
+            for p in self.players:
+                if p.health_bar.health == 0:
+                    run = False
+                    self.show_game_over()
         pg.quit()
+
+    def show_game_over(self):
+        # TODO
+        time.sleep(1)
 
     def get_players(self) -> List[player.Player]:
         """Return all player in game."""

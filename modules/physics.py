@@ -76,10 +76,10 @@ class Physics:
                 R2 = self.players[j].data.player_size
 
                 # Check if players have shield (which is added to the total radius)
-                if self.players[i].shield_on:
-                    R1 += self.players[i].shield_radius
-                if self.players[j].shield_on:
-                    R2 += self.players[j].shield_radius
+                if self.players[i].input.shield_on():
+                    R1 += self.players[i].data.shield_radius
+                if self.players[j].input.shield_on():
+                    R2 += self.players[j].data.shield_radius
 
                 # Check if there is collisions
                 if np.linalg.norm(r1 - r2) < R1 + R2:
