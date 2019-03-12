@@ -167,7 +167,8 @@ class Physics:
         """
 
         for player in self.players:
-
+            if player.shield():
+                continue
             force = PhysicsConsts.input_modulation * player.input.get_move()
 
             # if not shield:
