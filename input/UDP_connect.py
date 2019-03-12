@@ -4,7 +4,7 @@ import numpy as np
 
 class UdpSocket:
     def __init__(self, ip_address="0.0.0.0", port=2055, tx=0):
-        r"""
+        """
         Set up a general UDP socket that can be \
         set up to be a client or server.
 
@@ -14,14 +14,14 @@ class UdpSocket:
         or 1 if it only sends.
         """
         # Initiate values
-        self._socket = None
+        self.socket = None
 
-        self._udp_ip_address = ip_address
-        self._tx = tx
-        self._port = port
-        self._setup()
+        self.udp_ip_address = ip_address
+        self.tx = tx
+        self.port = port
+        self.setup()
 
-    def _setup(self):
+    def setup(self):
         """Set up the socket."""
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         if not self.tx:
@@ -62,10 +62,15 @@ class ConnectPhone:
         self.print_ct = print_ct
         self.coor = coor
         self.gyro_data = gyro_data
-        self.udp_socket = UdpSocket(port=port)
+        self.port = port
+        self.ready = False
+
+    def set_up(self):
+        self.udp_socket = UdpSocket(port=self.port)
+        self.ready = True
 
     def vect_phone(self):
-        self.gyro_data, self.user_data = self.udp_socket._receive()
+        self.gyro_data, self.user_data = self.udp_socket.receive()
         self.coor = list(
             map(lambda x: float(x), self.gyro_data[:-1].split(",")))
         self.x, self.y, self.z = -self.coor[1], -self.coor[0], self.coor[2]

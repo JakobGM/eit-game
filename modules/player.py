@@ -8,7 +8,7 @@ import math
 class Player:
     """This class a player class."""
 
-    def __init__(self, x: float, y: float, data):
+    def __init__(self, x: float, y: float, data, phone=None):
         """
         Initialize a player with given parameters.
 
@@ -20,7 +20,7 @@ class Player:
         self.position = np.array([x, y], dtype=float)
         self.velocity = np.zeros(2, dtype=float)
 
-        self.input = Input(self, data)
+        self.input = Input(self, data, phone)
 
         self.color = Colors.random()
         self.data = data

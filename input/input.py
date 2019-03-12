@@ -1,19 +1,23 @@
 from typing import Tuple
 import numpy as np
 import pygame as pg
+import multiprocessing
 
 
 class Input:
-    def __init__(self, player, keys, input_phone=None):
+    def __init__(self, player, keys, input_phone):
         self.keys = keys
         self.player1 = player
         self.input_phone = input_phone
+        if self.input_phone:
+            process = multiprocessing.Process(target=self.input_phone.set_up)
+            process.start()
 
     def get_move(self):
 
         keys = Input.get_key_pressed()
         move = np.zeros(2)
-        if self.input_phone:
+        if self.input_phone and self.input_phone.ready:
             move += self.input_phone.vect_phone()
 
         if keys[self.keys.key_left]:

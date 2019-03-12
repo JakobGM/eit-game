@@ -8,6 +8,7 @@ from settings import ArenaSettings, Colors
 import players_settings as ps
 from typing import List
 import time
+from input.UDP_connect import ConnectPhone
 
 
 class Game:
@@ -17,7 +18,8 @@ class Game:
         pg.font.init()
         self.screen = graphics.Screen()
         self.players = [
-            player.Player(200, 200, ps.Player1Settings),
+            player.Player(200, 200, ps.Player1Settings,
+                          ConnectPhone()),
             player.Player(300, 300, ps.Player2Settings),
         ]
 
