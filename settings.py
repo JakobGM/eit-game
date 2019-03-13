@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import pygame as pg
 from enum import Enum
 from collections import namedtuple
 import random
@@ -7,6 +6,8 @@ import random
 
 @dataclass
 class ScreenSettings:
+    """Settings for the screen."""
+
     height: int = 1000
     width: int = 1500
     font_size: int = 30
@@ -15,6 +16,8 @@ class ScreenSettings:
 
 @dataclass
 class ArenaSettings:
+    """Settings for the arena."""
+
     x: int = 1000
     y: int = 1000
 
@@ -23,6 +26,8 @@ Color = namedtuple("Color", ["red", "green", "blue"])
 
 
 class Colors(Enum):
+    """Class storing colors."""
+
     RED = Color(255, 0, 0)
     GREEN = Color(0, 255, 0)
     BLUE = Color(0, 0, 255)
@@ -37,6 +42,7 @@ class Colors(Enum):
 
     @staticmethod
     def random():
+        """Return a random color."""
         return Color(
             random.randint(0, 255), random.randint(
                 0, 255), random.randint(0, 255)
@@ -45,6 +51,8 @@ class Colors(Enum):
 
 @dataclass
 class PhysicsConsts:
+    """Constants for the physic engine."""
+
     friction_const = 1
     drag_coefficient = 1
     input_modulation = 1500
