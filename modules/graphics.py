@@ -17,7 +17,7 @@ class Slider:
         self.maxi = maxi  # maximum at slider position right
         self.mini = mini  # minimum at slider position left
         self.xpos = pos  # x-location on screen
-        self.ypos = 550
+        self.ypos = 400
         self.surf = pygame.surface.Surface((100, 50))
         self.hit = (
             False
