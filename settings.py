@@ -53,7 +53,7 @@ class PhysicsConsts:
     """Constants for the physic engine."""
 
     friction_const = 1
-    drag_coefficient = 0.00001
+    drag_coefficient = 0.01  # w0.00001
     input_modulation = 1500
     force_modulation = 50
     static_friction_limit = 5

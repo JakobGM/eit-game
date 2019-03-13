@@ -175,15 +175,14 @@ class Physics:
         for player in self.players:
             if player.shield():
                 continue
+
             force = PhysicsConsts.input_modulation * player.input.get_move()
+            force += PhysicsConsts.force_modulation * self.arena.force(player, force)
 
-            # if not shield:
-            # print(self.arena.force(player))
-            force += PhysicsConsts.force_modulation * self.arena.force(player)
-
+            # Eulers method
             acceleration = force / player.mass
-            player.velocity += acceleration * dt  # self.time_step
-            player.position += player.velocity * dt  # self.time_step
+            player.velocity += acceleration * dt
+            player.position += player.velocity * dt
 
             self._boarder_collisions(player)
 

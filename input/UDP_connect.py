@@ -58,8 +58,7 @@ class UdpSocket:
 class ConnectPhone:
     """A class representing a phone."""
 
-    def __init__(self, coor=0, gyro_data=0, port=2055,
-                 x=0, y=0, z=0, print_ct=0):
+    def __init__(self, coor=0, gyro_data=0, port=2055, x=0, y=0, z=0, print_ct=0):
         """Initialize the phone."""
         self.x = x
         self.y = y

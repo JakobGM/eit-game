@@ -15,7 +15,7 @@ class ArenaLayer(abc.ABC):
     """
 
     @abc.abstractmethod
-    def force(self, player: Player) -> np.array:
+    def force(self, player: Player, input_force: float) -> np.array:
         """Return force for specific player."""
 
 
@@ -30,12 +30,13 @@ class FrictionLayer(ArenaLayer):
         """
         self.friction = friction_matrix
 
-    def force(self, player: Player) -> np.array:
+    def force(self, player: Player, input_force: float) -> np.array:
         """
         Calculate the friction force for a player.
         The force is constant as long as the player moves, and zero if the player does not move
         :return: the force of friction
         """
+
         velocity = player.velocity
 
         # If the velocity is 0 (or close), the force is [0, 0]
@@ -52,6 +53,12 @@ class FrictionLayer(ArenaLayer):
             force = -mu * velocity / norm(velocity) * player.mass * 10
         else:
             force = np.array([0, 0])
+
+        # static friction
+        if np.linalg.norm(force) > np.linalg.norm(input_force) > 0:
+            player.velocity = np.zeros(2)
+            force = -input_force  #  np.zeros(2)
+
         return force
 
 
@@ -68,7 +75,7 @@ class AirResistanceLayer(ArenaLayer):
         """
         self.drag_coefficient = drag_coefficient
 
-    def force(self, player: Player) -> np.array:
+    def force(self, player: Player, input_force: float) -> np.array:
         """
         Calculate the air resistance for a player. The force is given by the eqn.
 
@@ -78,10 +85,14 @@ class AirResistanceLayer(ArenaLayer):
 
         :return: ndarray containing the air resistance
         """
-
-        return (
+        force = (
             -self.drag_coefficient * np.linalg.norm(player.velocity) * player.velocity
         )
+
+        if np.linalg.norm(force) > np.linalg.norm(input_force):
+            return -input_force
+
+        return force
 
 
 class Arena:
@@ -109,8 +120,8 @@ class Arena:
         arena = Circle(self.position[0], self.position[1], self.color, self.radius)
         return arena
 
-    def force(self, player):
+    def force(self, player: Player, input_force: float):
         total_force = np.zeros(2, dtype=float)
         for layer in self.layers:
-            total_force += layer.force(player=player)
+            total_force += layer.force(player=player, input_force=input_force)  # bool?
         return total_force
