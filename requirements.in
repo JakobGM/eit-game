@@ -12,3 +12,7 @@ black
 
 # Python testing library
 pytest
+
+# Plotting
+matplotlib
+scipy

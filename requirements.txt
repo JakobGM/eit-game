@@ -9,12 +9,17 @@ atomicwrites==1.3.0       # via pytest
 attrs==18.2.0             # via black, pytest
 black==18.9b0
 click==7.0                # via black
+cycler==0.10.0            # via matplotlib
+kiwisolver==1.0.1         # via matplotlib
+matplotlib==3.0.3
 more-itertools==5.0.0     # via pytest
 numpy==1.16.0
 pluggy==0.8.1             # via pytest
 py==1.7.0                 # via pytest
 pygame==1.9.4
+pyparsing==2.3.1          # via matplotlib
 pytest==4.2.0
+python-dateutil==2.8.0    # via matplotlib
 scipy==1.2.0
-six==1.12.0               # via more-itertools, pytest
+six==1.12.0               # via cycler, more-itertools, pytest, python-dateutil
 toml==0.10.0              # via black
