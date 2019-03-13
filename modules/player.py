@@ -3,6 +3,7 @@ import numpy as np
 from input.input import Input
 from players_settings import PlayerSettings
 import math
+from settings import ArenaSettings
 
 
 class Player:
@@ -41,8 +42,9 @@ class Player:
             return True
         return False
 
-    def update_health(self, arena_radius):
+    def update_health(self):
         """Update the health of the player."""
+        arena_radius = ArenaSettings.x / 2
         if math.sqrt((self.position[0] - arena_radius) ** 2
                      + (self.position[1] - arena_radius) ** 2) + \
                 self.data.player_size > arena_radius:

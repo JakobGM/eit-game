@@ -12,33 +12,41 @@ from input.UDP_connect import ConnectPhone
 
 
 class Game:
+    """This class represents the game."""
+
     def __init__(self):
-        """Initialize the game with different parameters."""
+        """Initialize the game with all the components."""
         pg.init()
         pg.font.init()
         self.screen = graphics.Screen()
-        self.players = [
+
+        # Players
+        self.players: List[player.Player] = [
             player.Player(200, 200, ps.Player1Settings,
                           ConnectPhone()),
             player.Player(300, 300, ps.Player2Settings),
         ]
 
-        self.arena_size = (ArenaSettings.x, ArenaSettings.y)
-        self.layers = [
+        # Plots
+        self.graphs = [graphics.Graph(self.players, "v")]
+
+        # Sliders
+        self.slides = [graphics.Slider("Friction", 1, 10, 0, 1300)]
+
+        # Layers
+        self.layers: arena.ArenaLayer = [
             arena.FrictionLayer(
-                np.ones((self.arena_size[0], self.arena_size[1]))),
+                np.ones((ArenaSettings.x, ArenaSettings.y))),
             arena.AirResistanceLayer(0.00001),
         ]
-        self.arena = arena.Arena(
-            self.arena_size[0], self.arena_size[1], layers=self.layers
-        )
 
-        self.x = self.arena.width / 2
-        self.y = self.arena.height / 2
+        # Arena
+        self.arena: arena.Arena = arena.Arena(ArenaSettings.x,
+                                              ArenaSettings.y,
+                                              layers=self.layers)
+
+        # Physic engine
         self.physics = Physics(self, time_step=1 / 60)
-        self.screen_object = []
-        self.graphs = [graphics.Graph(self.players, "v")]
-        self.slides = [graphics.Slider("Friction", 1, 10, 0, 1300)]
 
     def run(self):
         """Run game."""
@@ -46,9 +54,11 @@ class Game:
 
         run = True
         while run:
+            # Check for events
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     run = False
+                # Code for slides
                 elif event.type == pg.MOUSEBUTTONDOWN:
                     pos = pg.mouse.get_pos()
                     for s in self.slides:
@@ -58,7 +68,10 @@ class Game:
                     for s in self.slides:
                         s.hit = False
 
+            # Fill the screen with black to remove old drawings
             self.screen.screen.fill(Colors.BLACK.value)
+
+            # Draw the arena
             self.arena.shape.draw(self.screen.screen)
 
             # Move players
@@ -66,9 +79,10 @@ class Game:
 
             # Draw players
             for p in self.players:
-                p.update_health(self.arena.width / 2)
+                p.update_health()
                 p.draw(self.screen.screen)
-            # Draw graphs
+
+            # Draw plots
             for graph in self.graphs:
                 graph.draw(self.screen.screen)
 
