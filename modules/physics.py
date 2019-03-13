@@ -1,3 +1,4 @@
+import time
 from typing import List
 import numpy as np
 
@@ -12,7 +13,7 @@ class Physics:
     the position of all players.
     """
 
-    def __init__(self, game, time_step: float) -> None:
+    def __init__(self, game) -> None:
         """
         Constructor
 
@@ -21,7 +22,7 @@ class Physics:
         """
         self.arena = game.get_arena()
         self.players = game.get_players()
-        self.time_step = time_step
+        self.current_time = time.perf_counter()  # time.time()
 
     def _boarder_collisions(self, player: Player) -> None:
         """
@@ -167,6 +168,10 @@ class Physics:
         forces from the physical fields associated with the board.
         """
 
+        dt = time.perf_counter() - self.current_time
+        # time.time() - self.current_time
+        self.current_time = time.perf_counter()  # time.time()
+
         for player in self.players:
             if player.shield():
                 continue
@@ -177,8 +182,8 @@ class Physics:
             force += PhysicsConsts.force_modulation * self.arena.force(player)
 
             acceleration = force / player.mass
-            player.velocity += acceleration * self.time_step
-            player.position += player.velocity * self.time_step
+            player.velocity += acceleration * dt  # self.time_step
+            player.position += player.velocity * dt  # self.time_step
 
             self._boarder_collisions(player)
 

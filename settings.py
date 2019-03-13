@@ -45,7 +45,7 @@ class Colors(Enum):
 @dataclass
 class PhysicsConsts:
     friction_const = 1
-    drag_coefficient = 1
+    drag_coefficient = 0.00001
     input_modulation = 1500
     force_modulation = 50
     static_friction_limit = 5

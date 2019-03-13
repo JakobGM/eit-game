@@ -82,7 +82,7 @@ class Graph:
         graph_type,
         figsize=[4, 4],
         dpi=100,
-        max_window=100,
+        max_window=200,
         position=(1100, 0),
     ):
         """Initialize the plot with given parameters."""
@@ -99,7 +99,7 @@ class Graph:
         self.fig = pylab.figure(figsize=figsize, dpi=dpi)
         self.ax = self.fig.gca()
         self.canvas = agg.FigureCanvasAgg(self.fig)
-        self.max_count = 15
+        self.max_count = 1
         self.counter = self.max_count
         self.image = None
 

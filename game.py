@@ -4,7 +4,7 @@ import modules.graphics as graphics
 from modules.physics import Physics
 import numpy as np
 import pygame as pg
-from settings import ArenaSettings, Colors
+from settings import ArenaSettings, Colors, PhysicsConsts
 import players_settings as ps
 from typing import List
 import time
@@ -35,7 +35,7 @@ class Game:
         # Layers
         self.layers: arena.ArenaLayer = [
             arena.FrictionLayer(np.ones((ArenaSettings.x, ArenaSettings.y))),
-            arena.AirResistanceLayer(0.00001),
+            arena.AirResistanceLayer(PhysicsConsts.drag_coefficient),
         ]
 
         # Arena
@@ -44,7 +44,7 @@ class Game:
         )
 
         # Physic engine
-        self.physics = Physics(self, time_step=1 / 60)
+        self.physics = Physics(self)
 
     def run(self):
         """Run game."""
