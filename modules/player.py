@@ -36,7 +36,7 @@ class Player:
         """Turn on the shield."""
         if self.input.shield_on():
             self.velocity = np.zeros(2)
-            if(self.health_bar.health < self.health_bar.start_health):
+            if self.health_bar.health < self.health_bar.start_health:
                 # Player regens health while shielded.
                 self.health_bar.health += 1
             return True
@@ -45,9 +45,14 @@ class Player:
     def update_health(self):
         """Update the health of the player."""
         arena_radius = ArenaSettings.x / 2
-        if math.sqrt((self.position[0] - arena_radius) ** 2
-                     + (self.position[1] - arena_radius) ** 2) + \
-                self.data.player_size > arena_radius:
+        if (
+            math.sqrt(
+                (self.position[0] - arena_radius) ** 2
+                + (self.position[1] - arena_radius) ** 2
+            )
+            + self.data.player_size
+            > arena_radius
+        ):
             self.health_bar.update_health(self.health_bar.health - 1)
 
     def get_position(self):
@@ -63,8 +68,9 @@ class Player:
         self.health_bar.draw(screen)
         if self.shield():
             self.draw_shield(screen)
-        Circle(self.position[0], self.position[1], self.color,
-               self.data.player_size).draw(screen)
+        Circle(
+            self.position[0], self.position[1], self.color, self.data.player_size
+        ).draw(screen)
 
     def draw_shield(self, screen):
         """
@@ -72,5 +78,9 @@ class Player:
 
         :param screen: The screen of the game.
         """
-        Circle(self.position[0], self.position[1], PlayerSettings.shield_color,
-               self.data.player_size + self.data.shield_radius).draw(screen)
+        Circle(
+            self.position[0],
+            self.position[1],
+            PlayerSettings.shield_color,
+            self.data.player_size + self.data.shield_radius,
+        ).draw(screen)
