@@ -5,7 +5,16 @@ import multiprocessing
 
 
 class Input:
+    """This class represents the input module for players."""
+
     def __init__(self, player, keys, input_phone):
+        """
+        Initialize the input module for the given player.
+
+        :param player: A player object to use the input.
+        :param keys: The keys for the given player.
+        :param input_phone: A phone to control the input.
+        """
         self.keys = keys
         self.player1 = player
         self.input_phone = input_phone
@@ -14,12 +23,15 @@ class Input:
             process.start()
 
     def get_move(self):
-
+        """Move the player."""
         keys = Input.get_key_pressed()
         move = np.zeros(2)
+
+        # Get input from the phone if one exists
         if self.input_phone and self.input_phone.ready:
             move += self.input_phone.vect_phone()
 
+        # Get input from keyboard.
         if keys[self.keys.key_left]:
             move += np.array([-1, 0])
 
@@ -38,6 +50,7 @@ class Input:
         return move
 
     def shield_on(self):
+        """Check if the shield is on for the player."""
         keys = Input.get_key_pressed()
         if keys[self.keys.key_shield]:
             return True
@@ -45,4 +58,5 @@ class Input:
 
     @staticmethod
     def get_key_pressed() -> Tuple[int]:
+        """Get the keys for the player."""
         return pg.key.get_pressed()

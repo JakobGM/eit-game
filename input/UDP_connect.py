@@ -3,10 +3,11 @@ import numpy as np
 
 
 class UdpSocket:
+    """An udp socket."""
+
     def __init__(self, ip_address="0.0.0.0", port=2055, tx=0):
-        """
-        Set up a general UDP socket that can be \
-        set up to be a client or server.
+        r"""
+        Set up a general UDP socket that can be a client or server.
 
         :param ip_address: The ip address for outbound or inbound packets
         :param port: The port for outbound or inbound packets
@@ -55,7 +56,11 @@ class UdpSocket:
 
 
 class ConnectPhone:
-    def __init__(self, coor=0, gyro_data=0, port=2055, x=0, y=0, z=0, print_ct=0):
+    """A class representing a phone."""
+
+    def __init__(self, coor=0, gyro_data=0, port=2055,
+                 x=0, y=0, z=0, print_ct=0):
+        """Initialize the phone."""
         self.x = x
         self.y = y
         self.z = z
@@ -66,10 +71,12 @@ class ConnectPhone:
         self.ready = False
 
     def set_up(self):
+        """Set up a phone."""
         self.udp_socket = UdpSocket(port=self.port)
         self.ready = True
 
     def vect_phone(self):
+        """Get value from the phone."""
         self.gyro_data, self.user_data = self.udp_socket.receive()
         self.coor = list(map(lambda x: float(x), self.gyro_data[:-1].split(",")))
         self.x, self.y, self.z = -self.coor[1], -self.coor[0], self.coor[2]
