@@ -22,8 +22,7 @@ class Game:
 
         # Players
         self.players: List[player.Player] = [
-            player.Player(200, 200, ps.Player1Settings,
-                          ConnectPhone()),
+            player.Player(200, 200, ps.Player1Settings, ConnectPhone()),
             player.Player(300, 300, ps.Player2Settings),
         ]
 
@@ -35,15 +34,14 @@ class Game:
 
         # Layers
         self.layers: arena.ArenaLayer = [
-            arena.FrictionLayer(
-                np.ones((ArenaSettings.x, ArenaSettings.y))),
+            arena.FrictionLayer(np.ones((ArenaSettings.x, ArenaSettings.y))),
             arena.AirResistanceLayer(0.00001),
         ]
 
         # Arena
-        self.arena: arena.Arena = arena.Arena(ArenaSettings.x,
-                                              ArenaSettings.y,
-                                              layers=self.layers)
+        self.arena: arena.Arena = arena.Arena(
+            ArenaSettings.x, ArenaSettings.y, layers=self.layers
+        )
 
         # Physic engine
         self.physics = Physics(self, time_step=1 / 60)

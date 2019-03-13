@@ -11,6 +11,7 @@ class Physics:
     Create a physics engine which is used to update
     the position of all players.
     """
+
     def __init__(self, game, time_step: float) -> None:
         """
         Constructor
