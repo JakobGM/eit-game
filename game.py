@@ -71,7 +71,7 @@ class Game:
             # Fill the screen with black to remove old drawings
             self.screen.screen.fill(Colors.BLACK.value)
 
-            # Draw the arena
+            # Draw arena
             self.arena.shape.draw(self.screen.screen)
 
             # Move players
@@ -86,24 +86,22 @@ class Game:
             for graph in self.graphs:
                 graph.draw(self.screen.screen)
 
-            # Draw sliders
+            # Move sliders
             for s in self.slides:
                 if s.hit:
                     pass
                     s.move()
+
+            # Draw sliders
             for s in self.slides:
                 s.draw(self.screen.screen)
 
             pg.display.flip()
             clock.tick(60)
-            # Check for game over
-            for p in self.players:
-                if p.health_bar.health == 0:
-                    run = False
-                    self.show_game_over()
         pg.quit()
 
     def show_game_over(self):
+        """Run when one player dies."""
         # TODO
         time.sleep(1)
 
