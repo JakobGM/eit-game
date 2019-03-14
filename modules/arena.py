@@ -8,6 +8,8 @@ from numpy.linalg import norm
 from modules.player import Player
 from settings import PhysicsConsts
 
+import time  # bad test to friction change
+
 
 class ArenaLayer(abc.ABC):
     """
@@ -15,7 +17,7 @@ class ArenaLayer(abc.ABC):
     """
 
     @abc.abstractmethod
-    def force(self, player: Player, input_force: float) -> np.array:
+    def force(self, player: Player, input_force: np.ndarray, total_force: np.ndarray, max_input: float) -> np.array:
         """Return force for specific player."""
 
 
@@ -29,38 +31,58 @@ class FrictionLayer(ArenaLayer):
         :param friction_matrix: numpy array containing the friction coefficient at each pixel of the board
         """
         self.friction = friction_matrix
-        self.friction_const = friction_const
+        self.friction_const = 2 * friction_const()
+        self.start_time = time.time()
 
-    def force(self, player: Player, input_force: float) -> np.array:
+    def force(self, player: Player, input_force: np.ndarray, total_force: np.ndarray, max_input: float) -> np.array:
         """
         Calculate the friction force for a player.
         The force is constant as long as the player moves, and zero if the player does not move
         :return: the force of friction
         """
 
+        # Short variable name for the velocity of the player
         velocity = player.velocity
 
-        # If the velocity is 0 (or close), the force is [0, 0]
-        if norm(velocity) < PhysicsConsts.static_friction_limit:
+        # If the velocity is 0 (or close) and there is no input:
+        if norm(velocity) < PhysicsConsts.static_friction_limit and np.linalg.norm(input_force) == 0:
             player.velocity = np.zeros(2)
             force = np.zeros(2)
             return force
 
+        # If the velocity is 0 (or close) and there is input, the force is directed along input force:
+        if norm(velocity) < PhysicsConsts.static_friction_limit and np.linalg.norm(input_force) > 0:
+            position = player.position
+            x, y = position.tolist()
+            x, y = int(x), int(y)
+
+            mu = self.friction[int(x), int(y)] * self.friction_const
+            force_friction = - mu * input_force / np.linalg.norm(
+                input_force) * player.mass * 10 * PhysicsConsts.force_modulation
+
+            # Check if there is small enough friction to start movement
+            if np.linalg.norm(force_friction) < max_input:
+                return force_friction / PhysicsConsts.force_modulation
+            else:
+                player.velocity = np.zeros(2)
+                force = -input_force / PhysicsConsts.force_modulation
+                return force
+
+        # Else moving with constant friction (which may or may not be equal (mening full stop) or less than the input
         position = player.position
         x, y = position.tolist()
         x, y = int(x), int(y)
-        if 0 < x < self.friction.shape[1] and 0 < y < self.friction.shape[0]:
-            mu = self.friction[int(x), int(y)] * self.friction_const()
-            force = -mu * velocity / norm(velocity) * player.mass * 10
-        else:
-            force = np.array([0, 0])
 
-        # static friction
-        if np.linalg.norm(force) > np.linalg.norm(input_force) > 0:
+        mu = self.friction[int(x), int(y)] * self.friction_const
+        force_friction = force = -mu * velocity / np.linalg.norm(
+            velocity) * player.mass * 10 * PhysicsConsts.force_modulation
+
+        if np.linalg.norm(force_friction) > max_input:
             player.velocity = np.zeros(2)
-            force = -input_force  #  np.zeros(2)
+            force = -input_force / PhysicsConsts.force_modulation
+            return force
 
-        return force
+        return force_friction / PhysicsConsts.force_modulation
 
 
 class AirResistanceLayer(ArenaLayer):
@@ -74,9 +96,9 @@ class AirResistanceLayer(ArenaLayer):
         :param drag_coefficient: float representing the drag coefficient. This is proportional to geometric shape of the
         object, air density, and the relative speed of the fluid.
         """
-        self.drag_coefficient = drag_coefficient
+        self.drag_coefficient = drag_coefficient()
 
-    def force(self, player: Player, input_force: float) -> np.array:
+    def force(self, player: Player, input_force: float, total_force: float, max_input: float) -> np.array:
         """
         Calculate the air resistance for a player. The force is given by the eqn.
 
@@ -86,13 +108,24 @@ class AirResistanceLayer(ArenaLayer):
 
         :return: ndarray containing the air resistance
         """
+        # The intuitive force (from physical principles)
+        drag_force = -self.drag_coefficient * np.linalg.norm(player.velocity) * player.velocity * PhysicsConsts.force_modulation
 
-        force = -self.drag_coefficient() * np.linalg.norm(player.velocity) * player.velocity
+        # However as the drag parameter can be tweeked, the force may be unphysical. It is therefore necessary to make
+        # modifications:
 
-        if np.linalg.norm(force) > np.linalg.norm(input_force):
-            return -input_force
+        # If the drag_force is larger than max input
+        if np.linalg.norm(drag_force) > max_input:
+            pass
 
-        return force
+
+        # force = -self.drag_coefficient * np.linalg.norm(player.velocity) * player.velocity
+
+        # if np.linalg.norm(force) > np.linalg.norm(input_force):
+        #    return -input_force
+
+        return np.zeros(2)
+        # return force
 
 
 class Arena:
@@ -120,8 +153,9 @@ class Arena:
         arena = Circle(self.position[0], self.position[1], self.color, self.radius)
         return arena
 
-    def force(self, player: Player, input_force: float):
+    def force(self, player: Player, input_force: np.ndarray, max_input: float):
         total_force = np.zeros(2, dtype=float)
         for layer in self.layers:
-            total_force += layer.force(player=player, input_force=input_force)  # bool?
+            total_force += layer.force(player=player, input_force=input_force, total_force=input_force + total_force,
+                                       max_input=max_input)
         return total_force

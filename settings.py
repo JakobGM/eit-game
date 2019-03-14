@@ -56,4 +56,4 @@ class PhysicsConsts:
     drag_coefficient = 0.01  # w0.00001
     input_modulation = 1500
     force_modulation = 50
-    static_friction_limit = 5
+    static_friction_limit = 30

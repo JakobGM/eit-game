@@ -176,8 +176,11 @@ class Physics:
             if player.shield():
                 continue
 
+
             force = PhysicsConsts.input_modulation * player.input.get_move()
-            force += PhysicsConsts.force_modulation * self.arena.force(player, force)
+            force += PhysicsConsts.force_modulation * self.arena.force(player, force, PhysicsConsts.input_modulation)
+            #print('total force:', np.linalg.norm(force))
+
 
             # Eulers method
             acceleration = force / player.mass

@@ -1,8 +1,5 @@
 import numpy as np
 
-# from harald.arena import Arena, FrictionLayer
-# from harald.agent import Player
-
 from modules.arena import Arena, FrictionLayer
 from modules.player import Player
 
