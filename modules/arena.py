@@ -31,7 +31,7 @@ class FrictionLayer(ArenaLayer):
         :param friction_matrix: numpy array containing the friction coefficient at each pixel of the board
         """
         self.friction = friction_matrix
-        self.friction_const = 2 * friction_const()
+        self.friction_const = 0.0001 * friction_const()
         self.start_time = time.time()
 
     def force(self, player: Player, input_force: np.ndarray, total_force: np.ndarray, max_input: float) -> np.array:
@@ -62,10 +62,10 @@ class FrictionLayer(ArenaLayer):
 
             # Check if there is small enough friction to start movement
             if np.linalg.norm(force_friction) < max_input:
-                return force_friction / PhysicsConsts.force_modulation
+                return force_friction
             else:
                 player.velocity = np.zeros(2)
-                force = -input_force / PhysicsConsts.force_modulation
+                force = -input_force
                 return force
 
         # Else moving with constant friction (which may or may not be equal (mening full stop) or less than the input
@@ -79,10 +79,10 @@ class FrictionLayer(ArenaLayer):
 
         if np.linalg.norm(force_friction) > max_input:
             player.velocity = np.zeros(2)
-            force = -input_force / PhysicsConsts.force_modulation
+            force = -input_force
             return force
 
-        return force_friction / PhysicsConsts.force_modulation
+        return force_friction
 
 
 class AirResistanceLayer(ArenaLayer):
@@ -96,9 +96,9 @@ class AirResistanceLayer(ArenaLayer):
         :param drag_coefficient: float representing the drag coefficient. This is proportional to geometric shape of the
         object, air density, and the relative speed of the fluid.
         """
-        self.drag_coefficient = drag_coefficient()
+        self.drag_coefficient = 0.00000ds1 # drag_coefficient()
 
-    def force(self, player: Player, input_force: float, total_force: float, max_input: float) -> np.array:
+    def force(self, player: Player, input_force: np.ndarray, total_force: np.ndarray, max_input: float) -> np.array:
         """
         Calculate the air resistance for a player. The force is given by the eqn.
 
@@ -108,24 +108,53 @@ class AirResistanceLayer(ArenaLayer):
 
         :return: ndarray containing the air resistance
         """
-        # The intuitive force (from physical principles)
+
         drag_force = -self.drag_coefficient * np.linalg.norm(player.velocity) * player.velocity * PhysicsConsts.force_modulation
 
-        # However as the drag parameter can be tweeked, the force may be unphysical. It is therefore necessary to make
-        # modifications:
+        # Case 1: Input = 0, velocity = 0
+        if np.linalg.norm(input_force) == 0 and np.linalg.norm(player.velocity) == 0:
+            print('Case 1: Input = 0, vel = 0')
 
-        # If the drag_force is larger than max input
-        if np.linalg.norm(drag_force) > max_input:
-            pass
+            # Drag must be zeros
+            assert(np.linalg.norm(drag_force) == 0)
+            return np.zeros(2)
+
+        # Case 2: Input = 0, velocity > 0
+        elif np.linalg.norm(input_force) == 0 and np.linalg.norm(player.velocity) > 0:
+            print('Case 2: Input = 0, vel > 0')
+
+            # Manipulating to make friction + drag < input force (to preventing unphysical behavior:
+            if np.linalg.norm(total_force) + np.linalg.norm(drag_force) < max_input:
+                print('alt er ok!')
+                return drag_force
+            else:
+                print('for stor drag!')
+                player.velocity = np.zeros(2)
+                return -total_force
+                # fiks dette etter å sjekke om dette er en sitasjon som kan skje!
 
 
-        # force = -self.drag_coefficient * np.linalg.norm(player.velocity) * player.velocity
+        # Case 3: Input > 0, velocity = 0
+        elif np.linalg.norm(input_force) > 0 and np.linalg.norm(player.velocity) == 0:
+            print('Case 3: Input > 0, vel = 0')
+            assert(np.linalg.norm(drag_force) < 1e-10)
+            return np.zeros(2)
 
-        # if np.linalg.norm(force) > np.linalg.norm(input_force):
-        #    return -input_force
+        # Case 4: Input > 0, velocity > 0
+        elif np.linalg.norm(input_force) > 0 and np.linalg.norm(player.velocity) > 0:
+            print('Case 4: Input > 0, vel > 0')
+            # Goal reach terminal speed!
+            # Therefore the drag cannot be larger than the total force
+            if np.linalg.norm(drag_force) > np.linalg.norm(total_force) +1:
+                print('too high drag. terminal!')
+
+                return drag_force/np.linalg.norm(total_force)
+            else:
+                return drag_force
+
 
         return np.zeros(2)
-        # return force
+
 
 
 class Arena:
