@@ -32,15 +32,15 @@ class Game:
         # Sliders
         self.slides = [
             graphics.Slider("Drag coefficient", 0.00001, 0.00005, 0, 1350),
-            graphics.Slider("Friction", 1, 5, 0, 1150),
+            graphics.Slider("Friction", 0.001, 3, 0, 1150),
         ]
 
         # Layers
-        self.layers: arena.ArenaLayer = [
+        self.layers: list[arena.ArenaLayer] = [
             arena.FrictionLayer(
-                np.ones((ArenaSettings.x, ArenaSettings.y)), self.slides[1].get_value
+                np.ones((ArenaSettings.x, ArenaSettings.y)), self.slides[1].get_value()
             ),
-            arena.AirResistanceLayer(self.slides[0].get_value),
+            arena.AirResistanceLayer(self.slides[0].get_value()),
         ]
 
         # Arena
@@ -76,6 +76,10 @@ class Game:
 
             # Draw arena
             self.arena.shape.draw(self.screen.screen)
+
+            # Update sliders (Is this an Ok placement?)
+            self.arena.layers[0].friction_const =  self.slides[1].get_value()
+            self.arena.layers[1].drag_coefficient = self.slides[0].get_value()
 
             # Move players
             self.physics.move_players()

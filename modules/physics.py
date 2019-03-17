@@ -178,7 +178,7 @@ class Physics:
 
 
             force = PhysicsConsts.input_modulation * player.input.get_move()
-            force += self.arena.force(player, force, PhysicsConsts.input_modulation)
+            force += self.arena.force(player, force, PhysicsConsts.input_modulation, dt)
 
 
             # Eulers method
