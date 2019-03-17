@@ -8,8 +8,6 @@ from numpy.linalg import norm
 from modules.player import Player
 from settings import PhysicsConsts
 
-import time  # bad test to friction change
-
 
 class ArenaLayer(abc.ABC):
     """
