@@ -31,7 +31,8 @@ class FrictionLayer(ArenaLayer):
         :param friction_matrix: numpy array containing the friction coefficient at each pixel of the board
         """
         self.friction = friction_matrix
-        self.friction_const = 0.0001 * friction_const()
+        self.friction_const = 0.0001
+        self.friction_func = friction_const
         self.start_time = time.time()
 
     def force(self, player: Player, input_force: np.ndarray, total_force: np.ndarray, max_input: float) -> np.array:
@@ -56,7 +57,8 @@ class FrictionLayer(ArenaLayer):
             x, y = position.tolist()
             x, y = int(x), int(y)
 
-            mu = self.friction[int(x), int(y)] * self.friction_const
+            mu = self.friction[int(x), int(y)] * \
+                self.friction_const * self.friction_func()
             force_friction = - mu * input_force / np.linalg.norm(
                 input_force) * player.mass * 10 * PhysicsConsts.force_modulation
 
@@ -73,7 +75,8 @@ class FrictionLayer(ArenaLayer):
         x, y = position.tolist()
         x, y = int(x), int(y)
 
-        mu = self.friction[int(x), int(y)] * self.friction_const
+        mu = self.friction[int(x), int(y)] * \
+            self.friction_const * self.friction_func()
         force_friction = force = -mu * velocity / np.linalg.norm(
             velocity) * player.mass * 10 * PhysicsConsts.force_modulation
 
@@ -96,7 +99,8 @@ class AirResistanceLayer(ArenaLayer):
         :param drag_coefficient: float representing the drag coefficient. This is proportional to geometric shape of the
         object, air density, and the relative speed of the fluid.
         """
-        self.drag_coefficient = 0.00000ds1 # drag_coefficient()
+        self.drag_coefficient = 0.000001
+        self.drag_func = drag_coefficient
 
     def force(self, player: Player, input_force: np.ndarray, total_force: np.ndarray, max_input: float) -> np.array:
         """
@@ -109,7 +113,9 @@ class AirResistanceLayer(ArenaLayer):
         :return: ndarray containing the air resistance
         """
 
-        drag_force = -self.drag_coefficient * np.linalg.norm(player.velocity) * player.velocity * PhysicsConsts.force_modulation
+        drag_force = -self.drag_coefficient * np.linalg.norm(player.velocity) \
+            * player.velocity * PhysicsConsts.force_modulation * \
+            self.drag_func()
 
         # Case 1: Input = 0, velocity = 0
         if np.linalg.norm(input_force) == 0 and np.linalg.norm(player.velocity) == 0:
@@ -133,7 +139,6 @@ class AirResistanceLayer(ArenaLayer):
                 return -total_force
                 # fiks dette etter å sjekke om dette er en sitasjon som kan skje!
 
-
         # Case 3: Input > 0, velocity = 0
         elif np.linalg.norm(input_force) > 0 and np.linalg.norm(player.velocity) == 0:
             print('Case 3: Input > 0, vel = 0')
@@ -145,16 +150,14 @@ class AirResistanceLayer(ArenaLayer):
             print('Case 4: Input > 0, vel > 0')
             # Goal reach terminal speed!
             # Therefore the drag cannot be larger than the total force
-            if np.linalg.norm(drag_force) > np.linalg.norm(total_force) +1:
+            if np.linalg.norm(drag_force) > np.linalg.norm(total_force) + 1:
                 print('too high drag. terminal!')
 
                 return drag_force/np.linalg.norm(total_force)
             else:
                 return drag_force
 
-
         return np.zeros(2)
-
 
 
 class Arena:
@@ -179,7 +182,8 @@ class Arena:
         self.layers = layers
 
     def display(self):
-        arena = Circle(self.position[0], self.position[1], self.color, self.radius)
+        arena = Circle(self.position[0],
+                       self.position[1], self.color, self.radius)
         return arena
 
     def force(self, player: Player, input_force: np.ndarray, max_input: float):

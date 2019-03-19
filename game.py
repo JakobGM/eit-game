@@ -4,7 +4,7 @@ import modules.graphics as graphics
 from modules.physics import Physics
 import numpy as np
 import pygame as pg
-from settings import ArenaSettings, Colors, PhysicsConsts
+from settings import ArenaSettings, Colors
 import players_settings as ps
 from typing import List
 import time
@@ -32,14 +32,14 @@ class Game:
         # Sliders
         self.slides = [
             graphics.Slider("Drag coefficient", 0.00001, 0.00005, 0, 1350),
-            graphics.Slider("Friction", 1, 5, 0, 1150),
+            graphics.Slider("Friction", 1, 100, 0, 1150),
         ]
 
         # Layers
         self.layers: arena.ArenaLayer = [
             arena.FrictionLayer(
-                np.ones((ArenaSettings.x, ArenaSettings.y)), self.slides[1].get_value
-            ),
+                np.ones((ArenaSettings.x, ArenaSettings.y)),
+                self.slides[1].get_value),
             arena.AirResistanceLayer(self.slides[0].get_value),
         ]
 
