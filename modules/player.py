@@ -21,7 +21,7 @@ class Player:
         self.position = np.array([x, y], dtype=float)
         self.velocity = np.zeros(2, dtype=float)
 
-        self.input = Input(self, data, phone)
+        self.input = Input(data, phone)
 
         self.color = Colors.random()
         self.data = data

@@ -7,16 +7,14 @@ import multiprocessing
 class Input:
     """This class represents the input module for players."""
 
-    def __init__(self, player, keys, input_phone):
+    def __init__(self, keys, input_phone):
         """
         Initialize the input module for the given player.
 
-        :param player: A player object to use the input.
         :param keys: The keys for the given player.
         :param input_phone: A phone to control the input.
         """
         self.keys = keys
-        self.player1 = player
         self.input_phone = input_phone
         if self.input_phone:
             process = multiprocessing.Process(target=self.input_phone.set_up)
