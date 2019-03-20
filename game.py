@@ -1,3 +1,4 @@
+"""Game class."""
 import modules.arena as arena
 import modules.player as player
 import modules.graphics as graphics
@@ -38,8 +39,8 @@ class Game:
         # Layers
         self.layers: list[arena.ArenaLayer] = [
             arena.FrictionLayer(
-                np.ones((ArenaSettings.x, ArenaSettings.y)), self.slides[1].get_value
-            ),
+                np.ones((ArenaSettings.x, ArenaSettings.y)),
+                self.slides[1].get_value),
             arena.AirResistanceLayer(self.slides[0].get_value),
         ]
 
@@ -75,7 +76,7 @@ class Game:
             self.screen.screen.fill(Colors.BLACK.value)
 
             # Draw arena
-            self.arena.shape.draw(self.screen.screen)
+            self.arena.draw(self.screen.screen)
 
             # Move players
             self.physics.move_players()

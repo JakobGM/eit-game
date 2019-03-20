@@ -7,6 +7,7 @@ import matplotlib.backends.backend_agg as agg
 import pylab
 import numpy as np
 from collections import deque
+from typing import Tuple, List
 
 matplotlib.use("Agg")
 
@@ -89,8 +90,8 @@ class Graph:
     ):
         """Initialize the plot with given parameters."""
         self.players = players
-        self.position = position
-        self.points = [deque([-1], maxlen=max_window)]
+        self.position: Tuple[int] = position
+        self.points: List[deque] = [deque([-1], maxlen=max_window)]
         for i in players:
             self.points.append(deque([0], maxlen=max_window))
         self.graph_type = {
@@ -163,13 +164,14 @@ class Screen:
 class Circle:
     """This class represents a circle."""
 
-    def __init__(self, x=50, y=50, color=Colors.RED, radius=10):
+    def __init__(self, x: float = 50, y: float = 50,
+                 color: Colors = Colors.RED, radius: int = 10) -> None:
         """Initialize the circle."""
-        self.position = (int(x), int(y))
-        self.radius = radius
-        self.color = color
+        self.position: Tuple[int, int] = (int(x), int(y))
+        self.radius: int = radius
+        self.color: Colors = color
 
-    def draw(self, screen):
+    def draw(self, screen: pygame.Surface) -> None:
         """Draw the circle onto the screen."""
         return pygame.draw.circle(screen, self.color, self.position,
                                   self.radius)
