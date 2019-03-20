@@ -1,15 +1,19 @@
+"""Player class."""
 from modules.graphics import Circle, Colors, HealthBar
 import numpy as np
 from input.input import Input
 from players_settings import PlayerSettings
 import math
+from pg import Screen
 from settings import ArenaSettings
+from input.UDP_connect import ConnectPhone
 
 
 class Player:
     """This class a player class."""
 
-    def __init__(self, x: float, y: float, data, phone=None):
+    def __init__(self, x: float, y: float, data,
+                 phone: ConnectPhone = None) -> None:
         """
         Initialize a player with given parameters.
 
@@ -17,22 +21,22 @@ class Player:
         :param y: initial y-position
         :param data: Dataclass used to store player settings
         """
-        self.mass = data.mass
-        self.position = np.array([x, y], dtype=float)
-        self.velocity = np.zeros(2, dtype=float)
+        self.mass: float = data.mass
+        self.position: np.ndarray = np.array([x, y], dtype=float)
+        self.velocity: np.ndarray = np.zeros(2, dtype=float)
 
-        self.input = Input(data, phone)
+        self.input: Input = Input(data, phone)
 
-        self.color = Colors.random()
+        self.color: Colors = Colors.random()
         self.data = data
-        self.shield_on = False
-        self.health_bar = HealthBar(self, PlayerSettings.health)
+        self.shield_on: bool = False
+        self.health_bar: HealthBar = HealthBar(self, PlayerSettings.health)
 
-    def get_velocity(self):
+    def get_velocity(self) -> float:
         """Return the velocity of the player."""
         return math.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
 
-    def shield(self):
+    def shield(self) -> bool:
         """Turn on the shield."""
         if self.input.shield_on():
             self.velocity = np.zeros(2)
@@ -42,7 +46,7 @@ class Player:
             return True
         return False
 
-    def update_health(self):
+    def update_health(self) -> None:
         """Update the health of the player."""
         arena_radius = ArenaSettings.x / 2
         if (
@@ -55,11 +59,11 @@ class Player:
         ):
             self.health_bar.update_health(self.health_bar.health - 1)
 
-    def get_position(self):
+    def get_position(self) -> np.ndarray:
         """Return the position of the player."""
         return self.position
 
-    def draw(self, screen):
+    def draw(self, screen: Screen) -> None:
         """
         Draw the player onto the screenself.
 
@@ -72,7 +76,7 @@ class Player:
             self.position[0], self.position[1], self.color, self.data.player_size
         ).draw(screen)
 
-    def draw_shield(self, screen):
+    def draw_shield(self, screen: Screen):
         """
         Draw the shield onto the screenself.
 

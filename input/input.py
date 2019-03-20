@@ -20,7 +20,7 @@ class Input:
             process = multiprocessing.Process(target=self.input_phone.set_up)
             process.start()
 
-    def get_move(self):
+    def get_move(self) -> np.ndarray:
         """Move the player."""
         keys = Input.get_key_pressed()
         move = np.zeros(2)
@@ -47,7 +47,7 @@ class Input:
             move /= np.sqrt(2)
         return move
 
-    def shield_on(self):
+    def shield_on(self) -> bool:
         """Check if the shield is on for the player."""
         keys = Input.get_key_pressed()
         if keys[self.keys.key_shield]:
