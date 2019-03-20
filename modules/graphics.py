@@ -7,7 +7,6 @@ import matplotlib.backends.backend_agg as agg
 import pylab
 import numpy as np
 from collections import deque
-from modules.player import Player
 
 matplotlib.use("Agg")
 
@@ -21,9 +20,7 @@ class Slider:
         self.xpos = pos  # x-location on screen
         self.ypos = 400
         self.surf = pygame.surface.Surface((100, 50))
-        self.hit = (
-            False
-        )  # the hit attribute indicates slider movement due to mouse interaction
+        self.hit = (False)
         self.txt_surf = self.font.render(name, 1, Colors.BLACK.value)
         self.txt_rect = self.txt_surf.get_rect(center=(50, 15))
 
@@ -98,8 +95,8 @@ class Graph:
             self.points.append(deque([0], maxlen=max_window))
         self.graph_type = {
             "v": ["Velocity over time", "Velocity", "Time", ".get_velocity()"],
-            "a": ["Acceleration", "Acceleration", "Time", ".get_acceleration()"],
-        }[graph_type]
+            "a": ["Acceleration", "Acceleration", "Time",
+                  ".get_acceleration()"]}[graph_type]
         plt.style.use("dark_background")
         self.fig = pylab.figure(figsize=figsize, dpi=dpi)
         self.ax = self.fig.gca()
@@ -174,19 +171,20 @@ class Circle:
 
     def draw(self, screen):
         """Draw the circle onto the screen."""
-        return pygame.draw.circle(screen, self.color, self.position, self.radius)
+        return pygame.draw.circle(screen, self.color, self.position,
+                                  self.radius)
 
 
 class HealthBar:
     """This class represents the health of a player."""
 
-    def __init__(self, player: Player, health: int, length: float = 0.015,
+    def __init__(self, player, health: int, length: float = 0.015,
                  width: float = 0.3, y_move: float = 1.4,
                  x_move: float = 0.7) -> None:
         """Initialize the health bar."""
         self.start_health: int = health
         self.health: int = health
-        self.player: Player = player
+        self.player = player
         self.length: float = length
         self.width: float = width
         self.y_move: float = y_move

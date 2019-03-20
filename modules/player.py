@@ -1,5 +1,5 @@
 """Player class."""
-from modules.graphics import Circle, Colors, HealthBar
+from modules.graphics import Colors, HealthBar, Circle
 import numpy as np
 from input.input import Input
 from players_settings import PlayerSettings
