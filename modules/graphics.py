@@ -5,7 +5,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.backends.backend_agg as agg
 import pylab
+import numpy as np
 from collections import deque
+from modules.player import Player
 
 matplotlib.use("Agg")
 
@@ -38,8 +40,10 @@ class Slider:
         self.button_surf = pygame.surface.Surface((20, 20))
         self.button_surf.fill(Colors.TRANS.value)
         self.button_surf.set_colorkey(Colors.TRANS.value)
-        pygame.draw.circle(self.button_surf, Colors.BLACK.value, (10, 10), 6, 0)
-        pygame.draw.circle(self.button_surf, Colors.ORANGE.value, (10, 10), 4, 0)
+        pygame.draw.circle(
+            self.button_surf, Colors.BLACK.value, (10, 10), 6, 0)
+        pygame.draw.circle(
+            self.button_surf, Colors.ORANGE.value, (10, 10), 4, 0)
 
     def get_value(self):
         """Get the value of the current position of the slider."""
@@ -52,7 +56,8 @@ class Slider:
         # static
         surf = self.surf.copy()
         # dynamic
-        pos = (10 + int((self.val - self.mini) / (self.maxi - self.mini) * 80), 33)
+        pos = (10 + int((self.val - self.mini)
+                        / (self.maxi - self.mini) * 80), 33)
         self.button_rect = self.button_surf.get_rect(center=pos)
         surf.blit(self.button_surf, self.button_rect)
         # move of button box to correct screen position
@@ -175,23 +180,25 @@ class Circle:
 class HealthBar:
     """This class represents the health of a player."""
 
-    def __init__(self, player, health, length=0.015, width=0.3, y_move=1.4, x_move=0.7):
+    def __init__(self, player: Player, health: int, length: float = 0.015,
+                 width: float = 0.3, y_move: float = 1.4,
+                 x_move: float = 0.7) -> None:
         """Initialize the health bar."""
-        self.start_health = health
-        self.health = health
-        self.player = player
-        self.length = length
-        self.width = width
-        self.y_move = 1.4
-        self.x_move = 0.7
-        self.position = player.get_position()
+        self.start_health: int = health
+        self.health: int = health
+        self.player: Player = player
+        self.length: float = length
+        self.width: float = width
+        self.y_move: float = y_move
+        self.x_move: float = x_move
+        self.position: np.ndarray = player.get_position()
 
-    def update_health(self, health):
+    def update_health(self, health: int) -> None:
         """Update the health of the health bar."""
         if health >= 0 and health <= 100:
             self.health = health
 
-    def draw(self, screen):
+    def draw(self, screen: pygame.Surface) -> None:
         """Draw the health bar onto the screen."""
         pygame.draw.rect(
             screen,

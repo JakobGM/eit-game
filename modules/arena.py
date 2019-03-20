@@ -102,7 +102,8 @@ class FrictionLayer(ArenaLayer):
         x, y = position.tolist()
         x, y = int(x), int(y)
 
-        mu = self.friction[int(x), int(y)] * self.friction_const * self.friction_func()
+        mu = self.friction[int(x), int(y)] * \
+            self.friction_const * self.friction_func()
         force_friction = force = (
             -mu
             * velocity
@@ -225,7 +226,8 @@ class Arena:
         self.layers = layers
 
     def display(self):
-        arena = Circle(self.position[0], self.position[1], self.color, self.radius)
+        arena = Circle(self.position[0],
+                       self.position[1], self.color, self.radius)
         return arena
 
     def force(
