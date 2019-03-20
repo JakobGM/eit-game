@@ -1,10 +1,7 @@
 import numpy as np
 
-# from harald.arena import Arena, FrictionLayer
-# from harald.agent import Player
-
-from haakon.arena import Arena, FrictionLayer
-from haakon.player import Player
+from modules.arena import Arena, FrictionLayer
+from modules.player import Player
 
 
 def test_invokation_of_ArenaLayer() -> None:
@@ -25,7 +22,7 @@ def test_invokation_of_Arena_object() -> None:
     Arena(width=1000, height=1000, layers=[friction])
 
 
-def test_update_foce() -> None:
+def test_update_force() -> None:
     """
     Test if it is possible to update the position of a player based on the force from the area layer
     """
