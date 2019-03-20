@@ -14,11 +14,11 @@ from input.UDP_connect import ConnectPhone
 class Game:
     """This class represents the game."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the game with all the components."""
         pg.init()
         pg.font.init()
-        self.screen = graphics.Screen()
+        self.screen: graphics.Screen = graphics.Screen()
 
         # Players
         self.players: List[player.Player] = [
@@ -27,10 +27,10 @@ class Game:
         ]
 
         # Plots
-        self.graphs = [graphics.Graph(self.players, "v")]
+        self.graphs: List[graphics.Graph] = [graphics.Graph(self.players, "v")]
 
         # Sliders
-        self.slides = [
+        self.slides: List[graphics.Slider] = [
             graphics.Slider("Drag coefficient", 0.001, 100, 0, 1350),
             graphics.Slider("Friction", 1, 50000, 0, 1150),
         ]
@@ -49,13 +49,13 @@ class Game:
         )
 
         # Physic engine
-        self.physics = Physics(self)
+        self.physics: Physics = Physics(self)
 
-    def run(self):
+    def run(self) -> None:
         """Run game."""
-        clock = pg.time.Clock()
+        clock: pg.time.Clock = pg.time.Clock()
 
-        run = True
+        run: bool = True
         while run:
             # Check for events
             for event in pg.event.get():
@@ -76,10 +76,6 @@ class Game:
 
             # Draw arena
             self.arena.shape.draw(self.screen.screen)
-
-            # Update sliders (Is this an Ok placement?)
-            # self.arena.layers[0].friction_const = self.slides[1].get_value()
-            # self.arena.layers[1].drag_coefficient = self.slides[0].get_value()
 
             # Move players
             self.physics.move_players()
@@ -107,7 +103,7 @@ class Game:
             clock.tick(60)
         pg.quit()
 
-    def show_game_over(self):
+    def show_game_over(self) -> None:
         """Run when one player dies."""
         # TODO
         time.sleep(1)
