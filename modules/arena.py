@@ -112,8 +112,6 @@ class FrictionLayer(ArenaLayer):
             * PhysicsConsts.force_modulation
         )
 
-        print(force_friction)
-
         if np.linalg.norm(force_friction) > max_input:
             player.velocity = np.zeros(2)
             force = -input_force
@@ -202,7 +200,6 @@ class AirResistanceLayer(ArenaLayer):
                 return drag_force
         # Else, something is wrong
         else:
-            print("Logic is broken, please contact the responsible of Physics!")
             return np.zeros(2)
 
 

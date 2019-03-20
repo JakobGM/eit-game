@@ -4,7 +4,7 @@ import numpy as np
 from input.input import Input
 from players_settings import PlayerSettings
 import math
-from pg import Screen
+import pygame as pg
 from settings import ArenaSettings
 from input.UDP_connect import ConnectPhone
 
@@ -12,7 +12,7 @@ from input.UDP_connect import ConnectPhone
 class Player:
     """This class a player class."""
 
-    def __init__(self, x: float, y: float, data,
+    def __init__(self, x: float, y: float, data: type,
                  phone: ConnectPhone = None) -> None:
         """
         Initialize a player with given parameters.
@@ -28,7 +28,7 @@ class Player:
         self.input: Input = Input(data, phone)
 
         self.color: Colors = Colors.random()
-        self.data = data
+        self.data: type = data
         self.shield_on: bool = False
         self.health_bar: HealthBar = HealthBar(self, PlayerSettings.health)
 
@@ -63,7 +63,7 @@ class Player:
         """Return the position of the player."""
         return self.position
 
-    def draw(self, screen: Screen) -> None:
+    def draw(self, screen: pg.Surface) -> None:
         """
         Draw the player onto the screenself.
 
@@ -73,10 +73,10 @@ class Player:
         if self.shield():
             self.draw_shield(screen)
         Circle(
-            self.position[0], self.position[1], self.color, self.data.player_size
-        ).draw(screen)
+            self.position[0], self.position[1], self.color,
+            self.data.player_size).draw(screen)
 
-    def draw_shield(self, screen: Screen):
+    def draw_shield(self, screen: pg.Surface) -> None:
         """
         Draw the shield onto the screenself.
 
