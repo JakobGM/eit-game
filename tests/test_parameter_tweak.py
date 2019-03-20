@@ -14,8 +14,7 @@ def test_friction_to_high(capsys) -> None:
     Test reaction to a too high friction constant
     """
     PhysicsConsts.friction_const = 1
-    assert (PhysicsConsts.friction_const == 1)
-
+    assert PhysicsConsts.friction_const == 1
 
     # Layers
     layers = [
@@ -31,12 +30,10 @@ def test_friction_to_high(capsys) -> None:
     # Players
     players = [player.Player(200, 200, ps.Player1Settings)]
 
-
     # Physic engine
     physics = Physics()
 
     physics.move_players(players)
-
 
 
 def test_drag_to_high() -> None:
