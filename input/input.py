@@ -57,6 +57,7 @@ class Input:
             return True
         return False
 
+
     @staticmethod
     def get_key_pressed() -> Tuple[int]:
         """Get the keys for the player."""
