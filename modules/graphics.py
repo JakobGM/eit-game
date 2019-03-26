@@ -7,7 +7,7 @@ import matplotlib.backends.backend_agg as agg
 import pylab
 import numpy as np
 from collections import deque
-from typing import Tuple, List
+from typing import Tuple, List, NamedTuple
 
 matplotlib.use("Agg")
 
