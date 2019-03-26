@@ -49,15 +49,15 @@ class Game:
 
         # Layers
         self.layers: List[arena.ArenaLayer] = [
-            arena.FrictionLayer(
-                np.ones((ArenaSettings.x, ArenaSettings.y)),
-                self.slides[1].get_value),
+            arena.FrictionLayer(np.ones((ArenaSettings.x, ArenaSettings.y)),
+                                self.slides[1].get_value),
             arena.AirResistanceLayer(self.slides[0].get_value),
         ]
 
         # Arena
-        self.arena: arena.Arena = arena.Arena(
-            ArenaSettings.x, ArenaSettings.y, layers=self.layers)
+        self.arena: arena.Arena = arena.Arena(ArenaSettings.x,
+                                              ArenaSettings.y,
+                                              layers=self.layers)
 
         # Physic engine
         self.physics: Physics = Physics(self)
@@ -73,10 +73,8 @@ class Game:
         while 1:
             if not self.run_game(clock):
                 break
-<<<<<<< HEAD
+
         self.run_end()
-=======
->>>>>>> Add start screen
         pg.quit()
 
     def run_intro(self) -> bool:
@@ -149,18 +147,12 @@ class Game:
         pg.display.flip()
         clock.tick(60)
 
-<<<<<<< HEAD
-        # if True in [p.health_bar.health <= 0 for p in self.players]:
-        #    return False
+        if True in [p.health_bar.health <= 0 for p in self.players]:
+            return False
 
         return run
 
     def run_end(self) -> None:
-=======
-        return run
-
-    def show_game_over(self) -> None:
->>>>>>> Add start screen
         """Run when one player dies."""
         # Fill the screen with white
         self.screen.screen.fill(Colors.WHITE.value)
