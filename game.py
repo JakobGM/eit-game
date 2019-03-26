@@ -73,6 +73,7 @@ class Game:
         while 1:
             if not self.run_game(clock):
                 break
+        self.run_end()
         pg.quit()
 
     def run_intro(self) -> bool:
@@ -145,12 +146,23 @@ class Game:
         pg.display.flip()
         clock.tick(60)
 
+        if True in [p.health_bar.health <= 0 for p in self.players]:
+            return False
+
         return run
 
-    def show_game_over(self) -> None:
+    def run_end(self) -> None:
         """Run when one player dies."""
-        # TODO
-        time.sleep(1)
+        # Fill the screen with white
+        self.screen.screen.fill(Colors.WHITE.value)
+
+        # Draw text onto the screen
+        graphics.Text(
+            Texts('Game over!', ScreenSettings.width / 2,
+                  ScreenSettings.height / 2, 115)).draw(self.screen.screen)
+
+        pg.display.update()
+        time.sleep(2)
 
     def get_players(self) -> List[player.Player]:
         """Return all player in game."""
