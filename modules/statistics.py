@@ -44,7 +44,7 @@ class Statistics:
         """
         assert isinstance(save_path, Path)
         self.save_path = save_path
-        self.load_data()
+        self._load_data()
 
     def save(self, ranking: Optional[List[str]] = None) -> None:
         """
@@ -58,9 +58,9 @@ class Statistics:
             assert isinstance(ranking, list)
             assert isinstance(ranking[0], str)
             self.data.all_rankings.append(ranking)
-        self.save_data()
+        self._save_data()
 
-    def load_data(self) -> None:
+    def _load_data(self) -> None:
         """
         Load the save data stored in the given path.
 
@@ -75,11 +75,11 @@ class Statistics:
         if not self.save_path.exists():
             self.save_path.touch()
             self.data = Data()
-            self.save_data()
+            self._save_data()
         else:
             self.data = pickle.loads(self.save_path.read_bytes())
 
-    def save_data(self) -> None:
+    def _save_data(self) -> None:
         """Save data to path specified by __init__ save_path parameter."""
         self.save_path.write_bytes(
             data=pickle.dumps(self.data, protocol=pickle.HIGHEST_PROTOCOL),
