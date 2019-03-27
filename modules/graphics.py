@@ -103,7 +103,7 @@ class Graph:
         self.fig = pylab.figure(figsize=figsize, dpi=dpi)
         self.ax = self.fig.gca()
         self.canvas = agg.FigureCanvasAgg(self.fig)
-        self.max_count = 1
+        self.max_count = 15
         self.counter = self.max_count
         self.image = None
 
