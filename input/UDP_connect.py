@@ -95,4 +95,20 @@ class ConnectPhone:
             map(lambda x: float(x), self.gyro_data[:-1].split(",")))
         self.x, self.y, self.z = -self.coor[1], -self.coor[0], self.coor[2]
         # make the z a bool
+        self.x = self.x_filtered.lowpass(self.x)
+        self.y = self.y_filtered.lowpass(self.y)
         return np.array([self.x, self.y])
+
+class Filter:
+    def __init__(self):
+        self.input = 0
+        self.input_m = 0
+        self.output = 0
+        self.output_m = 0
+
+    def lowpass(self, input):
+        self.input = input
+        self.output = 0.7285 * self.output_m + 0.01358 * (self.input + self.input_m)
+        self.input_m = self.input
+        self.output_m = self.output
+        return self.output
