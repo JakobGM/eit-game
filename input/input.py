@@ -2,8 +2,6 @@
 from typing import Tuple, Dict
 import numpy as np
 import pygame as pg
-import multiprocessing
-import threading
 from input.UDP_connect import ConnectPhone
 
 
@@ -20,9 +18,7 @@ class Input:
         self.keys: type = keys
         self.input_phone: ConnectPhone = input_phone
         if self.input_phone:
-            thread = threading.Thread(
-                target=self.input_phone.set_up, daemon=True)
-            thread.start()
+            self.input_phone.set_up()
 
     def get_move(self) -> np.ndarray:
         """Move the player."""
