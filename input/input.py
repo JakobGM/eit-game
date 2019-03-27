@@ -2,7 +2,6 @@
 from typing import Tuple, Dict
 import numpy as np
 import pygame as pg
-import multiprocessing
 from input.UDP_connect import ConnectPhone
 
 
@@ -19,9 +18,7 @@ class Input:
         self.keys: type = keys
         self.input_phone: ConnectPhone = input_phone
         if self.input_phone:
-            process: multiprocessing.context.Process = \
-                multiprocessing.Process(target=self.input_phone.set_up)
-            process.start()
+            self.input_phone.set_up()
 
     def get_move(self) -> np.ndarray:
         """Move the player."""
@@ -29,7 +26,7 @@ class Input:
         move: np.ndarray = np.zeros(2)
 
         # Get input from the phone if one exists
-        if self.input_phone and self.input_phone.ready:
+        if self.input_phone:
             move += self.input_phone.vect_phone()
 
         # Get input from keyboard.
