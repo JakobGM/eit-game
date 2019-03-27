@@ -6,7 +6,9 @@ import numpy as np
 class UdpSocket:
     """An udp socket."""
 
-    def __init__(self, ip_address: str = "0.0.0.0", port: int = 2055,
+    def __init__(self,
+                 ip_address: str = "0.0.0.0",
+                 port: int = 2055,
                  tx: bool = False) -> None:
         r"""
         Set up a general UDP socket that can be a client or server.
@@ -30,6 +32,7 @@ class UdpSocket:
             socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         if not self.tx:
             self.socket.bind((self.udp_ip_address, self.port))
+        self.socket.setblocking(0)
 
     def receive(self, data_size: int = 1024) -> (str, str):
         """
@@ -37,7 +40,11 @@ class UdpSocket:
 
         :return: A message received from the socket
         """
-        data, addr = self.socket.recvfrom(data_size)
+        try:
+            data, addr = self.socket.recvfrom(data_size)
+        except Exception:
+            return '0,0,0\n', "unknown"
+
         return data.decode(), addr
 
     def send(self, message: str) -> None:
@@ -61,7 +68,13 @@ class UdpSocket:
 class ConnectPhone:
     """A class representing a phone."""
 
-    def __init__(self, coor=0, gyro_data=0, port=2055, x=0, y=0, z=0,
+    def __init__(self,
+                 coor=0,
+                 gyro_data=0,
+                 port=2055,
+                 x=0,
+                 y=0,
+                 z=0,
                  print_ct=0):
         """Initialize the phone."""
         self.x = x
@@ -71,12 +84,10 @@ class ConnectPhone:
         self.coor = coor
         self.gyro_data = gyro_data
         self.port = port
-        self.ready = False
 
     def set_up(self):
         """Set up a phone."""
         self.udp_socket = UdpSocket(port=self.port)
-        self.ready = True
 
     def vect_phone(self):
         """Get value from the phone."""
