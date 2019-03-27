@@ -147,8 +147,8 @@ class Game:
         pg.display.flip()
         clock.tick(60)
 
-        if True in [p.health_bar.health <= 0 for p in self.players]:
-            return False
+        # if True in [p.health_bar.health <= 0 for p in self.players]:
+        #    return False
 
         return run
 
