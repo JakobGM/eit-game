@@ -16,3 +16,6 @@ pytest
 # Plotting
 matplotlib
 scipy
+
+# For calculation of "ELO" for multiplayer games
+trueskill
