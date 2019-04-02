@@ -9,7 +9,7 @@ on.
 
 import pickle
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Set
 
 
 DEFAULT_SAVE_PATH = Path(__file__).parents[1] / 'data' / 'savefile'
@@ -59,6 +59,12 @@ class Statistics:
             assert isinstance(ranking[0], str)
             self.data.all_rankings.append(ranking)
         self._save_data()
+
+
+    @property
+    def all_players(self) -> Set[str]:
+        """Return the name of all players that have ever played."""
+        return {name for ranking in self.data.all_rankings for name in ranking}
 
     def _load_data(self) -> None:
         """
