@@ -9,7 +9,9 @@ on.
 
 import pickle
 from pathlib import Path
-from typing import List, Optional, Set
+from typing import Dict, List, Optional, Set
+
+from trueskill import Rating, rate
 
 
 DEFAULT_SAVE_PATH = Path(__file__).parents[1] / 'data' / 'savefile'
@@ -65,6 +67,42 @@ class Statistics:
     def all_players(self) -> Set[str]:
         """Return the name of all players that have ever played."""
         return {name for ranking in self.data.all_rankings for name in ranking}
+
+
+    def true_skill(self) -> Dict[str, Rating]:
+        """
+        Return TrueSkill Rating object for each player.
+
+        A TrueSkill rating is a normal distribution with a given mean and
+        variance. High means are indicative of good players, that way you
+        can compare players.
+        """
+        # First create rating objects for each player, assuming no prior skill
+        rankings = {
+            name: Rating()
+            for name
+            in self.all_players
+        }
+
+        # Iterate over all the saved games we have in our catalogue
+        for game in self.data.all_rankings:
+            # We have a free-for-all, so each player are placed in their own
+            # teams.
+            rating_groups = [[rankings[name]] for name in game]
+
+            # The rank of the players are stored from best to worse.
+            # TrueSkill uses the opposite order.
+            ranks = list(reversed(range(len(game))))
+
+            # Update the rating for each player
+            ratings = rate(rating_groups=rating_groups, ranks=ranks)
+            for name, ranking in zip(game, ratings):
+                rankings[name] = ranking[0]
+
+        # Sort the dictionary by player rating before returning it
+        sorted_rankings = sorted(rankings.items(), key=lambda r: r[1].mu)
+        return dict(sorted_rankings)
+
 
     def _load_data(self) -> None:
         """

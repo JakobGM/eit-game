@@ -51,3 +51,18 @@ def test_retrieval_of_all_players(stats):
     stats.save(ranking=['Jon', 'Robert', 'Eddard'])
     stats.save(ranking=['Robert', 'Cercei'])
     assert stats.all_players == {'Jon', 'Robert', 'Eddard', 'Cercei'}
+
+
+def test_retrieval_of_player_true_skill(stats):
+    """Test calculation of player TrueSkill."""
+    # At first, the best player placed 2nd a couple of times
+    stats.save(ranking=['better', 'best', 'good'])
+    stats.save(ranking=['better', 'best', 'good'])
+
+    # But then they win three games in a row
+    stats.save(ranking=['best', 'better', 'good'])
+    stats.save(ranking=['best', 'better', 'good'])
+    stats.save(ranking=['best', 'better', 'good'])
+
+    # The best player should now be considered best
+    assert list(stats.true_skill().keys()) == ['best', 'better', 'good']
