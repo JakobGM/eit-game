@@ -107,7 +107,10 @@ class Statistics:
                 rankings[name] = ranking[0]
 
         # Sort the dictionary by player rating before returning it
-        sorted_rankings = sorted(rankings.items(), key=lambda r: r[1].mu)
+        sorted_rankings = sorted(
+            rankings.items(),
+            key=lambda r: self.env.expose(r[1])
+        )
         return dict(sorted_rankings)
 
 
