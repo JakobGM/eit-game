@@ -44,3 +44,10 @@ def test_saving_the_winner_of_a_game(save_path):
     del stats
     new_stats = Statistics(save_path=save_path)
     assert new_stats.data.all_rankings == expected_rankings
+
+
+def test_retrieval_of_all_players(stats):
+    """We should be able to retrieve all the players that have played."""
+    stats.save(ranking=['Jon', 'Robert', 'Eddard'])
+    stats.save(ranking=['Robert', 'Cercei'])
+    assert stats.all_players == {'Jon', 'Robert', 'Eddard', 'Cercei'}
