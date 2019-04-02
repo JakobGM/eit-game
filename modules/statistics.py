@@ -11,7 +11,7 @@ import pickle
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
-from trueskill import TrueSkill, Rating, rate
+from trueskill import TrueSkill, Rating, backends, rate
 
 
 DEFAULT_SAVE_PATH = Path(__file__).parents[1] / 'data' / 'savefile'
@@ -50,6 +50,9 @@ class Statistics:
 
         # Use the same TrueSkill parameters in the entire class
         self.env = TrueSkill()
+
+        # Enable the scipy backend of TrueSkill
+        backends.choose_backend('scipy')
 
 
     def save(self, ranking: Optional[List[str]] = None) -> None:
