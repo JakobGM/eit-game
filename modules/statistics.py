@@ -11,7 +11,7 @@ import pickle
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
-from trueskill import Rating, rate
+from trueskill import TrueSkill, Rating, rate
 
 
 DEFAULT_SAVE_PATH = Path(__file__).parents[1] / 'data' / 'savefile'
@@ -48,6 +48,10 @@ class Statistics:
         self.save_path = save_path
         self._load_data()
 
+        # Use the same TrueSkill parameters in the entire class
+        self.env = TrueSkill()
+
+
     def save(self, ranking: Optional[List[str]] = None) -> None:
         """
         Save new data from a game for later retrieval and analysis.
@@ -79,7 +83,7 @@ class Statistics:
         """
         # First create rating objects for each player, assuming no prior skill
         rankings = {
-            name: Rating()
+            name: self.env.create_rating()
             for name
             in self.all_players
         }
@@ -95,7 +99,7 @@ class Statistics:
             ranks = list(reversed(range(len(game))))
 
             # Update the rating for each player
-            ratings = rate(rating_groups=rating_groups, ranks=ranks)
+            ratings = self.env.rate(rating_groups=rating_groups, ranks=ranks)
             for name, ranking in zip(game, ratings):
                 rankings[name] = ranking[0]
 
