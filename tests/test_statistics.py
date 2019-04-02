@@ -65,4 +65,28 @@ def test_retrieval_of_player_true_skill(stats):
     stats.save(ranking=['best', 'better', 'good'])
 
     # The best player should now be considered best
-    assert list(stats.true_skill().keys()) == ['best', 'better', 'good']
+    true_skills = stats.true_skill()
+    assert list(true_skills.keys()) == ['best', 'better', 'good']
+    assert true_skills['best'].mu > true_skills['better'].mu
+
+
+def test_win_probability(stats):
+    """Test the calculation of player win probabilities."""
+    # At first two new players will have equal win probabilities
+    prediction = stats.win_probability(['player_1', 'player_2'])
+    assert prediction['player_1'] == pytest.approx(prediction['player_2'])
+
+    # Their probabilities sum to 1
+    assert prediction['player_1'] + prediction['player_2'] == pytest.approx(1)
+
+    # And the probability of drawing is ~44.7%
+    assert prediction['draw'] == pytest.approx(0.447, abs=1e-3)
+
+    # Now, player one wins 20 times against player two
+    for _ in range(20):
+        stats.save(ranking=['player_1', 'player_2'])
+
+    # The probability of player 1 winning is now close to 100%
+    new_prediction = stats.win_probability(['player_1', 'player_2'])
+    assert new_prediction['player_1'] > 0.99
+    assert new_prediction['draw'] < 0.05

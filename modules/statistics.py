@@ -11,7 +11,8 @@ import pickle
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
-from trueskill import TrueSkill, Rating, backends, rate
+import numpy as np
+from trueskill import TrueSkill, Rating, backends, rate, quality_1vs1
 
 
 DEFAULT_SAVE_PATH = Path(__file__).parents[1] / 'data' / 'savefile'
@@ -54,7 +55,6 @@ class Statistics:
         # Enable the scipy backend of TrueSkill
         backends.choose_backend('scipy')
 
-
     def save(self, ranking: Optional[List[str]] = None) -> None:
         """
         Save new data from a game for later retrieval and analysis.
@@ -69,12 +69,10 @@ class Statistics:
             self.data.all_rankings.append(ranking)
         self._save_data()
 
-
     @property
     def all_players(self) -> Set[str]:
         """Return the name of all players that have ever played."""
         return {name for ranking in self.data.all_rankings for name in ranking}
-
 
     def true_skill(self) -> Dict[str, Rating]:
         """
@@ -98,8 +96,7 @@ class Statistics:
             rating_groups = [[rankings[name]] for name in game]
 
             # The rank of the players are stored from best to worse.
-            # TrueSkill uses the opposite order.
-            ranks = list(reversed(range(len(game))))
+            ranks = list(range(len(game)))
 
             # Update the rating for each player
             ratings = self.env.rate(rating_groups=rating_groups, ranks=ranks)
@@ -109,10 +106,47 @@ class Statistics:
         # Sort the dictionary by player rating before returning it
         sorted_rankings = sorted(
             rankings.items(),
-            key=lambda r: self.env.expose(r[1])
+            key=lambda r: self.env.expose(r[1]),
+            reverse=True,
         )
         return dict(sorted_rankings)
 
+    def win_probability(self, players: List[str]) -> Dict[str, float]:
+        """
+        Return the win and draw probabilities of two players.
+
+        Take care that the draw probability plus the two win probabilities do
+        not sum to 1. The two win probabilities *do* sum to 1, though.
+
+        :players: List of two player names.
+        :returns: Dictionary with <players[0]>, <players[1]>, and 'draw' as keys
+          and the respective probabilities as values.
+        """
+        if len(players) != 2:
+            raise NotImplementedError(
+                'Win probability is only implemented for two players.',
+            )
+        # Retrieve ratings based on earlier games.
+        # Default rating will be used if players have not played earlier.
+        true_skills = self.true_skill()
+        player_1 = true_skills.get(players[0], Rating())
+        player_2 = true_skills.get(players[1], Rating())
+
+        # Calculate the probability of a draw
+        draw_probability = quality_1vs1(player_1, player_2)
+
+        # Calculate the win probability of each player using the normal
+        # distributions of the two players.
+        delta_mu = player_1.mu - player_2.mu
+        denominator = np.sqrt(player_1.sigma ** 2 + player_2.sigma ** 2)
+        player_1_win_chance = self.env.cdf(delta_mu / denominator)
+        player_2_win_chance = 1 - player_1_win_chance
+
+        return {
+            'draw': draw_probability,
+            'player_1': player_1_win_chance,
+            'player_2': player_2_win_chance,
+        }
 
     def _load_data(self) -> None:
         """
