@@ -19,6 +19,11 @@ class Game:
     def __init__(self) -> None:
         """Initialize the game with all the components."""
         pg.init()
+        file = 'music.mp3'
+        pg.mixer.init()
+        pg.mixer.music.load(file)
+        pg.mixer.music.play()
+        pg.event.wait()
         pg.font.init()
         self.screen: graphics.Screen = graphics.Screen()
 
