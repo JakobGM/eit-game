@@ -14,7 +14,7 @@ from input.UDP_connect import ConnectPhone
 
 
 class Game:
-    """This class represents the game."""
+    """This class represents the whole game."""
 
     def __init__(self) -> None:
         """Initialize the game with all the components."""
@@ -49,15 +49,15 @@ class Game:
 
         # Layers
         self.layers: List[arena.ArenaLayer] = [
-            arena.FrictionLayer(
-                np.ones((ArenaSettings.x, ArenaSettings.y)),
-                self.slides[1].get_value),
+            arena.FrictionLayer(np.ones((ArenaSettings.x, ArenaSettings.y)),
+                                self.slides[1].get_value),
             arena.AirResistanceLayer(self.slides[0].get_value),
         ]
 
         # Arena
-        self.arena: arena.Arena = arena.Arena(
-            ArenaSettings.x, ArenaSettings.y, layers=self.layers)
+        self.arena: arena.Arena = arena.Arena(ArenaSettings.x,
+                                              ArenaSettings.y,
+                                              layers=self.layers)
 
         # Physic engine
         self.physics: Physics = Physics(self)
@@ -146,8 +146,8 @@ class Game:
         pg.display.flip()
         clock.tick(60)
 
-        # if True in [p.health_bar.health <= 0 for p in self.players]:
-        #    return False
+        if True in [p.health_bar.health <= 0 for p in self.players]:
+            return False
 
         return run
 
