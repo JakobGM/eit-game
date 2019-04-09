@@ -7,7 +7,7 @@ import matplotlib.backends.backend_agg as agg
 import pylab
 import numpy as np
 from collections import deque
-from typing import Tuple, List
+from typing import Tuple, List, NamedTuple
 
 matplotlib.use("Agg")
 
@@ -265,8 +265,8 @@ class Button:
         click = pygame.mouse.get_pressed()
 
         if self.settings.x + self.settings.w > mouse[
-                0] > self.settings.x and self.settings.y +\
-                self.settings.h > mouse[1] > self.settings.y:
+                0] > self.settings.x and self.settings.y + self.settings.h >\
+                    mouse[1] > self.settings.y:
             pygame.draw.rect(screen, self.settings.ac,
                              (self.settings.x, self.settings.y,
                               self.settings.w, self.settings.h))
