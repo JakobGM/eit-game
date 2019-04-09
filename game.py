@@ -14,7 +14,7 @@ from input.UDP_connect import ConnectPhone
 
 
 class Game:
-    """This class represents the game."""
+    """This class represents the whole game."""
 
     def __init__(self) -> None:
         """Initialize the game with all the components."""
@@ -146,8 +146,8 @@ class Game:
         pg.display.flip()
         clock.tick(60)
 
-        # if True in [p.health_bar.health <= 0 for p in self.players]:
-        #    return False
+        if True in [p.health_bar.health <= 0 for p in self.players]:
+            return False
 
         return run
 

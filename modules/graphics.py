@@ -7,7 +7,7 @@ import matplotlib.backends.backend_agg as agg
 import pylab
 import numpy as np
 from collections import deque
-from typing import Tuple, List, NamedTuple
+from typing import Tuple, List
 
 matplotlib.use("Agg")
 
@@ -57,8 +57,8 @@ class Slider:
         # static
         surf = self.surf.copy()
         # dynamic
-        pos = (10 + int((self.val - self.mini) / (self.maxi - self.mini) * 80),
-               33)
+        pos = (10 + int(
+            (self.val - self.mini) / (self.maxi - self.mini) * 80), 33)
         self.button_rect = self.button_surf.get_rect(center=pos)
         surf.blit(self.button_surf, self.button_rect)
         # move of button box to correct screen position
@@ -68,8 +68,8 @@ class Slider:
 
     def move(self):
         """The dynamic part; reacts to movement of the slider button."""
-        self.val = (pygame.mouse.get_pos()[0] - self.xpos - 10) / 80 * (
-            self.maxi - self.mini) + self.mini
+        self.val = (pygame.mouse.get_pos()[0] - self.xpos -
+                    10) / 80 * (self.maxi - self.mini) + self.mini
         if self.val < self.mini:
             self.val = self.mini
         if self.val > self.maxi:
@@ -265,8 +265,8 @@ class Button:
         click = pygame.mouse.get_pressed()
 
         if self.settings.x + self.settings.w > mouse[
-                0] > self.settings.x and self.settings.y + self.settings.h >\
-                    mouse[1] > self.settings.y:
+                0] > self.settings.x and self.settings.y +\
+                self.settings.h > mouse[1] > self.settings.y:
             pygame.draw.rect(screen, self.settings.ac,
                              (self.settings.x, self.settings.y,
                               self.settings.w, self.settings.h))
