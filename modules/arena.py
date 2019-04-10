@@ -31,8 +31,7 @@ class ArenaLayer(abc.ABC):
 class FrictionLayer(ArenaLayer):
     """Representing the physical friction field."""
 
-    def __init__(self, friction_matrix: np.ndarray,
-                 friction_const: Callable) -> None:
+    def __init__(self, friction_matrix: np.ndarray, friction_const: Callable) -> None:
         """
         Initialize.
 
@@ -44,9 +43,14 @@ class FrictionLayer(ArenaLayer):
         self.friction_func: Callable = friction_const
         self.start_time: float = time.time()
 
-    def force(self, player: Player, input_force: np.ndarray,
-              total_force: np.ndarray, max_input: float,
-              dt: float) -> np.array:
+    def force(
+        self,
+        player: Player,
+        input_force: np.ndarray,
+        total_force: np.ndarray,
+        max_input: float,
+        dt: float,
+    ) -> np.array:
         """
         Calculate the friction force for a player.
 
@@ -105,8 +109,7 @@ class FrictionLayer(ArenaLayer):
         x, y = position.tolist()
         x, y = int(x), int(y)
 
-        mu = self.friction[int(x), int(y)] * \
-            self.friction_const * self.friction_func()
+        mu = self.friction[int(x), int(y)] * self.friction_const * self.friction_func()
         force_friction = force = (
             -mu
             * velocity
@@ -125,7 +128,7 @@ class FrictionLayer(ArenaLayer):
 
 
 class AirResistanceLayer(ArenaLayer):
-    """Representing the physical friction field."""""
+    """Representing the physical friction field.""" ""
 
     def __init__(self, drag_coefficient: Callable) -> None:
         """
@@ -167,13 +170,11 @@ class AirResistanceLayer(ArenaLayer):
         )
 
         # Case 1: Input = 0, velocity = 0
-        if np.linalg.norm(input_force) == 0 and \
-                np.linalg.norm(player.velocity) == 0:
+        if np.linalg.norm(input_force) == 0 and np.linalg.norm(player.velocity) == 0:
             return np.zeros(2)
 
         # Case 2: Input = 0, velocity > 0
-        elif np.linalg.norm(input_force) == 0 and \
-                np.linalg.norm(player.velocity) > 0:
+        elif np.linalg.norm(input_force) == 0 and np.linalg.norm(player.velocity) > 0:
             # One Euler step to check if force is too big
             force = drag_force + total_force
             vel_old = player.velocity.copy()
@@ -186,13 +187,11 @@ class AirResistanceLayer(ArenaLayer):
                 return -total_force
 
         # Case 3: Input > 0, velocity = 0
-        elif np.linalg.norm(input_force) > 0 and \
-                np.linalg.norm(player.velocity) == 0:
+        elif np.linalg.norm(input_force) > 0 and np.linalg.norm(player.velocity) == 0:
             return np.zeros(2)
 
         # Case 4: Input > 0, velocity > 0
-        elif np.linalg.norm(input_force) > 0 and \
-                np.linalg.norm(player.velocity) > 0:
+        elif np.linalg.norm(input_force) > 0 and np.linalg.norm(player.velocity) > 0:
             if np.linalg.norm(drag_force) > np.linalg.norm(total_force) + 1:
 
                 # One Euler step to check if force is too big
@@ -221,8 +220,7 @@ class Arena:
     element needed for the physics engine.
     """
 
-    def __init__(self, width: int, height: int,
-                 layers: List[ArenaLayer]) -> None:
+    def __init__(self, width: int, height: int, layers: List[ArenaLayer]) -> None:
         """
         Initialize.
 
@@ -239,11 +237,11 @@ class Arena:
 
     def draw(self, screen) -> None:
         """Draw the arena onto the given screen."""
-        Circle(self.position[0], self.position[1], self.color,
-               self.radius).draw(screen)
+        Circle(self.position[0], self.position[1], self.color, self.radius).draw(screen)
 
-    def force(self, player: Player, input_force: np.ndarray, max_input: float,
-              dt: float) -> np.ndarray:
+    def force(
+        self, player: Player, input_force: np.ndarray, max_input: float, dt: float
+    ) -> np.ndarray:
         total_force = np.zeros(2, dtype=float)
         for layer in self.layers:
             total_force += layer.force(

@@ -5,8 +5,7 @@ import modules.graphics as graphics
 from modules.physics import Physics
 import numpy as np
 import pygame as pg
-from settings import ArenaSettings, Colors, ScreenSettings, Button, Texts,\
-Slider
+from settings import ArenaSettings, Colors, ScreenSettings, Button, Texts, Slider
 import players_settings as ps
 from typing import List
 import time
@@ -40,24 +39,27 @@ class Game:
         # Buttons
         self.buttons: List[graphics.Button] = [
             graphics.Button(
-                Button('Start!', 600, 600, 100, 50, Colors.GREEN.value,
-                       Colors.BLUE.value)),
+                Button(
+                    "Start!", 600, 600, 100, 50, Colors.GREEN.value, Colors.BLUE.value
+                )
+            ),
             graphics.Button(
-                Button('Help', 800, 600, 100, 50, Colors.RED.value,
-                       Colors.BLUE.value)),
+                Button("Help", 800, 600, 100, 50, Colors.RED.value, Colors.BLUE.value)
+            ),
         ]
 
         # Layers
         self.layers: List[arena.ArenaLayer] = [
-            arena.FrictionLayer(np.ones((ArenaSettings.x, ArenaSettings.y)),
-                                self.slides[1].get_value),
+            arena.FrictionLayer(
+                np.ones((ArenaSettings.x, ArenaSettings.y)), self.slides[1].get_value
+            ),
             arena.AirResistanceLayer(self.slides[0].get_value),
         ]
 
         # Arena
-        self.arena: arena.Arena = arena.Arena(ArenaSettings.x,
-                                              ArenaSettings.y,
-                                              layers=self.layers)
+        self.arena: arena.Arena = arena.Arena(
+            ArenaSettings.x, ArenaSettings.y, layers=self.layers
+        )
 
         # Physic engine
         self.physics: Physics = Physics(self)
@@ -88,8 +90,13 @@ class Game:
 
         # Draw text onto the screen
         graphics.Text(
-            Texts('EiT gruppe rød', ScreenSettings.width / 2,
-                  ScreenSettings.height / 2, 115)).draw(self.screen.screen)
+            Texts(
+                "EiT gruppe rød",
+                ScreenSettings.width / 2,
+                ScreenSettings.height / 2,
+                115,
+            )
+        ).draw(self.screen.screen)
 
         # Draw the buttions
         list(map(lambda x: x.draw(self.screen.screen), self.buttons))
@@ -158,8 +165,10 @@ class Game:
 
         # Draw text onto the screen
         graphics.Text(
-            Texts('Game over!', ScreenSettings.width / 2,
-                  ScreenSettings.height / 2, 115)).draw(self.screen.screen)
+            Texts(
+                "Game over!", ScreenSettings.width / 2, ScreenSettings.height / 2, 115
+            )
+        ).draw(self.screen.screen)
 
         pg.display.update()
         time.sleep(2)

@@ -12,8 +12,9 @@ from input.UDP_connect import ConnectPhone
 class Player:
     """This class a player class."""
 
-    def __init__(self, x: float, y: float, data: type,
-                 phone: ConnectPhone = None) -> None:
+    def __init__(
+        self, x: float, y: float, data: type, phone: ConnectPhone = None
+    ) -> None:
         """
         Initialize a player with given parameters.
 
@@ -24,6 +25,7 @@ class Player:
         self.mass: float = data.mass
         self.position: np.ndarray = np.array([x, y], dtype=float)
         self.velocity: np.ndarray = np.zeros(2, dtype=float)
+        self.acceleration: np.ndarray = np.zeros(2, dtype=float)
 
         self.input: Input = Input(data, phone)
 
@@ -35,6 +37,10 @@ class Player:
     def get_velocity(self) -> float:
         """Return the velocity of the player."""
         return math.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
+
+    def get_acceleration(self) -> float:
+        """Return the velocity of the player."""
+        return math.sqrt(self.acceleration[0] ** 2 + self.acceleration[1] ** 2)
 
     def shield(self) -> bool:
         """Turn on the shield."""
@@ -73,8 +79,8 @@ class Player:
         if self.shield():
             self.draw_shield(screen)
         Circle(
-            self.position[0], self.position[1], self.color,
-            self.data.player_size).draw(screen)
+            self.position[0], self.position[1], self.color, self.data.player_size
+        ).draw(screen)
 
     def draw_shield(self, screen: pg.Surface) -> None:
         """

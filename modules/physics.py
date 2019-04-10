@@ -180,8 +180,8 @@ class Physics:
             force += self.arena.force(player, force, PhysicsConsts.input_modulation, dt)
 
             # Eulers method
-            acceleration = force / player.mass
-            player.velocity += acceleration * dt
+            player.acceleration = force / player.mass
+            player.velocity += player.acceleration * dt
             player.position += player.velocity * dt
 
             self._boarder_collisions(player)

@@ -23,9 +23,9 @@ class ArenaSettings:
 
 
 Color = namedtuple("Color", ["red", "green", "blue"])
-Button = namedtuple('Button', ['msg', 'x', 'y', 'w', 'h', 'ic', 'ac'])
-Texts = namedtuple('Texts', ['msg', 'w', 'h', 'font_size'])
-Slider = namedtuple('Slider', ['name', 'val', 'min', 'max', 'xpos', 'ypos'])
+Button = namedtuple("Button", ["msg", "x", "y", "w", "h", "ic", "ac"])
+Texts = namedtuple("Texts", ["msg", "w", "h", "font_size"])
+Slider = namedtuple("Slider", ["name", "val", "min", "max", "xpos", "ypos"])
 
 
 class Colors(Enum):
@@ -47,8 +47,8 @@ class Colors(Enum):
     def random():
         """Return a random color."""
         return Color(
-            random.randint(0, 255), random.randint(0, 255),
-            random.randint(0, 255))
+            random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
+        )
 
 
 @dataclass
