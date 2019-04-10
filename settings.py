@@ -46,8 +46,14 @@ class Colors(Enum):
     @staticmethod
     def random():
         """Return a random color."""
+<<<<<<< HEAD
         return Color(random.randint(0, 255), random.randint(0, 255),
                      random.randint(0, 255))
+=======
+        return Color(
+            random.randint(0, 255), random.randint(0, 255),
+            random.randint(0, 255))
+>>>>>>> e71ff1fcbf1347a7333fa3e4df79154b9008a657
 
 
 @dataclass

@@ -73,7 +73,6 @@ class Game:
         while 1:
             if not self.run_game(clock):
                 break
-
         self.run_end()
         pg.quit()
 
