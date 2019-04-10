@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set
 
 import numpy as np
-from trueskill import TrueSkill, Rating, backends, rate, quality_1vs1
+from trueskill import TrueSkill, Rating, backends, quality_1vs1
 
 
 DEFAULT_SAVE_PATH = Path(__file__).parents[1] / 'data' / 'savefile'
@@ -119,8 +119,8 @@ class Statistics:
         not sum to 1. The two win probabilities *do* sum to 1, though.
 
         :players: List of two player names.
-        :returns: Dictionary with <players[0]>, <players[1]>, and 'draw' as keys
-          and the respective probabilities as values.
+        :returns: Dictionary with <players[0]>, <players[1]>, and 'draw' as
+          keys and the respective probabilities as values.
         """
         if len(players) != 2:
             raise NotImplementedError(
