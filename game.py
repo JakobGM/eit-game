@@ -10,6 +10,7 @@ import players_settings as ps
 from typing import List
 import time
 from input.UDP_connect import ConnectPhone
+from modules.statistics import Statistics
 
 
 class Game:
@@ -20,6 +21,9 @@ class Game:
         pg.init()
         pg.font.init()
         self.screen: graphics.Screen = graphics.Screen()
+
+        # Statistics
+        self.statistics = Statistics()
 
         # Players
         self.players: List[player.Player] = [
@@ -181,6 +185,11 @@ class Game:
 
     def run_end(self) -> None:
         """Run when one player dies."""
+        # Save statistics
+        stats = [player.name for player in sorted(self.players,
+                                                  key=lambda x: x.health_bar.health, reverse=True)]
+        self.statistics.save(stats)
+
         # Fill the screen with white
         self.screen.screen.fill(Colors.WHITE.value)
 
