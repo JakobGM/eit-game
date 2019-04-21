@@ -28,12 +28,13 @@ class Game:
         ]
 
         # Plots
-        self.graphs: List[graphics.Graph] = [graphics.Graph(self.players, "v")]
+        self.graphs: List[graphics.Graph] = [graphics.Graph(
+            self.players, "v"), graphics.Graph(self.players, "a", position=(1100, 400))]
 
         # Sliders
         self.slides: List[graphics.Slider] = [
-            graphics.Slider(Slider("Drag coefficient", 50, 0, 100, 1350, 400)),
-            graphics.Slider(Slider("Friction", 10000, 0, 30000, 1150, 400)),
+            graphics.Slider(Slider("Drag coefficient", 50, 0, 100, 1150, 800)),
+            graphics.Slider(Slider("Friction", 10000, 0, 30000, 1150, 860)),
         ]
 
         # Buttons
@@ -44,14 +45,16 @@ class Game:
                 )
             ),
             graphics.Button(
-                Button("Help", 800, 600, 100, 50, Colors.RED.value, Colors.BLUE.value)
+                Button("Help", 800, 600, 100, 50,
+                       Colors.RED.value, Colors.BLUE.value)
             ),
         ]
 
         # Layers
         self.layers: List[arena.ArenaLayer] = [
             arena.FrictionLayer(
-                np.ones((ArenaSettings.x, ArenaSettings.y)), self.slides[1].get_value
+                np.ones((ArenaSettings.x, ArenaSettings.y)
+                        ), self.slides[1].get_value
             ),
             arena.AirResistanceLayer(self.slides[0].get_value),
         ]
@@ -64,6 +67,11 @@ class Game:
         # Physic engine
         self.physics: Physics = Physics(self)
 
+        # Input boxes
+        self.input_boxes = [graphics.InputBox(
+            500, 400, 200, 32, text='player 1 name'), graphics.InputBox(
+            800, 400, 200, 32, text='player 2 name')]
+
     def run(self) -> None:
         """Run the whole game loop."""
         clock: pg.time.Clock = pg.time.Clock()
@@ -71,6 +79,10 @@ class Game:
         while 1:
             if not self.run_intro():
                 break
+
+        # Set player name
+        self.players[0].name = self.input_boxes[0].text
+        self.players[1].name = self.input_boxes[1].text
 
         while 1:
             if not self.run_game(clock):
@@ -84,6 +96,11 @@ class Game:
             if event.type == pg.QUIT:
                 pg.quit()
                 quit()
+            for box in self.input_boxes:
+                box.handle_event(event)
+
+        for box in self.input_boxes:
+            box.update()
 
         # Fill the screen with white
         self.screen.screen.fill(Colors.WHITE.value)
@@ -93,13 +110,17 @@ class Game:
             Texts(
                 "EiT gruppe rød",
                 ScreenSettings.width / 2,
-                ScreenSettings.height / 2,
+                300,
                 115,
             )
         ).draw(self.screen.screen)
 
         # Draw the buttions
         list(map(lambda x: x.draw(self.screen.screen), self.buttons))
+
+        # Input boxes
+        for box in self.input_boxes:
+            box.draw(self.screen.screen)
 
         pg.display.update()
 

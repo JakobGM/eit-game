@@ -28,6 +28,7 @@ class Player:
         self.acceleration: np.ndarray = np.zeros(2, dtype=float)
 
         self.input: Input = Input(data, phone)
+        self.name = ''
 
         self.color: Colors = Colors.random()
         self.data: type = data

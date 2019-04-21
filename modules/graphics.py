@@ -41,8 +41,10 @@ class Slider:
         self.button_surf = pygame.surface.Surface((20, 20))
         self.button_surf.fill(Colors.TRANS.value)
         self.button_surf.set_colorkey(Colors.TRANS.value)
-        pygame.draw.circle(self.button_surf, Colors.BLACK.value, (10, 10), 6, 0)
-        pygame.draw.circle(self.button_surf, Colors.ORANGE.value, (10, 10), 4, 0)
+        pygame.draw.circle(
+            self.button_surf, Colors.BLACK.value, (10, 10), 6, 0)
+        pygame.draw.circle(
+            self.button_surf, Colors.ORANGE.value, (10, 10), 4, 0)
 
     def get_value(self):
         """Get the value of the current position of the slider."""
@@ -55,7 +57,8 @@ class Slider:
         # static
         surf = self.surf.copy()
         # dynamic
-        pos = (10 + int((self.val - self.mini) / (self.maxi - self.mini) * 80), 33)
+        pos = (10 + int((self.val - self.mini) /
+                        (self.maxi - self.mini) * 80), 33)
         self.button_rect = self.button_surf.get_rect(center=pos)
         surf.blit(self.button_surf, self.button_rect)
         # move of button box to correct screen position
@@ -239,7 +242,8 @@ class Text:
 
     def draw(self, screen: pygame.Surface):
         """Draw the text onto the screen."""
-        textSurf, textRect = self.text_objects(self.settings.msg, self.smallText)
+        textSurf, textRect = self.text_objects(
+            self.settings.msg, self.smallText)
         textRect.center = ((self.settings.w), (self.settings.h))
         screen.blit(textSurf, textRect)
 
@@ -269,7 +273,8 @@ class Button:
             pygame.draw.rect(
                 screen,
                 self.settings.ac,
-                (self.settings.x, self.settings.y, self.settings.w, self.settings.h),
+                (self.settings.x, self.settings.y,
+                 self.settings.w, self.settings.h),
             )
 
             if click[0]:
@@ -278,7 +283,8 @@ class Button:
             pygame.draw.rect(
                 screen,
                 self.settings.ic,
-                (self.settings.x, self.settings.y, self.settings.w, self.settings.h),
+                (self.settings.x, self.settings.y,
+                 self.settings.w, self.settings.h),
             )
 
         text = Text(
@@ -291,3 +297,49 @@ class Button:
         )
 
         text.draw(screen)
+
+
+pygame.font.init()
+COLOR_INACTIVE = pygame.Color('lightskyblue3')
+COLOR_ACTIVE = pygame.Color('dodgerblue2')
+FONT = pygame.font.Font(None, 32)
+
+
+class InputBox:
+
+    def __init__(self, x, y, w, h, text=''):
+        self.rect = pygame.Rect(x, y, w, h)
+        self.color = COLOR_INACTIVE
+        self.text = text
+        self.txt_surface = FONT.render(text, True, self.color)
+        self.active = False
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # If the user clicked on the input_box rect.
+            if self.rect.collidepoint(event.pos):
+                # Toggle the active variable.
+                self.active = not self.active
+            else:
+                self.active = False
+            # Change the current color of the input box.
+            self.color = COLOR_ACTIVE if self.active else COLOR_INACTIVE
+        if event.type == pygame.KEYDOWN:
+            if self.active:
+                if event.key == pygame.K_BACKSPACE:
+                    self.text = self.text[:-1]
+                else:
+                    self.text += event.unicode
+                # Re-render the text.
+                self.txt_surface = FONT.render(self.text, True, self.color)
+
+    def update(self):
+        # Resize the box if the text is too long.
+        width = max(200, self.txt_surface.get_width()+10)
+        self.rect.w = width
+
+    def draw(self, screen):
+        # Blit the text.
+        screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
+        # Blit the rect.
+        pygame.draw.rect(screen, self.color, self.rect, 2)
