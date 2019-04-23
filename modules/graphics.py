@@ -141,7 +141,7 @@ class Graph:
 
     def clean(self):
         """Clean the canvas for old plot."""
-        plt.cla()
+        self.ax.cla()
 
 
 class Screen:

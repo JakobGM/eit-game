@@ -45,13 +45,9 @@ class Game:
         self.buttons: List[graphics.Button] = [
             graphics.Button(
                 Button(
-                    "Start!", 600, 600, 100, 50, Colors.GREEN.value, Colors.BLUE.value
+                    "Start!", 700, 600, 100, 50, Colors.GREEN.value, Colors.BLUE.value
                 )
-            ),
-            graphics.Button(
-                Button("Help", 800, 600, 100, 50,
-                       Colors.RED.value, Colors.BLUE.value)
-            ),
+            )
         ]
 
         # End screen buttons
