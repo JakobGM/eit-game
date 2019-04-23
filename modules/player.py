@@ -7,6 +7,7 @@ import math
 import pygame as pg
 from settings import ArenaSettings
 from input.UDP_connect import ConnectPhone
+import copy
 
 
 class Player:
@@ -23,9 +24,11 @@ class Player:
         :param data: Dataclass used to store player settings
         """
         self.mass: float = data.mass
+        self.initial_position: np.ndarray = np.array([x, y], dtype=float)
         self.position: np.ndarray = np.array([x, y], dtype=float)
         self.velocity: np.ndarray = np.zeros(2, dtype=float)
         self.acceleration: np.ndarray = np.zeros(2, dtype=float)
+        self.score = 0
 
         self.input: Input = Input(data, phone)
         self.name = ''
@@ -34,6 +37,9 @@ class Player:
         self.data: type = data
         self.shield_on: bool = False
         self.health_bar: HealthBar = HealthBar(self, PlayerSettings.health)
+
+    def reset_position(self):
+        self.position = copy.deepcopy(self.initial_position)
 
     def get_velocity(self) -> float:
         """Return the velocity of the player."""

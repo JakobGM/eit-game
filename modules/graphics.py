@@ -200,6 +200,10 @@ class HealthBar:
         self.x_move: float = x_move
         self.position: np.ndarray = player.get_position()
 
+    def reset(self):
+        self.health = self.start_health
+        self.position = self.player.get_position()
+
     def update_health(self, health: int) -> None:
         """Update the health of the health bar."""
         if health >= 0 and health <= 100:
@@ -238,12 +242,13 @@ class Text:
     def __init__(self, settings) -> None:
         """Initialize a button with a Texts namedtuple."""
         self.settings = settings
+        self.msg = self.settings.msg
         self.smallText = pygame.font.SysFont("comicsansms", settings.font_size)
 
     def draw(self, screen: pygame.Surface):
         """Draw the text onto the screen."""
         textSurf, textRect = self.text_objects(
-            self.settings.msg, self.smallText)
+            self.msg, self.smallText)
         textRect.center = ((self.settings.w), (self.settings.h))
         screen.blit(textSurf, textRect)
 

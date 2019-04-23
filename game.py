@@ -54,6 +54,19 @@ class Game:
             ),
         ]
 
+        # End screen buttons
+        self.end_btn: List[graphics.Button] = [
+            graphics.Button(
+                Button(
+                    "Retry", 600, 600, 100, 50, Colors.GREEN.value, Colors.BLUE.value
+                )
+            ),
+            graphics.Button(
+                Button("Quit", 800, 600, 100, 50,
+                       Colors.RED.value, Colors.BLUE.value)
+            ),
+        ]
+
         # Layers
         self.layers: List[arena.ArenaLayer] = [
             arena.FrictionLayer(
@@ -76,22 +89,56 @@ class Game:
             500, 400, 200, 32, text='player 1 name'), graphics.InputBox(
             800, 400, 200, 32, text='player 2 name')]
 
+        # Score
+        self.score_table = [graphics.Text(
+            Texts(
+                "Score table", ScreenSettings.width / 2, 200, 115
+            )
+        ),
+            graphics.Text(
+            Texts('', ScreenSettings.width /
+                  2, 260, 80)
+        ),
+            graphics.Text(
+            Texts('', ScreenSettings.width /
+                  2, 320, 80)
+        ),
+
+        ]
+
     def run(self) -> None:
         """Run the whole game loop."""
         clock: pg.time.Clock = pg.time.Clock()
 
         while 1:
-            if not self.run_intro():
+            if self.run_intro():
                 break
 
         # Set player name
         self.players[0].name = self.input_boxes[0].text
         self.players[1].name = self.input_boxes[1].text
 
-        while 1:
+        self.cont_game: bool = True
+        while self.cont_game:
             if not self.run_game(clock):
-                break
-        self.run_end()
+                # Give the winner points
+                if self.players[0].health_bar.health > self.players[1].health_bar.health:
+                    self.players[0].score += 1
+                else:
+                    self.players[1].score += 1
+
+                # Add highscore
+                self.score_table[1].msg = f"{self.players[0].name}: {self.players[0].score}"
+                self.score_table[2].msg = f"{self.players[1].name}: {self.players[1].score}"
+                while 1:
+                    if self.run_end():
+                        self.end_btn[0].clicked = False
+                        break
+                self.reset_game()
+        stats = [player.name for player in sorted(self.players,
+                                                  key=lambda x: x.score, reverse=True)]
+        self.statistics.save(stats)
+
         pg.quit()
 
     def run_intro(self) -> bool:
@@ -128,7 +175,7 @@ class Game:
 
         pg.display.update()
 
-        return not self.buttons[0].clicked
+        return self.buttons[0].clicked
 
     def run_game(self, clock: pg.time.Clock) -> bool:
         """Run the game."""
@@ -183,25 +230,27 @@ class Game:
 
         return run
 
-    def run_end(self) -> None:
+    def run_end(self) -> bool:
         """Run when one player dies."""
-        # Save statistics
-        stats = [player.name for player in sorted(self.players,
-                                                  key=lambda x: x.health_bar.health, reverse=True)]
-        self.statistics.save(stats)
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                quit()
 
         # Fill the screen with white
         self.screen.screen.fill(Colors.WHITE.value)
 
         # Draw text onto the screen
-        graphics.Text(
-            Texts(
-                "Game over!", ScreenSettings.width / 2, ScreenSettings.height / 2, 115
-            )
-        ).draw(self.screen.screen)
+        list(map(lambda x: x.draw(self.screen.screen), self.score_table))
+
+        # Draw the buttions
+        list(map(lambda x: x.draw(self.screen.screen), self.end_btn))
+
+        if self.end_btn[1].clicked:
+            self.cont_game = False
 
         pg.display.update()
-        time.sleep(2)
+        return self.end_btn[0].clicked or self.end_btn[1].clicked
 
     def get_players(self) -> List[player.Player]:
         """Return all player in game."""
@@ -210,3 +259,7 @@ class Game:
     def get_arena(self) -> arena.Arena:
         """Return game arena."""
         return self.arena
+
+    def reset_game(self):
+        list(map(lambda x: x.reset_position(), self.players))
+        list(map(lambda x: x.health_bar.reset(), self.players))
