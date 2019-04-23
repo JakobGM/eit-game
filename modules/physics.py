@@ -87,8 +87,8 @@ class Physics:
                 if np.linalg.norm(r1 - r2) < R1 + R2:
                     v1 = self.players[i].velocity.copy()
                     v2 = self.players[j].velocity.copy()
-                    m1 = self.players[i].mass
-                    m2 = self.players[j].mass
+                    m1 = self.players[i].get_mass()
+                    m2 = self.players[j].get_mass()
 
                     # Update velocity
                     self.players[i].velocity -= (
@@ -121,11 +121,13 @@ class Physics:
                         ) * direction_vector
                     else:
                         self.players[i].position -= (
-                            (R1 + R2 - np.linalg.norm(r2 - r1)) * direction_vector / 2
+                            (R1 + R2 - np.linalg.norm(r2 - r1)) *
+                            direction_vector / 2
                         )
 
                         self.players[j].position += (
-                            (R1 + R2 - np.linalg.norm(r2 - r1)) * direction_vector / 2
+                            (R1 + R2 - np.linalg.norm(r2 - r1)) *
+                            direction_vector / 2
                         )
 
                     # Fixing the positions in case that any of the players are crossing the borders
@@ -177,10 +179,11 @@ class Physics:
                 continue
 
             force = PhysicsConsts.input_modulation * player.input.get_move()
-            force += self.arena.force(player, force, PhysicsConsts.input_modulation, dt)
+            force += self.arena.force(player, force,
+                                      PhysicsConsts.input_modulation, dt)
 
             # Eulers method
-            player.acceleration = force / player.mass
+            player.acceleration = force / player.get_mass()
             player.velocity += player.acceleration * dt
             player.position += player.velocity * dt
 

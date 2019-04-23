@@ -25,21 +25,24 @@ class Game:
         # Statistics
         self.statistics = Statistics()
 
+        # Sliders
+        self.slides: List[graphics.Slider] = [
+            graphics.Slider(Slider("Drag coefficient", 50, 0, 100, 1150, 820)),
+            graphics.Slider(Slider("Friction", 10000, 0, 30000, 1150, 880)),
+            graphics.Slider(Slider('Player 1 mass', 1, 0.01, 2, 1300, 820)),
+            graphics.Slider(Slider('Player 2 mass', 1, 0.01, 2, 1300, 880)),
+        ]
+
         # Players
         self.players: List[player.Player] = [
-            player.Player(200, 200, ps.Player1Settings, ConnectPhone()),
-            player.Player(300, 300, ps.Player2Settings),
+            player.Player(200, 200, ps.Player1Settings,
+                          mass=self.slides[2], phone=ConnectPhone()),
+            player.Player(300, 300, ps.Player2Settings, mass=self.slides[3]),
         ]
 
         # Plots
         self.graphs: List[graphics.Graph] = [graphics.Graph(
             self.players, "v"), graphics.Graph(self.players, "a", position=(1100, 400))]
-
-        # Sliders
-        self.slides: List[graphics.Slider] = [
-            graphics.Slider(Slider("Drag coefficient", 50, 0, 100, 1150, 800)),
-            graphics.Slider(Slider("Friction", 10000, 0, 30000, 1150, 860)),
-        ]
 
         # Buttons
         self.buttons: List[graphics.Button] = [

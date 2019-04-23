@@ -14,8 +14,7 @@ class Player:
     """This class a player class."""
 
     def __init__(
-        self, x: float, y: float, data: type, phone: ConnectPhone = None
-    ) -> None:
+            self, x: float, y: float, data: type, mass, phone: ConnectPhone = None) -> None:
         """
         Initialize a player with given parameters.
 
@@ -23,7 +22,7 @@ class Player:
         :param y: initial y-position
         :param data: Dataclass used to store player settings
         """
-        self.mass: float = data.mass
+        self.mass = mass
         self.initial_position: np.ndarray = np.array([x, y], dtype=float)
         self.position: np.ndarray = np.array([x, y], dtype=float)
         self.velocity: np.ndarray = np.zeros(2, dtype=float)
@@ -37,6 +36,9 @@ class Player:
         self.data: type = data
         self.shield_on: bool = False
         self.health_bar: HealthBar = HealthBar(self, PlayerSettings.health)
+
+    def get_mass(self):
+        return self.mass.get_value()
 
     def reset_position(self):
         self.position = copy.deepcopy(self.initial_position)

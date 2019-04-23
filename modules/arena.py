@@ -90,7 +90,7 @@ class FrictionLayer(ArenaLayer):
                 -mu
                 * input_force
                 / np.linalg.norm(input_force)
-                * player.mass
+                * player.get_mass()
                 * 10
                 * PhysicsConsts.force_modulation
             )
@@ -109,12 +109,13 @@ class FrictionLayer(ArenaLayer):
         x, y = position.tolist()
         x, y = int(x), int(y)
 
-        mu = self.friction[int(x), int(y)] * self.friction_const * self.friction_func()
+        mu = self.friction[int(x), int(y)] * \
+            self.friction_const * self.friction_func()
         force_friction = force = (
             -mu
             * velocity
             / np.linalg.norm(velocity)
-            * player.mass
+            * player.get_mass()
             * 10
             * PhysicsConsts.force_modulation
         )
@@ -178,7 +179,7 @@ class AirResistanceLayer(ArenaLayer):
             # One Euler step to check if force is too big
             force = drag_force + total_force
             vel_old = player.velocity.copy()
-            acceleration = force / player.mass
+            acceleration = force / player.get_mass()
             vel_new = player.velocity + acceleration * dt
             if np.dot(vel_old, vel_new) > 0:
                 return drag_force
@@ -197,7 +198,7 @@ class AirResistanceLayer(ArenaLayer):
                 # One Euler step to check if force is too big
                 force = drag_force + total_force
                 vel_old = player.velocity.copy()
-                acceleration = force / player.mass
+                acceleration = force / player.get_mass()
                 vel_new = player.velocity + acceleration * dt
 
                 if np.dot(vel_old, vel_new) < 0:
@@ -237,7 +238,8 @@ class Arena:
 
     def draw(self, screen) -> None:
         """Draw the arena onto the given screen."""
-        Circle(self.position[0], self.position[1], self.color, self.radius).draw(screen)
+        Circle(self.position[0], self.position[1],
+               self.color, self.radius).draw(screen)
 
     def force(
         self, player: Player, input_force: np.ndarray, max_input: float, dt: float
