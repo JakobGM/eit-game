@@ -15,7 +15,7 @@ import numpy as np
 from trueskill import TrueSkill, Rating, backends, quality_1vs1
 
 
-DEFAULT_SAVE_PATH = Path(__file__).parents[1] / 'data' / 'savefile'
+DEFAULT_SAVE_PATH = Path(__file__).parents[1] / "data" / "savefile"
 
 
 class Data:
@@ -53,7 +53,7 @@ class Statistics:
         self.env = TrueSkill()
 
         # Enable the scipy backend of TrueSkill
-        backends.choose_backend('scipy')
+        backends.choose_backend("scipy")
 
     def save(self, ranking: Optional[List[str]] = None) -> None:
         """
@@ -83,11 +83,7 @@ class Statistics:
         can compare players.
         """
         # First create rating objects for each player, assuming no prior skill
-        rankings = {
-            name: self.env.create_rating()
-            for name
-            in self.all_players
-        }
+        rankings = {name: self.env.create_rating() for name in self.all_players}
 
         # Iterate over all the saved games we have in our catalogue
         for game in self.data.all_rankings:
@@ -105,9 +101,7 @@ class Statistics:
 
         # Sort the dictionary by player rating before returning it
         sorted_rankings = sorted(
-            rankings.items(),
-            key=lambda r: self.env.expose(r[1]),
-            reverse=True,
+            rankings.items(), key=lambda r: self.env.expose(r[1]), reverse=True
         )
         return dict(sorted_rankings)
 
@@ -124,7 +118,7 @@ class Statistics:
         """
         if len(players) != 2:
             raise NotImplementedError(
-                'Win probability is only implemented for two players.',
+                "Win probability is only implemented for two players."
             )
         # Retrieve ratings based on earlier games.
         # Default rating will be used if players have not played earlier.
@@ -143,9 +137,9 @@ class Statistics:
         player_2_win_chance = 1 - player_1_win_chance
 
         return {
-            'draw': draw_probability,
-            'player_1': player_1_win_chance,
-            'player_2': player_2_win_chance,
+            "draw": draw_probability,
+            "player_1": player_1_win_chance,
+            "player_2": player_2_win_chance,
         }
 
     def _load_data(self) -> None:
@@ -170,5 +164,5 @@ class Statistics:
     def _save_data(self) -> None:
         """Save data to path specified by __init__ save_path parameter."""
         self.save_path.write_bytes(
-            data=pickle.dumps(self.data, protocol=pickle.HIGHEST_PROTOCOL),
+            data=pickle.dumps(self.data, protocol=pickle.HIGHEST_PROTOCOL)
         )

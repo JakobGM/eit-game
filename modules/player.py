@@ -7,13 +7,14 @@ import math
 import pygame as pg
 from settings import ArenaSettings
 from input.UDP_connect import ConnectPhone
+import copy
 
 
 class Player:
     """This class a player class."""
 
-    def __init__(self, x: float, y: float, data: type,
-                 phone: ConnectPhone = None) -> None:
+    def __init__(
+            self, x: float, y: float, data: type, mass, phone: ConnectPhone = None) -> None:
         """
         Initialize a player with given parameters.
 
@@ -21,20 +22,34 @@ class Player:
         :param y: initial y-position
         :param data: Dataclass used to store player settings
         """
-        self.mass: float = data.mass
+        self.mass = mass
+        self.initial_position: np.ndarray = np.array([x, y], dtype=float)
         self.position: np.ndarray = np.array([x, y], dtype=float)
         self.velocity: np.ndarray = np.zeros(2, dtype=float)
+        self.acceleration: np.ndarray = np.zeros(2, dtype=float)
+        self.score = 0
 
         self.input: Input = Input(data, phone)
+        self.name = ''
 
         self.color: Colors = Colors.random()
         self.data: type = data
         self.shield_on: bool = False
         self.health_bar: HealthBar = HealthBar(self, PlayerSettings.health)
 
+    def get_mass(self):
+        return self.mass.get_value()
+
+    def reset_position(self):
+        self.position = copy.deepcopy(self.initial_position)
+
     def get_velocity(self) -> float:
         """Return the velocity of the player."""
         return math.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
+
+    def get_acceleration(self) -> float:
+        """Return the velocity of the player."""
+        return math.sqrt(self.acceleration[0] ** 2 + self.acceleration[1] ** 2)
 
     def shield(self) -> bool:
         """Turn on the shield."""
@@ -73,8 +88,8 @@ class Player:
         if self.shield():
             self.draw_shield(screen)
         Circle(
-            self.position[0], self.position[1], self.color,
-            self.data.player_size).draw(screen)
+            self.position[0], self.position[1], self.color, self.data.player_size
+        ).draw(screen)
 
     def draw_shield(self, screen: pg.Surface) -> None:
         """
