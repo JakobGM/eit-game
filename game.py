@@ -91,7 +91,7 @@ class Game:
         # Score
         self.score_table = [graphics.Text(
             Texts(
-                "Score table", ScreenSettings.width / 2, 200, 115
+                "Win chance", ScreenSettings.width / 2, 200, 115
             )
         ),
             graphics.Text(
@@ -102,7 +102,10 @@ class Game:
             Texts('', ScreenSettings.width /
                   2, 320, 80)
         ),
-
+            graphics.Text(
+            Texts('', ScreenSettings.width /
+                  2, 380, 80)
+        ),
         ]
 
     def run(self) -> None:
@@ -126,17 +129,21 @@ class Game:
                 else:
                     self.players[1].score += 1
 
+                stats = [player.name for player in sorted(self.players,
+                                                          key=lambda x: x.health_bar.health, reverse=True)]
+                self.statistics.save(stats)
+                stats = self.statistics.win_probability(
+                    [self.players[0].name, self.players[1].name])
+
                 # Add highscore
-                self.score_table[1].msg = f"{self.players[0].name}: {self.players[0].score}"
-                self.score_table[2].msg = f"{self.players[1].name}: {self.players[1].score}"
+                self.score_table[1].msg = f"{self.players[0].name}: {stats['player_1']:.2f}"
+                self.score_table[2].msg = f"{self.players[1].name}: {stats['player_2']:.2f}"
+                self.score_table[3].msg = f"Draw: {stats['draw']:.2f}"
                 while 1:
                     if self.run_end():
                         self.end_btn[0].clicked = False
                         break
                 self.reset_game()
-        stats = [player.name for player in sorted(self.players,
-                                                  key=lambda x: x.score, reverse=True)]
-        self.statistics.save(stats)
 
         pg.quit()
 
