@@ -91,7 +91,7 @@ class Game:
         # Score
         self.score_table = [graphics.Text(
             Texts(
-                "Win chance", ScreenSettings.width / 2, 200, 115
+                "Win and draw probabilities", ScreenSettings.width / 2, 200, 115
             )
         ),
             graphics.Text(
